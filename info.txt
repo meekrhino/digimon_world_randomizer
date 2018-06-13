@@ -1,0 +1,55 @@
+starting digimon offsets (agumon + gabumon)
+0x14D271B8 and 0x14D271C0 single byte value (0x03 and 0x11)
+
+set starting move learned (must match above)
+0x14CD1D24 + 0x14CD1D40 (03 -> Digimon ID, 02 -> Move ID)
+0x14CD1D44 + 0x14CD1D60 (11 -> Digimon ID, 2B -> Move ID)
+
+0x14CD1D30 (2E for first slot)
+0x14CD1D50 (30 for third slot)
+
+animation (move equipeed) starts at 2E for moves
+
+Static Elect	Electric Cloud	Water Blit	Aqua Magic	Electric Shock
+0x0C		0x0A		0x14		0x15		0x42
+
+                     digi      	set     		idk
+3  > 0x03 + 0x02   (agumon, 	spitfire)		1
+4  > 0x04 + 0x0C   (betamon, 	static elect)		1
+17 > 0x11 + 0x2B   (gabumon,	sonic jab)		3
+18 > 0x12 + 0x0C   (elecmon,	static elect)		4
+31 > 0x1F + 0x2B   (patamon,	sonic jab)		1
+32 > 0x20 + 0x25   (kunemon,	poison claw)		4
+45 > 0x2D + 0x02   (biyomon,	spit fire)		1
+46 > 0x2E + 0x25   (palmon, 	poison claw)		1
+57 > 0x39 + 0x25   (penguinmon, poison claw)		1
+--------------
+67 > 0x43
+68 >
+69
+71
+74
+80
+82
+83
+84
+86
+93
+94
+96
+97
+98
+101
+102
+103
+109
+111
+113
+128
+139
+140
+151
+152
+163
+164
+176
