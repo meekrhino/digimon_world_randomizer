@@ -8,7 +8,7 @@ Utilities for writing specific positions in memory.
 import data
 import sys
 
-def writeDataToFile( file, ofst, mode, value ):
+def writeDataToFile( file, ofst, mode, value, verbose ):
     """
     Convert specified value to bytes and write to file.
 
@@ -23,6 +23,10 @@ def writeDataToFile( file, ofst, mode, value ):
     #if I run into endianness problems, may need to convert
     #values in a different way.
     bytesToWrite = bytes([value])
+
+    if( verbose ):
+        print( 'Writing the following to file: ' + str( bytesToWrite ) )
+
     return file.write( bytesToWrite )
 
 
@@ -34,8 +38,9 @@ def techSlotAnimID( slot ):
     slot -- Tech slot to convert (1 to 16)
     """
 
-    if( slot < 1 or slot > 16 )
-        print( 'Error: Tried to use an invalid tech slot.' )
+    if( slot < 1 or slot > 16 ):
+        print( 'Error: Tried to use an invalid tech slot: ' + format( slot, '02x' ) )
+        slot = 1
 
     #Move slots index from 1 and the move animations index from 0x2E
     #So slot 1 in animation 0x2E
@@ -51,10 +56,12 @@ def animIDTechSlot( anim ):
 
     #Move slots index from 1 and the move animations index from 0x2E
     #So slot 1 in animation 0x2E
+    print( format( anim, '02x' ) )
     slot = anim - 0x2E + 1
 
-    if( slot < 1 or slot > 16 )
-        print( 'Error: Tried to read an invalid animation ID as a tech slot.' )
+    if( slot < 1 or slot > 16 ):
+        print( 'Error: Tried to read an invalid animation ID as a tech slot: ' + format( slot, '02x' ) )
+        slot = 1
 
     return slot
 
@@ -66,7 +73,8 @@ def starterTech( id ):
     id -- Digimon ID to get starter tech for
     """
     if( id not in data.starterTechs ):
-        print( 'Error: Tried to get starter tech for invalid digimon' )
+        print( 'Error: Tried to get starter tech for invalid digimon: ' + format( id, '02x' ) )
+        id = data.rookies[ 0 ]
 
     return data.starterTechs[ id ]
 
@@ -78,6 +86,7 @@ def starterTechSlot( id ):
     id -- Digimon ID to get starter tech slot for
     """
     if( id not in data.starterTechSlots ):
-        print( 'Error: Tried to get starter tech slot for invalid digimon' )
+        print( 'Error: Tried to get starter tech slot for invalid digimon: ' + format( id, '02x' ) )
+        id = data.rookies[ 0 ]
 
     return data.starterTechSlots[ id ]
