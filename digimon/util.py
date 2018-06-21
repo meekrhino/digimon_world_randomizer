@@ -8,7 +8,7 @@ Utilities for writing specific positions in memory.
 import data
 import sys
 
-def writeDataToFile( file, ofst, mode, value, verbose ):
+def writeDataToFile( file, ofst, mode, str, verbose ):
     """
     Convert specified value to bytes and write to file.
 
@@ -20,14 +20,10 @@ def writeDataToFile( file, ofst, mode, value, verbose ):
     """
     file.seek( ofst, mode )
 
-    #if I run into endianness problems, may need to convert
-    #values in a different way.
-    bytesToWrite = bytes([value])
-
     if( verbose ):
-        print( 'Writing the following to file: ' + str( bytesToWrite ) )
+        print( 'Writing the following to file: ' + str )
 
-    return file.write( bytesToWrite )
+    return file.write( str )
 
 
 def techSlotAnimID( slot ):
@@ -56,7 +52,6 @@ def animIDTechSlot( anim ):
 
     #Move slots index from 1 and the move animations index from 0x2E
     #So slot 1 in animation 0x2E
-    print( format( anim, '02x' ) )
     slot = anim - 0x2E + 1
 
     if( slot < 1 or slot > 16 ):

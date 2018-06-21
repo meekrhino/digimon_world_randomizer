@@ -64,27 +64,27 @@ class DigimonWorldHandler:
             #Read in first starter learned tech ID
             file.seek( data.starter1LearnTechOffset, 0 )
             self.starter1Tech = struct.unpack( self.techIDFormat, file.read( 1 ) )[0]
-            print( format( self.starter1Tech, '02x' ) + ' = tech ID' )
+            print( '0x' + format( self.starter1Tech, '02x' ) + ' = tech ID' )
 
             #Read in first starter learned tech slot
             file.seek( data.starter1EquipAnimOffset, 0 )
             self.starter1TechSlot = util.animIDTechSlot( struct.unpack( self.animIDFormat, file.read( 1 ) )[0] )
-            print( format( self.starter1TechSlot, '02x' ) + ' = tech slot' )
+            print( '0x' + format( self.starter1TechSlot, '02x' ) + ' = tech slot' )
 
             #Read in second starter ID
             file.seek( data.starter2SetDigimonOffset, 0 )
             self.starter2ID = struct.unpack( self.digimonIDFormat, file.read( 1 ) )[0]
-            print( format( self.starter2ID, '02x' ) + ' = starter ID' )
+            print( '0x' + format( self.starter2ID, '02x' ) + ' = starter ID' )
 
             #Read in second starter learned tech ID
             file.seek( data.starter2LearnTechOffset, 0 )
             self.starter2Tech = struct.unpack( self.techIDFormat, file.read( 1 ) )[0]
-            print( format( self.starter2Tech, '02x' ) + ' = tech ID' )
+            print( '0x' + format( self.starter2Tech, '02x' ) + ' = tech ID' )
 
             #Read in second starter learned tech slot
             file.seek( data.starter2EquipAnimOffset, 0 )
             self.starter2TechSlot = util.animIDTechSlot( struct.unpack( self.animIDFormat, file.read( 1 ) )[0] )
-            print( format( self.starter2TechSlot, '02x' ) + ' = tech slot' )
+            print( '0x' + format( self.starter2TechSlot, '02x' ) + ' = tech slot' )
 
 
     def write( self, filename, verbose=False ):
@@ -108,7 +108,7 @@ class DigimonWorldHandler:
             util.writeDataToFile( file,
                                   data.starter1SetDigimonOffset,
                                   0,
-                                  self.starter1ID,
+                                  struct.pack( self.digimonIDFormat, self.starter1ID ),
                                   verbose )
 
             #Set digimon ID to check when learning first
@@ -116,14 +116,14 @@ class DigimonWorldHandler:
             util.writeDataToFile( file,
                                   data.starter1ChkDigimonOffset,
                                   0,
-                                  self.starter1ID,
+                                  struct.pack( self.digimonIDFormat, self.starter1ID ),
                                   verbose )
 
             #Set tech ID for first starter to learn
             util.writeDataToFile( file,
                                   data.starter1LearnTechOffset,
                                   0,
-                                  self.starter1Tech,
+                                  struct.pack( self.techIDFormat, self.starter1Tech ),
                                   verbose )
 
             #Set animation ID to equip as first stater's
@@ -131,7 +131,7 @@ class DigimonWorldHandler:
             util.writeDataToFile( file,
                                   data.starter1EquipAnimOffset,
                                   0,
-                                  util.techSlotAnimID( self.starter1TechSlot ),
+                                  struct.pack( self.animIDFormat, util.techSlotAnimID( self.starter1TechSlot ) ),
                                   verbose )
 
             #------------------------------------------------------
@@ -142,7 +142,7 @@ class DigimonWorldHandler:
             util.writeDataToFile( file,
                                   data.starter2SetDigimonOffset,
                                   0,
-                                  self.starter2ID,
+                                  struct.pack( self.digimonIDFormat, self.starter2ID ),
                                   verbose )
 
             #Set digimon ID to check when learning second
@@ -150,14 +150,14 @@ class DigimonWorldHandler:
             util.writeDataToFile( file,
                                   data.starter2ChkDigimonOffset,
                                   0,
-                                  self.starter2ID,
+                                  struct.pack( self.digimonIDFormat, self.starter2ID ),
                                   verbose )
 
             #Set tech ID for first starter to learn
             util.writeDataToFile( file,
                                   data.starter2LearnTechOffset,
                                   0,
-                                  self.starter2Tech,
+                                  struct.pack( self.techIDFormat, self.starter2Tech ),
                                   verbose )
 
             #Set animation ID to equip as first stater's
@@ -165,7 +165,7 @@ class DigimonWorldHandler:
             util.writeDataToFile( file,
                                   data.starter2EquipAnimOffset,
                                   0,
-                                  util.techSlotAnimID( self.starter2TechSlot ),
+                                  struct.pack( self.animIDFormat, util.techSlotAnimID( self.starter2TechSlot ) ),
                                   verbose )
 
 

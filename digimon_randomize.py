@@ -6,9 +6,10 @@ if( len(sys.argv) < 1 ):
 	print( 'Must provide file name at command line.' )
 	exit
 
-print( 'Reading data from ' + sys.argv[1] + '...' )
+print( 'Reading data from ' + sys.argv[1] + '...\n' )
 handler = DigimonWorldHandler(sys.argv[1])
 
+print( 'Modifying data...\n' )
 handler.randomizeStarters()
 handler.setStarterTechs( default=True )
 
@@ -17,7 +18,7 @@ if( len(sys.argv) > 1 ):
 else:
     out = sys.argv[1]
 
-print( 'Writing to ' + out + '...' )
-handler.write( out, verbose=True )
+print( 'Writing to ' + out + '...\n' )
+handler.write( out, verbose=False )
 
 print( 'Modifications complete.' )
