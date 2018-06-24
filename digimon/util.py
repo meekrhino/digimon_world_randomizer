@@ -5,7 +5,7 @@
 Utilities for writing specific positions in memory.
 """
 
-import data
+import digimon.data as data
 import sys
 
 def writeDataToFile( file, ofst, mode, str, verbose ):

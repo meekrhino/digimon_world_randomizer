@@ -5,6 +5,18 @@
 Hard coded data values and binary offsets.
 """
 
+names = {
+			0x03 : 'Agumon',
+			0x04 : 'Betamon',
+			0x11 : 'Gabumon',
+			0x12 : 'Elecmon',
+			0x1F : 'Patamon',
+			0x20 : 'Kunemon',
+			0x2D : 'Biyomon',
+			0x2E : 'Palmon',
+			0x39 : 'Penguinmon'
+			}
+
 rookies = [0x03, 0x04, 0x11, 0x12, 0x1F, 0x20, 0x2D, 0x2E, 0x39]
 
 starterTechs = {

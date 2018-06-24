@@ -5,9 +5,10 @@
 Handler that stores all data to be written to the ROM.
 """
 
-import data, util
+import digimon.data as data, digimon.util as util
 import random, struct
 from shutil import copyfile
+
 
 class DigimonWorldHandler:
     """
@@ -59,7 +60,7 @@ class DigimonWorldHandler:
             #Read in first starter digimon ID
             file.seek( data.starter1SetDigimonOffset, 0 )
             self.starter1ID = struct.unpack( self.digimonIDFormat, file.read( 1 ) )[0]
-            print( '0x' + format( self.starter1ID, '02x' ) + ' = starter ID')
+            print( data.names[ self.starter1ID ] )
 
             #Read in first starter learned tech ID
             file.seek( data.starter1LearnTechOffset, 0 )
@@ -74,7 +75,7 @@ class DigimonWorldHandler:
             #Read in second starter ID
             file.seek( data.starter2SetDigimonOffset, 0 )
             self.starter2ID = struct.unpack( self.digimonIDFormat, file.read( 1 ) )[0]
-            print( '0x' + format( self.starter2ID, '02x' ) + ' = starter ID' )
+            print( data.names[ self.starter2ID ] )
 
             #Read in second starter learned tech ID
             file.seek( data.starter2LearnTechOffset, 0 )
@@ -179,10 +180,10 @@ class DigimonWorldHandler:
             secondDigi = data.rookies[random.randint(0, len(data.rookies) - 1)]
 
         self.starter1ID = firstDigi
-        print( 'First starter set to 0x' + format( firstDigi, '02x' ) )
+        print( 'First starter set to ' + data.names[ firstDigi ] )
 
         self.starter2ID = secondDigi
-        print( 'Second starter set to 0x' + format( secondDigi, '02x' ) )
+        print( 'Second starter set to ' + data.names[ secondDigi ] )
 
 
     def setStarterTechs( self, default=True ):
@@ -202,4 +203,4 @@ class DigimonWorldHandler:
 
         self.starter2Tech = util.starterTech( self.starter2ID )
         self.starter2TechSlot = util.starterTechSlot( self.starter2ID )
-        print( 'First starter tech set to 0x' + format( self.starter2Tech, '02x' ) + ' in slot ' + str( self.starter2TechSlot ) )
+        print( 'Second starter tech set to 0x' + format( self.starter2Tech, '02x' ) + ' in slot ' + str( self.starter2TechSlot ) )
