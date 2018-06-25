@@ -43,12 +43,12 @@ starterTechSlots = {
 			0x39 : 0x01
 			}
 
-starter1SetDigimonOffset = 0x14D271B8
+starter1SetDigimonOffset = 0x14D271C0
 starter1ChkDigimonOffset = 0x14CD1D24
 starter1LearnTechOffset  = 0x14CD1D40
 starter1EquipAnimOffset  = 0x14CD1D30
 
-starter2SetDigimonOffset = 0x14D271C0
+starter2SetDigimonOffset = 0x14D271B8
 starter2ChkDigimonOffset = 0x14CD1D44
 starter2LearnTechOffset  = 0x14CD1D60
 starter2EquipAnimOffset  = 0x14CD1D50
