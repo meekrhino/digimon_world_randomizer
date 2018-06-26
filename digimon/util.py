@@ -2,7 +2,7 @@
 # Copyright: TODO
 
 """
-Utilities for writing specific positions in memory.
+Utilities for manipulating digimon data.
 """
 
 import digimon.data as data

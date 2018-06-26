@@ -6,6 +6,7 @@ Handler that stores all data to be written to the ROM.
 """
 
 import digimon.data as data, digimon.util as util
+import script.util as scrutil
 import random, struct
 from shutil import copyfile
 
@@ -17,36 +18,37 @@ class DigimonWorldHandler:
     file.
     """
 
-    #       Endianness              Size (packed/not)
-    # @ 	native 	                native
-    # = 	native 	                standard
-    # < 	little-endian 	        standard
-    # > 	big-endian 	            standard
-    # ! 	network (= big-endian) 	standard
+    #       Endianness                      Size (packed/not)
+    # @     native                              native
+    # =     native                              standard
+    # <     little-endian                       standard
+    # >     big-endian                      standard
+    # !     network (= big-endian)  standard
 
     #       Type
-    # x 	pad byte
-    # c 	char
-    # b 	signed char
-    # B 	unsigned char
-    # ? 	_Bool
-    # h 	short
-    # H 	unsigned short
-    # i 	int
-    # I 	unsigned int
-    # l 	long
-    # L 	unsigned long
-    # q 	long long
-    # Q 	unsigned long long
-    # f 	float
-    # d 	double
-    # s 	char[]
-    # p 	char[]
-    # P 	void *
+    # x     pad byte
+    # c     char
+    # b     signed char
+    # B     unsigned char
+    # ?     _Bool
+    # h     short
+    # H     unsigned short
+    # i     int
+    # I     unsigned int
+    # l     long
+    # L     unsigned long
+    # q     long long
+    # Q     unsigned long long
+    # f     float
+    # d     double
+    # s     char[]
+    # p     char[]
+    # P     void *
 
-    digimonIDFormat = "=B"
-    techIDFormat    = "=B"
-    animIDFormat    = "=B"
+    digimonIDFormat = '<B'
+    techIDFormat    = '<B'
+    animIDFormat    = '<B'
+    chestItemFormat = '<BB'
 
     def __init__( self, filename ):
         """
@@ -86,7 +88,21 @@ class DigimonWorldHandler:
             file.seek( data.starter2EquipAnimOffset, 0 )
             self.starter2TechSlot = util.animIDTechSlot( struct.unpack( self.animIDFormat, file.read( 1 ) )[0] )
             print( '0x' + format( self.starter2TechSlot, '02x' ) + ' = tech slot' )
-
+            
+            self.chestItems = {}
+            
+            for ofst in data.chestItemOffsets:
+                file.seek( ofst, 0 )
+                cmd, item = struct.unpack( self.chestItemFormat, file.read( 2 ) )
+                if( cmd != scrutil.spawnChest ):
+                    print( 'Error: Looking for chest item, found incorrect command: ' + str( cmd ) + ' @ ' + format( ofst, '08x' ) )
+                else:
+                    self.chestItems[ ofst ] = item
+            
+            for item in self.chestItems.values():
+                print( 'Chest contains: \'' + data.items[ item ] + '\'' )
+            
+            
 
     def write( self, filename, verbose=False ):
         """
