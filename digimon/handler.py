@@ -239,9 +239,11 @@ class DigimonWorldHandler:
         """
         self.starter1Tech = util.starterTech( self.starter1ID )
         self.starter1TechSlot = util.starterTechSlot( self.starter1ID )
-        print( 'First starter tech set to 0x' + format( self.starter1Tech, '02x' ) + ' in slot ' + str( self.starter1TechSlot ) )
+        print( 'First starter tech set to ' + data.techs[ self.starter1Tech ]
+             + ' (' + data.names[ self.starter1ID ] + '\'s slot ' + str( self.starter1TechSlot ) ) + ')'
 
 
         self.starter2Tech = util.starterTech( self.starter2ID )
         self.starter2TechSlot = util.starterTechSlot( self.starter2ID )
-        print( 'Second starter tech set to 0x' + format( self.starter2Tech, '02x' ) + ' in slot ' + str( self.starter2TechSlot ) )
+        print( 'Second starter tech set to ' + data.techs[ self.starter2Tech ]
+             + ' (' + data.names[ self.starter2ID ] + '\'s slot ' + str( self.starter2TechSlot ) ) + ')'
