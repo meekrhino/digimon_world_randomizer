@@ -148,7 +148,18 @@ items = {
             0x7F :'Metalbanana',
             }
 
-rookies = (0x03, 0x04, 0x11, 0x12, 0x1F, 0x20, 0x2D, 0x2E, 0x39)
+#Everything from 'Grey Claws' to 'Coral charm' and 'Giga Hand' to the end
+evoItems = { k:v for k,v in items.iteritems() if( ( k >= 0x47
+                                                and k <= 0x72 )
+                                                 or k >= 0x7D ) }
+
+#Everything from 'Blue Flute' to 'AS Decoder' excluding 'Rain Plant' and 'Steak'
+questItems = { k:v for k,v in items.iteritems() if( k >= 0x73
+                                                and k <= 0x7C
+                                                and v != 'Rain Plant'
+                                                and v != 'Steak' ) }
+
+rookies = ( 0x03, 0x04, 0x11, 0x12, 0x1F, 0x20, 0x2D, 0x2E, 0x39 )
 
 starterTechs = {
             0x03 : 0x02,
@@ -204,7 +215,7 @@ chestItemOffsets = (
             0x14023630,
             0x14023F54,
             0x14023F60,
-            0x14030964, 
+            0x14030964,
             0x140377A8,
             0x13FF58AA,
             0x13FF58B6,

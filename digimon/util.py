@@ -8,17 +8,16 @@ Utilities for manipulating digimon data.
 import digimon.data as data
 import sys
 
-def writeDataToFile( file, ofst, mode, str, verbose ):
+def writeDataToFile( file, ofst, str, verbose ):
     """
     Convert specified value to bytes and write to file.
 
     Keyword arguments:
     file -- File pointer opened in binary mode.
     ofst -- Offset to write.
-    mode -- Relative to start (0), current (1), or end (2)
     value -- Value to write.
     """
-    file.seek( ofst, mode )
+    file.seek( ofst, 0 )
 
     if( verbose ):
         print( 'Writing the following to file: ' + str )

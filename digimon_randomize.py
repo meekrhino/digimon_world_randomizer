@@ -11,7 +11,7 @@ handler = DigimonWorldHandler(sys.argv[1])
 
 print( 'Modifying data...\n' )
 handler.randomizeStarters()
-handler.setStarterTechs( default=True )
+handler.randomizeChestItems()
 
 if( len(sys.argv) > 1 ):
     out = sys.argv[2]
