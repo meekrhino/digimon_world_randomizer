@@ -5,6 +5,8 @@
 Hard coded data values and binary offsets.
 """
 
+from future.utils import iteritems
+
 names = {
             0x03 : 'Agumon',
             0x04 : 'Betamon',
@@ -273,15 +275,15 @@ items = {
             }
 
 #Everything from 'Grey Claws' to 'Coral charm' and 'Giga Hand' to the end
-evoItems = { k:v for k,v in items.iteritems() if( ( k >= 0x47
-                                                and k <= 0x72 )
-                                                 or k >= 0x7D ) }
+evoItems = { k:v for k,v in iteritems( items ) if( ( k >= 0x47
+                                                 and k <= 0x72 )
+                                                  or k >= 0x7D ) }
 
 #Everything from 'Blue Flute' to 'AS Decoder' excluding 'Rain Plant' and 'Steak'
-questItems = { k:v for k,v in items.iteritems() if( k >= 0x73
-                                                and k <= 0x7C
-                                                and v != 'Rain Plant'
-                                                and v != 'Steak' ) }
+questItems = { k:v for k,v in iteritems( items ) if( k >= 0x73
+                                                 and k <= 0x7C
+                                                 and v != 'Rain Plant'
+                                                 and v != 'Steak' ) }
 
 rookies = ( 0x03, 0x04, 0x11, 0x12, 0x1F, 0x20, 0x2D, 0x2E, 0x39 )
 

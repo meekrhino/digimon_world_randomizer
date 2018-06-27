@@ -9,6 +9,7 @@ import digimon.data as data, digimon.util as util
 #import script.util as scrutil
 import random, struct
 from shutil import copyfile
+from future.utils import iteritems, itervalues
 
 
 class DigimonWorldHandler:
@@ -99,7 +100,7 @@ class DigimonWorldHandler:
                 #else:
                 self.chestItems[ ofst ] = item
 
-            for item in self.chestItems.values():
+            for item in itervalues( self.chestItems ):
                 print( 'Chest contains: \'' + data.items[ item ] + '\'' )
 
 
@@ -183,7 +184,7 @@ class DigimonWorldHandler:
             #------------------------------------------------------
 
             #Set item IDs in chests
-            for ofst, item in self.chestItems.iteritems():
+            for ofst, item in iteritems( self.chestItems ):
                 util.writeDataToFile( file,
                                       ofst,
                                       struct.pack( self.chestItemFormat, 0x75, item ),#spawnChest item ),
@@ -217,14 +218,14 @@ class DigimonWorldHandler:
         """
         #Allow all items besides quest and evolution items
         if( allowEvo ):
-            allowedItems = { k:v for k,v in data.items.iteritems() if( k not in data.questItems.keys() ) }
+            allowedItems = { k:v for k,v in iteritems( data.items ) if( k not in data.questItems.keys() ) }
         else:
-            allowedItems = { k:v for k,v in data.items.iteritems() if( k not in data.evoItems.keys()
-                                                                   and k not in data.questItems.keys() ) }
+            allowedItems = { k:v for k,v in iteritems( data.items ) if( k not in data.evoItems.keys()
+                                                                    and k not in data.questItems.keys() ) }
 
-        for key in self.chestItems.keys():
+        for key in list( self.chestItems ):
             pre = self.chestItems[ key ]
-            self.chestItems[ key ] = allowedItems.keys()[ random.randint( 0, len( allowedItems ) - 1 ) ]
+            self.chestItems[ key ] = list(allowedItems)[ random.randint( 0, len( allowedItems ) - 1 ) ]
             print( 'Changed chest item from ' + data.items[ pre ] + ' to ' + data.items[ self.chestItems[ key ] ] )
 
     def setStarterTechs( self, default=True ):
@@ -240,10 +241,10 @@ class DigimonWorldHandler:
         self.starter1Tech = util.starterTech( self.starter1ID )
         self.starter1TechSlot = util.starterTechSlot( self.starter1ID )
         print( 'First starter tech set to ' + data.techs[ self.starter1Tech ]
-             + ' (' + data.names[ self.starter1ID ] + '\'s slot ' + str( self.starter1TechSlot ) ) + ')'
+             + ' (' + data.names[ self.starter1ID ] + '\'s slot ' + str( self.starter1TechSlot ) + ')' )
 
 
         self.starter2Tech = util.starterTech( self.starter2ID )
         self.starter2TechSlot = util.starterTechSlot( self.starter2ID )
         print( 'Second starter tech set to ' + data.techs[ self.starter2Tech ]
-             + ' (' + data.names[ self.starter2ID ] + '\'s slot ' + str( self.starter2TechSlot ) ) + ')'
+             + ' (' + data.names[ self.starter2ID ] + '\'s slot ' + str( self.starter2TechSlot ) + ')' )
