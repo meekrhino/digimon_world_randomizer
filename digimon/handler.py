@@ -12,6 +12,7 @@ from shutil import copyfile
 from future.utils import iteritems, itervalues
 
 
+
 class DigimonWorldHandler:
     """
     Digimon World handler class.  Holds all data
@@ -20,11 +21,11 @@ class DigimonWorldHandler:
     """
 
     #       Endianness                      Size (packed/not)
-    # @     native                              native
-    # =     native                              standard
-    # <     little-endian                       standard
+    # @     native                          native
+    # =     native                          standard
+    # <     little-endian                   standard
     # >     big-endian                      standard
-    # !     network (= big-endian)  standard
+    # !     network (= big-endian)          standard
 
     #       Type
     # x     pad byte
@@ -46,26 +47,38 @@ class DigimonWorldHandler:
     # p     char[]
     # P     void *
 
-    digimonIDFormat = '<B'
-    techIDFormat    = '<B'
-    animIDFormat    = '<B'
-    chestItemFormat = '<BB'
+    digimonIDFormat   = '<B'
+    techIDFormat      = '<B'
+    animIDFormat      = '<B'
+    chestItemFormat   = '<BB'
+    digimonDataFormat = '<20sihh23Bx'
 
     def __init__( self, filename ):
         """
         Load ROM data into cache so that it can be read
         and manipulated.
+
+        Keyword arguments:
+        filename -- Name of file to read.
         """
 
         self.inFilename = filename
 
         with open( filename, 'r' + 'b' ) as file:
             #Read in full digimon data block
-            util.readDataWithExclusions( file,
-                                         data.digimonDataBlockOffset,
-                                         data.digimonDataBlockSize,
-                                         data.digimonDataExclusionOffsets,
-                                         data.digimonDataExclusionSize )
+            data_read = util.readDataWithExclusions( file,
+                                                     data.digimonDataBlockOffset,
+                                                     data.digimonDataBlockSize,
+                                                     data.digimonDataExclusionOffsets,
+                                                     data.digimonDataExclusionSize )
+
+            #Parse digimon data block
+            self.digimonData = util.parseDataArray( data_read,
+                                                    self.digimonDataFormat,
+                                                    data.digimonDataBlockCount )
+
+            for i, digi in enumerate( self.digimonData ):
+                print( str( digi ) + '\n' )
 
             #Read in first starter digimon ID
             file.seek( data.starter1SetDigimonOffset, 0 )
@@ -194,7 +207,7 @@ class DigimonWorldHandler:
             for ofst, item in iteritems( self.chestItems ):
                 util.writeDataToFile( file,
                                       ofst,
-                                      struct.pack( self.chestItemFormat, scrutil.spawnChest item ),
+                                      struct.pack( self.chestItemFormat, scrutil.spawnChest, item ),
                                       verbose )
 
 

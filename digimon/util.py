@@ -6,7 +6,10 @@ Utilities for manipulating digimon data.
 """
 
 import digimon.data as data
+from digimon.digimonclass import Digimon
 import sys
+import struct
+
 
 def writeDataToFile( file, ofst, str, verbose ):
     """
@@ -23,37 +26,61 @@ def writeDataToFile( file, ofst, str, verbose ):
         print( 'Writing the following to file: ' + str )
 
     return file.write( str )
-    
+
+
 def readDataWithExclusions( file, ofst, sz, excls, excl_sz ):
     """
     Read data from file, excluding selected sections.
-    
+
     Keyword arguments:
     file -- File pointer.
     ofst -- Offset to start reading from.
     sz   -- Length of data block to read (includes
             exclusion sections).
-    *excls -- List of offset exclusion starting points.
+    excls -- List of offset exclusion starting points.
     excl_sz -- Size of exclusions (all must be same size).
     """
-    
+
     file.seek( ofst, 0 )
-    str = ''
-    
+    out = ''
+
     bytes_read = 0
     for nextExcl in excls:
         pos = ofst + bytes_read
         bytes_to_read = nextExcl - pos
-        str += file.read( bytes_to_read )
+        out += file.read( bytes_to_read )
         file.seek( excl_sz, 1 )
         bytes_read += bytes_to_read + excl_sz
-        
-    str.append( file.read( sz - bytes_read ) )
-    
-    print( 'Read ' + str( sz ) + ' bytes as:\n' + str )
-    
-    return str
-    
+
+    out += file.read( sz - bytes_read )
+
+    return out
+
+
+def parseDataArray( buf, fmt, count ):
+    """
+    Parse data as an array of structs.
+
+    Keyword arguments:
+    buf -- String of data.
+    fmt -- Struct format.
+    count -- Length of array.
+    """
+
+    fmt_sz = struct.calcsize( fmt )
+
+    data = []
+
+    if not count * fmt_sz == len( buf ):
+        print( 'Error: trying to parse data array with size '
+             + 'not matching expected size.' )
+        return []
+
+    for i in range( count ):
+        data.append( Digimon( i, struct.unpack_from( fmt, buf, i * fmt_sz ) ) )
+
+    return data
+
 
 def techSlotAnimID( slot ):
     """
@@ -70,6 +97,7 @@ def techSlotAnimID( slot ):
     #Move slots index from 1 and the move animations index from 0x2E
     #So slot 1 in animation 0x2E
     return 0x2E + (slot - 1)
+
 
 def animIDTechSlot( anim ):
     """
@@ -89,18 +117,20 @@ def animIDTechSlot( anim ):
 
     return slot
 
+
 def starterTech( id ):
     """
     Get the starter tech ID for the specified starter digimon ID.
 
     Keyword arguments:
-    id -- Digimon ID to get starter tech for
+    id -- Digimon ID to get starter tech for.
     """
     if( id not in data.starterTechs ):
         print( 'Error: Tried to get starter tech for invalid digimon: ' + format( id, '02x' ) )
         id = data.rookies[ 0 ]
 
     return data.starterTechs[ id ]
+
 
 def starterTechSlot( id ):
     """
@@ -114,3 +144,4 @@ def starterTechSlot( id ):
         id = data.rookies[ 0 ]
 
     return data.starterTechSlots[ id ]
+

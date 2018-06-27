@@ -274,6 +274,30 @@ items = {
             0x7F :'Metalbanana',
             }
 
+types = {
+            0x01 : 'DATA',
+            0x02 : 'VACCINE',
+            0x03 : 'VIRUS'
+        }
+
+levels = {
+            0x01 : 'FRESH',
+            0x02 : 'IN-TRAINING',
+            0x03 : 'ROOKIE',
+            0x04 : 'CHAMPION',
+            0x05 : 'ULTIMATE'
+        }
+
+specs = {
+            0x00 : 'FIRE',
+            0x01 : 'BATTLE',
+            0x02 : 'AIR',
+            0x03 : 'EARTH',
+            0x04 : 'ICE',
+            0x05 : 'MECH',
+            0x06 : 'FILTH'
+        }
+
 #Everything from 'Grey Claws' to 'Coral charm' and 'Giga Hand' to the end
 evoItems = { k:v for k,v in iteritems( items ) if( ( k >= 0x47
                                                  and k <= 0x72 )
@@ -386,16 +410,17 @@ chestItemOffsets = (
             0x140818F4, #690
             0x14081900, #691
             )
-            
+
 digimonDataBlockOffset   = 0x14D6E9DC       #start of digimon data block
-digimonDataBlockSize     = 0x2A80           #total number of bytes    
-            
+digimonDataBlockSize     = 0x2A80           #total number of bytes
+digimonDataBlockCount    = 0xB4             #number of digimon blocks
+
 digimonDataExclusionOffsets = (
             0x14D6EB28, #in Devimo
             0x14D6F458, #in Biyomon
             0x14D6FD88, #in Piddomon
-            0x14D706B8, #in Master Tyrannomon 
-            0x14D70FE8  #in Biyomon 
+            0x14D706B8, #in Master Tyrannomon
+            0x14D70FE8  #in Biyomon
             )
 digimonDataExclusionSize = 0x130
 

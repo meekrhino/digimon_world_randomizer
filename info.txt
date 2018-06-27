@@ -28,11 +28,31 @@ Static Elect	Electric Cloud	Water Blit	Aqua Magic	Electric Shock
 
 digimon stats data block begins at 0x14D6E9DC and ends at 0x14D7145C
 
+total of 0x2A80 (10880) bytes
+
 each block is 0x34 (52) bytes
 
-exclusion sections
- 0x14D6EB28 - 0x14D6EC58  (0x130 bytes, inside Devimon 6)
- 0x14D6F458 - 0x14D6F588  (0x130 bytes, inside Biyomon 45)
- 0x14D6FD88 - 0x14D6FEB8  (0x130 bytes, inside Piddomon 85)
- 0x14D706B8 - 0x14D707E8  (0x130 bytes, inside Master Tyrannomon 124)
- 0x14D70FE8 - 0x14D71118  (0x130 bytes, inside Biyomon 163)
+exclusion sections of 0x130 (304) bytes each
+    0x14D6EB28 - 0x14D6EC58  (inside Devimon 6)
+    0x14D6F458 - 0x14D6F588  (inside Biyomon 45)
+    0x14D6FD88 - 0x14D6FEB8  (inside Piddomon 85)
+    0x14D706B8 - 0x14D707E8  (inside Master Tyrannomon 124)
+    0x14D70FE8 - 0x14D71118  (inside Biyomon 163)
+
+data block format:
+20  char[20] name
+ 4  sint32 models
+ 2  sint16 radius
+ 2  sint16 height
+ 1  uint8  type   (data, virus, vaccine)
+ 1  uint8  level  (fresh, in-training, etc)
+ 1  uint8  spec1  (fire, battle, etc)
+ 1  uint8  spec2  (-1 = none)
+ 1  uint8  spec3
+ 1  uint8  item   (0 = sm.recovery, etc)
+ 1  uint8  drop%  (chance to drop)
+16  uint8[16] techs
+ 1  pad[1]
+----------
+52  total
+
