@@ -6,7 +6,7 @@ Handler that stores all data to be written to the ROM.
 """
 
 import digimon.data as data, digimon.util as util
-#import script.util as scrutil
+import script.util as scrutil
 import random, struct
 from shutil import copyfile
 from future.utils import iteritems, itervalues
@@ -61,12 +61,12 @@ class DigimonWorldHandler:
 
         with open( filename, 'r' + 'b' ) as file:
             #Read in full digimon data block
-            util.readDataWithExclusions( file, 
+            util.readDataWithExclusions( file,
                                          data.digimonDataBlockOffset,
                                          data.digimonDataBlockSize,
                                          data.digimonDataExclusionOffsets,
                                          data.digimonDataExclusionSize )
-        
+
             #Read in first starter digimon ID
             file.seek( data.starter1SetDigimonOffset, 0 )
             self.starter1ID = struct.unpack( self.digimonIDFormat, file.read( 1 ) )[0]
@@ -102,10 +102,10 @@ class DigimonWorldHandler:
             for ofst in data.chestItemOffsets:
                 file.seek( ofst, 0 )
                 cmd, item = struct.unpack( self.chestItemFormat, file.read( 2 ) )
-                #if( cmd != scrutil.spawnChest ):
-                #    print( 'Error: Looking for chest item, found incorrect command: ' + str( cmd ) + ' @ ' + format( ofst, '08x' ) )
-                #else:
-                self.chestItems[ ofst ] = item
+                if( cmd != scrutil.spawnChest ):
+                    print( 'Error: Looking for chest item, found incorrect command: ' + str( cmd ) + ' @ ' + format( ofst, '08x' ) )
+                else:
+                    self.chestItems[ ofst ] = item
 
             for item in itervalues( self.chestItems ):
                 print( 'Chest contains: \'' + data.items[ item ] + '\'' )
@@ -194,7 +194,7 @@ class DigimonWorldHandler:
             for ofst, item in iteritems( self.chestItems ):
                 util.writeDataToFile( file,
                                       ofst,
-                                      struct.pack( self.chestItemFormat, 0x75, item ),#spawnChest item ),
+                                      struct.pack( self.chestItemFormat, scrutil.spawnChest item ),
                                       verbose )
 
 
