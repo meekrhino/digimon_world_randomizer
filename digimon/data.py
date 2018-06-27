@@ -386,13 +386,25 @@ chestItemOffsets = (
             0x140818F4, #690
             0x14081900, #691
             )
+            
+digimonDataBlockOffset   = 0x14D6E9DC       #start of digimon data block
+digimonDataBlockSize     = 0x2A80           #total number of bytes    
+            
+digimonDataExclusionOffsets = (
+            0x14D6EB28, #in Devimo
+            0x14D6F458, #in Biyomon
+            0x14D6FD88, #in Piddomon
+            0x14D706B8, #in Master Tyrannomon 
+            0x14D70FE8  #in Biyomon 
+            )
+digimonDataExclusionSize = 0x130
 
 starter1SetDigimonOffset = 0x14D271C0       #set digimon id for agumon
-starter1ChkDigimonOffset = 0x14CD1D24    #check digimon id to set agumon's tech
-starter1LearnTechOffset  = 0x14CD1D40      #tech to learn for agumon
-starter1EquipAnimOffset  = 0x14CD1D30      #animation to equip for agumon
+starter1ChkDigimonOffset = 0x14CD1D24       #check digimon id to set agumon's tech
+starter1LearnTechOffset  = 0x14CD1D40       #tech to learn for agumon
+starter1EquipAnimOffset  = 0x14CD1D30       #animation to equip for agumon
 
 starter2SetDigimonOffset = 0x14D271B8       #set digimon id for gabumon
-starter2ChkDigimonOffset = 0x14CD1D44   #check digimon id to set gabumon's tech
+starter2ChkDigimonOffset = 0x14CD1D44       #check digimon id to set gabumon's tech
 starter2LearnTechOffset  = 0x14CD1D60       #tech to learn for gabuumon
 starter2EquipAnimOffset  = 0x14CD1D50       #animation to equip for gabumon

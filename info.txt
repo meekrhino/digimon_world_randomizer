@@ -10,6 +10,7 @@ set starting move learned (must match above)
 
 animation (move equipeed) starts at 2E for moves
 
+
 Static Elect	Electric Cloud	Water Blit	Aqua Magic	Electric Shock
 0x0C		0x0A		0x14		0x15		0x42
 
@@ -24,32 +25,14 @@ Static Elect	Electric Cloud	Water Blit	Aqua Magic	Electric Shock
 46 > 0x2E + 0x25   (palmon, 	poison claw)	1
 57 > 0x39 + 0x25   (penguinmon, poison claw)	1
 --------------
-67 > 0x43
-68 >
-69
-71
-74
-80
-82
-83
-84
-86
-93
-94
-96
-97
-98
-101
-102
-103
-109
-111
-113
-128
-139
-140
-151
-152
-163
-164
-176
+
+digimon stats data block begins at 0x14D6E9DC and ends at 0x14D7145C
+
+each block is 0x34 (52) bytes
+
+exclusion sections
+ 0x14D6EB28 - 0x14D6EC58  (0x130 bytes, inside Devimon 6)
+ 0x14D6F458 - 0x14D6F588  (0x130 bytes, inside Biyomon 45)
+ 0x14D6FD88 - 0x14D6FEB8  (0x130 bytes, inside Piddomon 85)
+ 0x14D706B8 - 0x14D707E8  (0x130 bytes, inside Master Tyrannomon 124)
+ 0x14D70FE8 - 0x14D71118  (0x130 bytes, inside Biyomon 163)

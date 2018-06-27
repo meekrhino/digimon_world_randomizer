@@ -23,7 +23,37 @@ def writeDataToFile( file, ofst, str, verbose ):
         print( 'Writing the following to file: ' + str )
 
     return file.write( str )
-
+    
+def readDataWithExclusions( file, ofst, sz, excls, excl_sz ):
+    """
+    Read data from file, excluding selected sections.
+    
+    Keyword arguments:
+    file -- File pointer.
+    ofst -- Offset to start reading from.
+    sz   -- Length of data block to read (includes
+            exclusion sections).
+    *excls -- List of offset exclusion starting points.
+    excl_sz -- Size of exclusions (all must be same size).
+    """
+    
+    file.seek( ofst, 0 )
+    str = ''
+    
+    bytes_read = 0
+    for nextExcl in excls:
+        pos = ofst + bytes_read
+        bytes_to_read = nextExcl - pos
+        str += file.read( bytes_to_read )
+        file.seek( excl_sz, 1 )
+        bytes_read += bytes_to_read + excl_sz
+        
+    str.append( file.read( sz - bytes_read ) )
+    
+    print( 'Read ' + str( sz ) + ' bytes as:\n' + str )
+    
+    return str
+    
 
 def techSlotAnimID( slot ):
     """

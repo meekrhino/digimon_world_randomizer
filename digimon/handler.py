@@ -60,6 +60,13 @@ class DigimonWorldHandler:
         self.inFilename = filename
 
         with open( filename, 'r' + 'b' ) as file:
+            #Read in full digimon data block
+            util.readDataWithExclusions( file, 
+                                         data.digimonDataBlockOffset,
+                                         data.digimonDataBlockSize,
+                                         data.digimonDataExclusionOffsets,
+                                         data.digimonDataExclusionSize )
+        
             #Read in first starter digimon ID
             file.seek( data.starter1SetDigimonOffset, 0 )
             self.starter1ID = struct.unpack( self.digimonIDFormat, file.read( 1 ) )[0]
