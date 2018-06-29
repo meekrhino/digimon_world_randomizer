@@ -7,6 +7,7 @@ Handler that stores all data to be written to the ROM.
 
 import digimon.data as data, digimon.util as util
 import script.util as scrutil
+from digimon.digimonclass import Digimon
 import random, struct
 from shutil import copyfile
 from future.utils import iteritems, itervalues
@@ -73,12 +74,16 @@ class DigimonWorldHandler:
                                                      data.digimonDataExclusionSize )
 
             #Parse digimon data block
-            self.digimonData = util.parseDataArray( data_read,
-                                                    self.digimonDataFormat,
-                                                    data.digimonDataBlockCount )
+            data_unpacked = util.unpackDataArray( data_read,
+                                                  self.digimonDataFormat,
+                                                  data.digimonDataBlockCount )
 
-            for i, digi in enumerate( self.digimonData ):
-                print( str( digi ) + '\n' )
+            #Store data in digimon objects
+            self.digimonData = []
+            for i, data_tuple in enumerate( data_unpacked ):
+                self.digimonData.append( Digimon( i, data_tuple ) )
+                print( str( self.digimonData[ i ] ) + '\n' )
+
 
             #Read in first starter digimon ID
             file.seek( data.starter1SetDigimonOffset, 0 )
@@ -137,6 +142,26 @@ class DigimonWorldHandler:
             copyfile( self.inFilename, filename )
 
         with open( filename, 'r+' + 'b' ) as file:
+            #------------------------------------------------------
+            # Write out digimon data
+            #------------------------------------------------------
+
+            #Pack digimon data into buffer
+            data_unpacked = []
+            for digi in self.digimonData:
+                data_unpacked.append( digi.unpackedFormat() )
+
+            data_packed = util.packDataArray( data_unpacked, self.digimonDataFormat )
+
+            #Set all digimon data
+            util.writeDataWithExclusions( file,
+                                          data_packed,
+                                          data.digimonDataBlockOffset,
+                                          data.digimonDataBlockSize,
+                                          data.digimonDataExclusionOffsets,
+                                          data.digimonDataExclusionSize )
+
+
             #------------------------------------------------------
             # Write out first starter data
             #------------------------------------------------------
@@ -228,6 +253,7 @@ class DigimonWorldHandler:
 
         self.setStarterTechs( default=True )
 
+
     def randomizeChestItems( self, allowEvo=False ):
         """
         Randomize items in chests.
@@ -247,6 +273,7 @@ class DigimonWorldHandler:
             pre = self.chestItems[ key ]
             self.chestItems[ key ] = list(allowedItems)[ random.randint( 0, len( allowedItems ) - 1 ) ]
             print( 'Changed chest item from ' + data.items[ pre ] + ' to ' + data.items[ self.chestItems[ key ] ] )
+
 
     def setStarterTechs( self, default=True ):
         """
@@ -268,3 +295,4 @@ class DigimonWorldHandler:
         self.starter2TechSlot = util.starterTechSlot( self.starter2ID )
         print( 'Second starter tech set to ' + data.techs[ self.starter2Tech ]
              + ' (' + data.names[ self.starter2ID ] + '\'s slot ' + str( self.starter2TechSlot ) + ')' )
+
