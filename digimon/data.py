@@ -155,7 +155,12 @@ specs = {
             0x06 : 'FILTH'
         }
 
+digimonIDFormat   = '<B'
+
 rookies = ( 0x03, 0x04, 0x11, 0x12, 0x1F, 0x20, 0x2D, 0x2E, 0x39 )
+
+techIDFormat      = '<B'
+animIDFormat      = '<B'
 
 starterTechs = {
             0x03 : 0x02,
@@ -180,6 +185,8 @@ starterTechSlots = {
             0x2E : 0X01,
             0x39 : 0x01
             }
+
+chestItemFormat   = '<BB'
 
 chestItemOffsets = (
             0x13FE3118, #706
@@ -257,6 +264,8 @@ chestItemOffsets = (
             0x14081900, #691
             )
 
+digimonDataFormat = '<20sihh23Bx'
+
 digimonDataBlockOffset   = 0x14D6E9DC       #start of digimon data block
 digimonDataBlockSize     = 0x2A80           #total number of bytes
 digimonDataBlockCount    = 0xB4             #number of digimon blocks
@@ -269,6 +278,8 @@ digimonDataExclusionOffsets = (
             0x14D70FE8  #in Biyomon
             )
 digimonDataExclusionSize = 0x130
+
+itemDataFormat    = '<20sIHHb?2x'
 
 itemDataBlockOffset     = 0x14D676C4       #start of item data block
 itemDataBlockSize       = 0x1260           #total number of bytes
