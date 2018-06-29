@@ -77,8 +77,6 @@ def writeDataWithExclusions( file, buf, ofst, sz, excls, excl_sz ):
 
     file.seek( ofst, 0 )
 
-    print( excls )
-
     bytes_written = 0
     excluded_bytes = 0
     for nextExcl in excls:
@@ -132,7 +130,6 @@ def packDataArray( list, fmt ):
 
     buf = b''
 
-    print( list )
     for tuple in list:
         buf += struct.pack( fmt, *tuple )
 
@@ -177,19 +174,6 @@ def specIDToName( id ):
 
     if( id in data.specs ):
         return data.specs[ id ]
-    return "-"
-
-
-def itemIDToName( id ):
-    """
-    Convert item ID to name.
-
-    Keyword argument:
-    id -- Item ID to convert.
-    """
-
-    if( id in data.items ):
-        return data.items[ id ]
     return "-"
 
 

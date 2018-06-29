@@ -40,19 +40,37 @@ exclusion sections of 0x130 (304) bytes each
     0x14D70FE8 - 0x14D71118  (inside Biyomon 163)
 
 data block format:
-20  char[20] name
- 4  sint32 models
- 2  sint16 radius
- 2  sint16 height
- 1  uint8  type   (data, virus, vaccine)
- 1  uint8  level  (fresh, in-training, etc)
- 1  uint8  spec1  (fire, battle, etc)
- 1  uint8  spec2  (-1 = none)
- 1  uint8  spec3
- 1  uint8  item   (0 = sm.recovery, etc)
- 1  uint8  drop%  (chance to drop)
+20  char[20]  name
+ 4  sint32    models
+ 2  sint16    radius
+ 2  sint16    height
+ 1  uint8     type   (data, virus, vaccine)
+ 1  uint8     level  (fresh, in-training, etc)
+ 3  uint8[3]  spec  (-1 = none)
+ 1  uint8     item   (0 = sm.recovery, etc)
+ 1  uint8     drop%  (chance to drop)
 16  uint8[16] techs
  1  pad[1]
 ----------
 52  total
+
+
+item info block begins at 0x14D676C4 and ends at 0x14D68924
+
+total of 0x1260 (4704) bytes
+
+each block is 0x20 (32) bytes
+
+exclusion sections of 0x130 (304) bytes each
+    0x14D67CE8 - 0x14D67E18 (inside Red Berry 49)
+    0x14D68618 - 0x14D68748 (inside Coral charm 113)
+
+data block format:
+20  char[20] name
+ 4  uint32   price
+ 2  uint16   merit
+ 2  uint16   sort
+ 1  uint8    color
+ 1  bool     dropable
+ 2  pad[1]
 

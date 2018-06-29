@@ -28,7 +28,9 @@ class Digimon:
         """
 
         self.id        = id
-        self.name      = data[ 0 ].decode( 'ascii' )
+
+        #decode binary data as ascii and trim trailing nulls
+        self.name      = data[ 0 ].decode( 'ascii' ).rstrip( '\0' )
         self.models    = data[ 1 ]
         self.radius    = data[ 2 ]
         self.height    = data[ 3 ]
@@ -55,13 +57,12 @@ class Digimon:
 
         type  = util.typeIDToName( self.type )
         level = util.levelIDToName( self.level )
-        item  = util.itemIDToName(  self.item )
 
         spec = []
         for i in range( 3 ):
             spec.append( util.specIDToName( self.spec[ i ] ) )
 
-        out = '{:>3d}{:>20s} {:>5d}{:>5d}{:>5d} {:>9s} {:>11s} {:>6s} {:>6s} {:>6s} {:>12s} {:>3d}%\n{:>23s} '.format(
+        out = '{:>3d}{:>20s} {:>5d}{:>5d}{:>5d} {:>9s} {:>11s} {:>6s} {:>6s} {:>6s} {:>3d} {:>3d}%\n{:>23s} '.format(
                         self.id,
                         self.name.rstrip(' \t\r\n\0'),
                         self.models,
@@ -70,7 +71,7 @@ class Digimon:
                         type,
                         level,
                         spec[ 0 ], spec[ 1 ], spec[ 2 ],
-                        item,
+                        self.item,
                         self.drop_rate,
                         "" )
 
@@ -108,3 +109,81 @@ class Digimon:
             repr.append( tech )                     # 11+
 
         return tuple( repr )
+
+
+class Item:
+    """
+    Item data object.  Stores all data about a given
+    item.
+    """
+
+    #Grey Claws - Moon mirror, Giga Hand, Noble Mane, Metalbanana
+    evoItems = list( range( 0x47, 0x73 ) ) + [ 0x7D, 0x7E, 0x7F ]
+
+    def __init__( self, id, data ):
+        """
+        Separate out composite data into individual
+        components.
+
+        Keyword arguments:
+        data -- List of values (unpacked from data string).
+        """
+        self.id       = id
+
+        #decode binary data as ascii and trim trailing nulls
+        self.name     = data[ 0 ].decode( 'ascii' ).rstrip( '\0' )
+        self.price    = data[ 1 ]
+        self.merit    = data[ 2 ]
+        self.sort     = data[ 3 ]
+        self.color    = data[ 4 ]
+        self.dropable = data[ 5 ]
+
+        self.isEvo = id in self.evoItems
+
+
+    def __str__( self ):
+        """
+        Produce a string representation of the object
+        for convenient logging.
+        """
+
+        out = '{:>3d}{:>20s} {:>4d} {:>4d} {:>2d} {:>2d} {!r:>5}'.format(
+                        self.id,
+                        self.name,
+                        self.price,
+                        self.merit,
+                        self.sort,
+                        self.color,
+                        self.dropable )
+
+        return out
+
+
+    def unpackedFormat( self ):
+        """
+        Produce a tuple representation of all
+        of the data in the object.
+        """
+        repr = []
+
+        repr.append( self.name.encode( 'ascii' ) )  # 0
+        repr.append( self.price )                   # 1
+        repr.append( self.merit )                   # 2
+        repr.append( self.sort )                    # 3
+        repr.append( self.color )                   # 4
+        repr.append( self.dropable )                # 5
+
+        return tuple( repr )
+
+
+    def isAllowedInChest( self, allowEvos ):
+        """
+        Check if this items should be allowed in chests,
+        allowing or disallowing evos as necessary.  Always
+        ban quest items (undroppable).
+        """
+        if( allowEvos ):
+            return self.dropable
+        else:
+            return ( self.dropable and not self.isEvo )
+
