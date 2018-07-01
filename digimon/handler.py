@@ -154,7 +154,8 @@ class DigimonWorldHandler:
 
             for ofst in data.chestItemOffsets:
                 file.seek( ofst, 0 )
-                cmd, item = struct.unpack( data.chestItemFormat, file.read( 2 ) )
+                cmd, item = struct.unpack( data.chestItemFormat, 
+                                           file.read( struct.calcsize( data.chestItemFormat ) ) )
                 if( cmd != scrutil.spawnChest ):
                     print( 'Error: Looking for chest item, found incorrect command: ' + str( cmd ) + ' @ ' + format( ofst, '08x' ) )
                 else:
@@ -162,6 +163,25 @@ class DigimonWorldHandler:
 
             for item in itervalues( self.chestItems ):
                 print( 'Chest contains: \'' + self.itemData[ item ].name + '\'' )
+                
+            
+            #------------------------------------------------------
+            # Read in Tokomon item data
+            #------------------------------------------------------
+
+            self.tokoItems = {}
+
+            for ofst in data.tokoItemOffsets:
+                file.seek( ofst, 0 )
+                cmd, item, count = struct.unpack( data.tokoItemFormat, 
+                                                  file.read( struct.calcsize( data.tokoItemFormat ) ) )
+                if( cmd != scrutil.giveItem ):
+                    print( 'Error: Looking for Tokomon item, found incorrect command: ' + str( cmd ) + ' @ ' + format( ofst, '08x' ) )
+                else:
+                    self.tokoItems[ ofst ] = ( item, count )
+
+            for ( item, count ) in itervalues( self.tokoItems ):
+                print( 'Tokomon gives: ' + str( count ) + 'x \'' + self.itemData[ item ].name + '\'' )
 
 
     def write( self, filename, verbose=False ):
@@ -289,6 +309,17 @@ class DigimonWorldHandler:
                                       ofst,
                                       struct.pack( data.chestItemFormat, scrutil.spawnChest, item ),
                                       verbose )
+                                      
+            #------------------------------------------------------
+            # Write out Tokomon item data
+            #------------------------------------------------------
+
+            #Set item IDs and counts for Tokomon
+            for ofst, ( item, count ) in iteritems( self.tokoItems ):
+                util.writeDataToFile( file,
+                                      ofst,
+                                      struct.pack( data.tokoItemFormat, scrutil.giveItem, item, count ),
+                                      verbose )
 
 
     def randomizeStarters( self ):
@@ -306,7 +337,7 @@ class DigimonWorldHandler:
         self.starter2ID = secondDigi
         print( 'Second starter set to ' + self.digimonData[ secondDigi ].name )
 
-        self.setStarterTechs( default=True )
+        self._setStarterTechs( default=True )
 
 
     def randomizeChestItems( self, allowEvo=False ):
@@ -323,12 +354,45 @@ class DigimonWorldHandler:
             randID = random.randint( 0, len( self.itemData ) - 1 )
             while( not self.itemData[ randID ].isAllowedInChest( allowEvo ) ):
                 randID = random.randint( 0, len( self.itemData ) - 1 )
+                
             pre = self.chestItems[ key ]
             self.chestItems[ key ] = self.itemData[ randID ].id
             print( 'Changed chest item from ' + self.itemData[ pre ].name + ' to ' + self.itemData[ self.chestItems[ key ] ].name )
 
+    
+    def randomizeTokomonItems( self, consumableOnly=True ):
+        """
+        Randomize items (and quantity) that Tokomon gives.
 
-    def setStarterTechs( self, default=True ):
+        Keyword arguments:
+        allowEvo -- Include or exclude evolution items from
+                    the pool of items to choose from.
+        """
+        
+        #for each tokomon item, choose a random allowed item
+        #and a random quantity
+        for key in list( self.tokoItems ):
+            randID = random.randint( 0, len( self.itemData ) - 1 )
+            while( not self.itemData[ randID ].isAllowedTokomon( consumableOnly ) ):
+                randID = random.randint( 0, len( self.itemData ) - 1 )
+                
+            #choose random number 1-3.  Make valuable items less likely
+            #to come in large numbers
+            randCount = random.randint( 1, 3 )
+            if( self.itemData[ randID ].price >= 1000 and randCount > 1 ):
+                randCount = random.randint( 1, 3 )
+            elif( self.itemData[ randID ].price < 1000 and randCount == 1 ):
+                randCount = random.randint( 1, 3 )
+                
+            preItem, preCount = self.tokoItems[ key ]
+            self.tokoItems[ key ] = ( self.itemData[ randID ].id, randCount )
+            
+            print( 'Changed Tokomon item from ' + str( preCount ) + 'x \'' + self.itemData[ preItem ].name +
+                                         ' to ' + str( randCount ) + 'x \'' + self.itemData[ self.tokoItems[ key ][0] ].name + '\'' ) 
+                 
+            
+
+    def _setStarterTechs( self, default=True ):
         """
         Set starter techs to default techs (lowest tier tech
         learnable by default) for current starters.

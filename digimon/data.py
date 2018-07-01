@@ -263,6 +263,18 @@ chestItemOffsets = (
             0x140818F4, #690
             0x14081900, #691
             )
+  
+tokoItemFormat = '<BxBB'
+  
+tokoItemOffsets = (
+            0x14071064,
+            0x14071068,
+            0x1407106C,
+            0x14071070,
+            0x14071074,
+            0x14071078,
+            )
+            
 
 digimonDataFormat = '<20sihh23Bx'
 

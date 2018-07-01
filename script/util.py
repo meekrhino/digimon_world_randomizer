@@ -9,6 +9,7 @@ import digimon.data as data
 import struct
 import pyperclip
 
+giveItem = 0x28
 spawnChest = 0x75
 
 def compile( inst, *args ):
@@ -22,7 +23,6 @@ def compile( inst, *args ):
     """
     
     if( inst == 'spawnChest' ):
-        
         packed = struct.pack( 
                             '<BBbbhbbhh', 
                             spawnChest,
@@ -35,7 +35,17 @@ def compile( inst, *args ):
                             args[6],
                             args[7]
                             )
-        out =  "".join("{:02x}".format(c) for c in packed)
-        print('Copied:'  + '\'' + out  + '\'' + ' to the cipboard')
-        pyperclip.copy(out)
+    elif( inst == 'giveItem' ):
+        packed = struct.pack(
+                            '<BBBB',
+                            giveItem,
+                            0x00,
+                            args[0],
+                            args[1]
+                            )
+       
+    out =  "".join("{:02x}".format(c) for c in packed)
+    print('Copied:'  + '\'' + out  + '\'' + ' to the cipboard')
+    pyperclip.copy(out)
+    
     return ( packed )

@@ -6,7 +6,7 @@ Handler that stores all data associated with
 a single digimon.
 """
 
-import digimon.data, digimon.util as data, util
+import digimon.data as data, digimon.util as util
 import script.util as scrutil
 from future.utils import iteritems, itervalues
 
@@ -119,7 +119,8 @@ class Item:
 
     #Grey Claws - Moon mirror, Giga Hand, Noble Mane, Metalbanana
     evoItems = list( range( 0x47, 0x73 ) ) + [ 0x7D, 0x7E, 0x7F ]
-
+    consumableItems = list( range( 0x00, 0x21 ) ) + list( range( 0x26, 0x73 ) ) + [ 0x7A, 0x7B, 0x7D, 0x7E, 0x7F ]
+                    
     def __init__( self, id, data ):
         """
         Separate out composite data into individual
@@ -139,6 +140,7 @@ class Item:
         self.dropable = data[ 5 ]
 
         self.isEvo = id in self.evoItems
+        self.isConsumable = id in self.consumableItems
 
 
     def __str__( self ):
@@ -184,6 +186,18 @@ class Item:
         """
         if( allowEvos ):
             return self.dropable
+        else:
+            return ( self.dropable and not self.isEvo )
+            
+            
+    def isAllowedTokomon( self, onlyConsumables ):
+        """
+        Check if this items should be allowed in chests,
+        allowing or disallowing evos as necessary.  Always
+        ban quest items and evos (game breaking).
+        """
+        if( onlyConsumables ):
+            return ( self.isConsumable and not self.isEvo )
         else:
             return ( self.dropable and not self.isEvo )
 

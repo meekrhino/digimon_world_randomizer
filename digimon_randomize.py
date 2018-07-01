@@ -12,6 +12,7 @@ handler = DigimonWorldHandler(sys.argv[1])
 print( 'Modifying data...\n' )
 handler.randomizeStarters()
 handler.randomizeChestItems()
+handler.randomizeTokomonItems()
 
 if( len(sys.argv) > 1 ):
     out = sys.argv[2]
