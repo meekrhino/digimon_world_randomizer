@@ -120,7 +120,7 @@ class Item:
     #Grey Claws - Moon mirror, Giga Hand, Noble Mane, Metalbanana
     evoItems = list( range( 0x47, 0x73 ) ) + [ 0x7D, 0x7E, 0x7F ]
     consumableItems = list( range( 0x00, 0x21 ) ) + list( range( 0x26, 0x73 ) ) + [ 0x7A, 0x7B, 0x7D, 0x7E, 0x7F ]
-                    
+
     def __init__( self, id, data ):
         """
         Separate out composite data into individual
@@ -188,8 +188,8 @@ class Item:
             return self.dropable
         else:
             return ( self.dropable and not self.isEvo )
-            
-            
+
+
     def isAllowedTokomon( self, onlyConsumables ):
         """
         Check if this items should be allowed in chests,
@@ -200,4 +200,51 @@ class Item:
             return ( self.isConsumable and not self.isEvo )
         else:
             return ( self.dropable and not self.isEvo )
+
+
+class Tech:
+    """
+    Tech data object.  Stores all data about a given
+    tech.  Currently only names (read ONLY)
+    """
+
+    def __init__( self, id, data ):
+        """
+        Separate out composite data into individual
+        components.
+
+        Keyword arguments:
+        data -- List of values (unpacked from data string).
+        """
+        self.id       = id
+
+        self.name     = data[ 0 ]
+
+
+
+    def __str__( self ):
+        """
+        Produce a string representation of the object
+        for convenient logging.
+        """
+
+        return self.name
+
+
+    def unpackedFormat( self ):
+        """
+        Produce a tuple representation of all
+        of the data in the object.
+        """
+        repr = []
+
+        #convert to binary, add null terminator, and pad to 4 bytes
+        name = self.name.encode( 'ascii' ) + b'\00'
+        while( len( name ) % 4 != 0 ):
+            name += b'\00'
+
+        repr.append( self.name )
+
+        return tuple( repr )
+
 

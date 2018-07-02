@@ -263,9 +263,9 @@ chestItemOffsets = (
             0x140818F4, #690
             0x14081900, #691
             )
-  
+
 tokoItemFormat = '<BxBB'
-  
+
 tokoItemOffsets = (
             0x14071064,
             0x14071068,
@@ -274,7 +274,16 @@ tokoItemOffsets = (
             0x14071074,
             0x14071078,
             )
-            
+
+#techNameFormat is variable, so can't define it this way
+
+techNameBlockOffset = 0x14D65494
+techNameBlockSize   = 0x75C
+
+techNameExclusionOffsets = (
+            0x14D65828,
+            )
+techNameExclusionSize = 0x130
 
 digimonDataFormat = '<20sihh23Bx'
 

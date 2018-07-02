@@ -7,7 +7,7 @@ Handler that stores all data to be written to the ROM.
 
 import digimon.data as data, digimon.util as util
 import script.util as scrutil
-from digimon.digimonclass import Digimon, Item
+from digimon.digimonclass import Digimon, Item, Tech
 import random, struct
 from shutil import copyfile
 from future.utils import iteritems, itervalues
@@ -107,6 +107,25 @@ class DigimonWorldHandler:
 
 
             #------------------------------------------------------
+            # Read in tech name data
+            #------------------------------------------------------
+
+            #Read in full tech name data block
+            data_read = util.readDataWithExclusions( file,
+                                                     data.techNameBlockOffset,
+                                                     data.techNameBlockSize,
+                                                     data.techNameExclusionOffsets,
+                                                     data.techNameExclusionSize )
+
+            data_unpacked = list( filter( None, data_read.decode( 'ascii' ).split( '\0' ) ) )
+
+            self.techData = []
+            for i, name in enumerate( data_unpacked ):
+                self.techData.append( Tech( i, ( name, ) ) )
+                print( str( self.techData[ i ] ) )
+
+
+            #------------------------------------------------------
             # Read in first starter data
             #------------------------------------------------------
 
@@ -154,7 +173,7 @@ class DigimonWorldHandler:
 
             for ofst in data.chestItemOffsets:
                 file.seek( ofst, 0 )
-                cmd, item = struct.unpack( data.chestItemFormat, 
+                cmd, item = struct.unpack( data.chestItemFormat,
                                            file.read( struct.calcsize( data.chestItemFormat ) ) )
                 if( cmd != scrutil.spawnChest ):
                     print( 'Error: Looking for chest item, found incorrect command: ' + str( cmd ) + ' @ ' + format( ofst, '08x' ) )
@@ -163,8 +182,8 @@ class DigimonWorldHandler:
 
             for item in itervalues( self.chestItems ):
                 print( 'Chest contains: \'' + self.itemData[ item ].name + '\'' )
-                
-            
+
+
             #------------------------------------------------------
             # Read in Tokomon item data
             #------------------------------------------------------
@@ -173,7 +192,7 @@ class DigimonWorldHandler:
 
             for ofst in data.tokoItemOffsets:
                 file.seek( ofst, 0 )
-                cmd, item, count = struct.unpack( data.tokoItemFormat, 
+                cmd, item, count = struct.unpack( data.tokoItemFormat,
                                                   file.read( struct.calcsize( data.tokoItemFormat ) ) )
                 if( cmd != scrutil.giveItem ):
                     print( 'Error: Looking for Tokomon item, found incorrect command: ' + str( cmd ) + ' @ ' + format( ofst, '08x' ) )
@@ -309,7 +328,7 @@ class DigimonWorldHandler:
                                       ofst,
                                       struct.pack( data.chestItemFormat, scrutil.spawnChest, item ),
                                       verbose )
-                                      
+
             #------------------------------------------------------
             # Write out Tokomon item data
             #------------------------------------------------------
@@ -354,12 +373,12 @@ class DigimonWorldHandler:
             randID = random.randint( 0, len( self.itemData ) - 1 )
             while( not self.itemData[ randID ].isAllowedInChest( allowEvo ) ):
                 randID = random.randint( 0, len( self.itemData ) - 1 )
-                
+
             pre = self.chestItems[ key ]
             self.chestItems[ key ] = self.itemData[ randID ].id
             print( 'Changed chest item from ' + self.itemData[ pre ].name + ' to ' + self.itemData[ self.chestItems[ key ] ].name )
 
-    
+
     def randomizeTokomonItems( self, consumableOnly=True ):
         """
         Randomize items (and quantity) that Tokomon gives.
@@ -368,14 +387,14 @@ class DigimonWorldHandler:
         allowEvo -- Include or exclude evolution items from
                     the pool of items to choose from.
         """
-        
+
         #for each tokomon item, choose a random allowed item
         #and a random quantity
         for key in list( self.tokoItems ):
             randID = random.randint( 0, len( self.itemData ) - 1 )
             while( not self.itemData[ randID ].isAllowedTokomon( consumableOnly ) ):
                 randID = random.randint( 0, len( self.itemData ) - 1 )
-                
+
             #choose random number 1-3.  Make valuable items less likely
             #to come in large numbers
             randCount = random.randint( 1, 3 )
@@ -383,14 +402,14 @@ class DigimonWorldHandler:
                 randCount = random.randint( 1, 3 )
             elif( self.itemData[ randID ].price < 1000 and randCount == 1 ):
                 randCount = random.randint( 1, 3 )
-                
+
             preItem, preCount = self.tokoItems[ key ]
             self.tokoItems[ key ] = ( self.itemData[ randID ].id, randCount )
-            
+
             print( 'Changed Tokomon item from ' + str( preCount ) + 'x \'' + self.itemData[ preItem ].name +
-                                         ' to ' + str( randCount ) + 'x \'' + self.itemData[ self.tokoItems[ key ][0] ].name + '\'' ) 
-                 
-            
+                                         ' to ' + str( randCount ) + 'x \'' + self.itemData[ self.tokoItems[ key ][0] ].name + '\'' )
+
+
 
     def _setStarterTechs( self, default=True ):
         """

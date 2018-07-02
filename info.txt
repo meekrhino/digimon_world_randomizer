@@ -74,7 +74,26 @@ data block format:
  1  bool     dropable
  2  pad[1]
 
+
+tech name block begins at 0x14D65494 and ends at 0x14D65BF0
+
+total of 0x75C (1884) bytes
+
+blocks are variable length strings packed in 4-byte alignment
+
+exclusion sections of 0x130 (304) bytes each
+    0x14D65828 - 0x14D65958 (inside Spiral Twister
+
+pads to 4-byte alignement AFTER null terminator, e.g.
+'Meltdown' is 8 characters, but it takes 12 to store it because 'Meltdown\0' is 9 characters and next 4-byte align is 12
+'Giga Freeze' is 11 characters, and only takes 12 to store.
+list( filter( None, data_packed.split('\0') ) ) should turn a block of tech names into a list of name strings.
+
+
 Ideas for things to randomize:
+  ✓Starters and their starting tech
+  ✓Items in chests
+  ✓Items given by Tokomon
     Seadramon tech gifts (easy)
     Map items (time consuming)
     Meat farm 5x bonus -> random food (difficult!! string encoding etc)
