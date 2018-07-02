@@ -74,3 +74,12 @@ data block format:
  1  bool     dropable
  2  pad[1]
 
+Ideas for things to randomize:
+    Seadramon tech gifts (easy)
+    Map items (time consuming)
+    Meat farm 5x bonus -> random food (difficult!! string encoding etc)
+    Vending machines (difficult, hard-coded text boxes)
+    Background music (probably easy, but do I want this?)
+    Enemy digimon (difficult, but very high value if done.  Requires a change in 2 places for each.)
+
+
