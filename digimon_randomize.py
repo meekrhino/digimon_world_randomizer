@@ -17,7 +17,16 @@ print( 'Reading data from ' + sys.argv[1] + '...\n' )
 
 verbose = config[ 'general' ].getboolean( 'verbose' )
 
-handler = DigimonWorldHandler( sys.argv[1], verbose )
+seedcfg = config[ 'general' ][ 'seed' ]
+
+if( seedcfg == 'None' ):
+    handler = DigimonWorldHandler( sys.argv[1], verbose )
+else:
+    try:
+        handler = DigimonWorldHandler( sys.argv[1], verbose, int( seedcfg ) )
+    except ValueError:
+        print( 'Seed must be an integer. ' + str( seedcfg ) + ' is not a valid value.' )
+        exit()
 
 print( 'Modifying data...\n' )
 if( config[ 'starter' ].getboolean( 'Enabled' ) ):

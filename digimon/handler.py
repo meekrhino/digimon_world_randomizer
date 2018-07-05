@@ -476,7 +476,7 @@ class DigimonWorldHandler:
                 if( cmd != scrutil.spawnItem ):
                     print( 'Error: Looking for map item, found incorrect command: ' + str( cmd ) + ' @ ' + format( ofst, '08x' ) )
                 else:
-                    print( format( ofst, '08X' ) + ' \'' + self.itemData[ item ].name + '\' spawns on the map.' )
+                    print( ' \'' + self.itemData[ item ].name + '\' spawns on the map.' )
                     self.mapItems[ ofst ] = item
 
 
