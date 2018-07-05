@@ -3,15 +3,257 @@
 
 """
 Handler that stores all data to be written to the ROM.
+Classes to represent data inside the ROM.
 """
 
 import digimon.data as data, digimon.util as util
 import script.util as scrutil
-from digimon.digimonclass import Digimon, Item, Tech
 import random, struct
 from shutil import copyfile
 from future.utils import iteritems, itervalues
 
+
+class Digimon:
+    """
+    Digimon data object.  Stores all data about a given
+    digimon.  (currently does not include raise data or
+    evolution data)
+    """
+
+    def __init__( self, handler, id, data ):
+        """
+        Separate out composite data into individual
+        components.
+
+        Keyword arguments:
+        data -- List of values (unpacked from data string).
+        """
+
+        self.handler   = handler
+        self.id        = id
+
+        #decode binary data as ascii and trim trailing nulls
+        self.name      = data[ 0 ].decode( 'ascii' ).rstrip( '\0' )
+        self.models    = data[ 1 ]
+        self.radius    = data[ 2 ]
+        self.height    = data[ 3 ]
+        self.type      = data[ 4 ]
+        self.level     = data[ 5 ]
+
+        self.spec = []
+        for i in range( 3 ):
+            self.spec.append( data[ 6 + i ] )
+
+        self.item      = data[ 9 ]
+        self.drop_rate = data[ 10 ]
+
+        self.tech = []
+        for i in range( 16 ):
+            self.tech.append( data[ 11 + i ] )
+
+
+    def __str__( self ):
+        """
+        Produce a string representation of the object
+        for convenient logging.
+        """
+
+        type  = self.handler.getTypeName( self.type )
+        level = self.handler.getLevelName( self.level )
+        item  = self.handler.getItemName( self.item )
+        
+        spec = []
+        for i in range( 3 ):
+            spec.append( self.handler.getSpecialtyName( self.spec[ i ] ) )
+
+        out = '{:>3d}{:>20s} {:>5d}{:>5d}{:>5d} {:>9s} {:>11s} {:>6s} {:>6s} {:>6s} {:>12s} {:>3d}%\n{:>23s} '.format(
+                        self.id,
+                        self.name.rstrip(' \t\r\n\0'),
+                        self.models,
+                        self.radius,
+                        self.height,
+                        type,
+                        level,
+                        spec[ 0 ], spec[ 1 ], spec[ 2 ],
+                        item,
+                        self.drop_rate,
+                        "" )
+
+        for i in range( 16 ):
+            if( self.tech[ i ] != 'None' ):
+                out += self.handler.getTechName( self.tech[ i ] )
+            if( i == 15 or self.handler.getTechName( self.tech[ i + 1 ] ) == 'None' ):
+                break;
+            out +=  ', '
+
+        return out
+
+
+    def unpackedFormat( self ):
+        """
+        Produce a tuple representation of all
+        of the data in the object.
+        """
+        repr = []
+
+        repr.append( self.name.encode( 'ascii' ) )  # 0
+        repr.append( self.models )                  # 1
+        repr.append( self.radius )                  # 2
+        repr.append( self.height )                  # 3
+        repr.append( self.type )                    # 4
+        repr.append( self.level )                   # 5
+
+        for spec in self.spec:
+            repr.append( spec )                     # 6 7 8
+
+        repr.append( self.item )                    # 9
+        repr.append( self.drop_rate )               # 10
+
+        for tech in self.tech:
+            repr.append( tech )                     # 11+
+
+        return tuple( repr )
+
+
+class Item:
+    """
+    Item data object.  Stores all data about a given
+    item.
+    """
+
+    #Grey Claws - Moon mirror, Giga Hand, Noble Mane, Metalbanana
+    evoItems = list( range( 0x47, 0x73 ) ) + [ 0x7D, 0x7E, 0x7F ]
+    consumableItems = list( range( 0x00, 0x21 ) ) + list( range( 0x26, 0x73 ) ) + [ 0x7A, 0x7B, 0x7D, 0x7E, 0x7F ]
+
+    def __init__( self, handler, id, data ):
+        """
+        Separate out composite data into individual
+        components.
+
+        Keyword arguments:
+        data -- List of values (unpacked from data string).
+        """
+
+        self.handler  = handler
+        self.id       = id
+
+        #decode binary data as ascii and trim trailing nulls
+        self.name     = data[ 0 ].decode( 'ascii' ).rstrip( '\0' )
+        self.price    = data[ 1 ]
+        self.merit    = data[ 2 ]
+        self.sort     = data[ 3 ]
+        self.color    = data[ 4 ]
+        self.dropable = data[ 5 ]
+
+        self.isEvo = id in self.evoItems
+        self.isConsumable = id in self.consumableItems
+
+
+    def __str__( self ):
+        """
+        Produce a string representation of the object
+        for convenient logging.
+        """
+
+        out = '{:>3d}{:>20s} {:>4d} {:>4d} {:>2d} {:>2d} {!r:>5}'.format(
+                        self.id,
+                        self.name,
+                        self.price,
+                        self.merit,
+                        self.sort,
+                        self.color,
+                        self.dropable )
+
+        return out
+
+
+    def unpackedFormat( self ):
+        """
+        Produce a tuple representation of all
+        of the data in the object.
+        """
+        repr = []
+
+        repr.append( self.name.encode( 'ascii' ) )  # 0
+        repr.append( self.price )                   # 1
+        repr.append( self.merit )                   # 2
+        repr.append( self.sort )                    # 3
+        repr.append( self.color )                   # 4
+        repr.append( self.dropable )                # 5
+
+        return tuple( repr )
+
+
+    def isAllowedInChest( self, allowEvos ):
+        """
+        Check if this items should be allowed in chests,
+        allowing or disallowing evos as necessary.  Always
+        ban quest items (undroppable).
+        """
+        if( allowEvos ):
+            return self.dropable
+        else:
+            return ( self.dropable and not self.isEvo )
+
+
+    def isAllowedTokomon( self, onlyConsumables ):
+        """
+        Check if this items should be allowed in chests,
+        allowing or disallowing evos as necessary.  Always
+        ban quest items and evos (game breaking).
+        """
+        if( onlyConsumables ):
+            return ( self.isConsumable and not self.isEvo )
+        else:
+            return ( self.dropable and not self.isEvo )
+
+
+class Tech:
+    """
+    Tech data object.  Stores all data about a given
+    tech.  Currently only names (read ONLY)
+    """
+
+    def __init__( self, handler, id, data ):
+        """
+        Separate out composite data into individual
+        components.
+
+        Keyword arguments:
+        data -- List of values (unpacked from data string).
+        """
+
+        self.handler  = handler
+        self.id       = id
+
+        self.name     = data[ 0 ]
+
+
+
+    def __str__( self ):
+        """
+        Produce a string representation of the object
+        for convenient logging.
+        """
+
+        return self.name
+
+
+    def unpackedFormat( self ):
+        """
+        Produce a tuple representation of all
+        of the data in the object.
+        """
+        repr = []
+
+        #convert to binary, add null terminator, and pad to 4 bytes
+        name = self.name.encode( 'ascii' ) + b'\00'
+        while( len( name ) % 4 != 0 ):
+            name += b'\00'
+
+        repr.append( self.name )
+
+        return tuple( repr )
 
 
 class DigimonWorldHandler:
@@ -61,26 +303,22 @@ class DigimonWorldHandler:
 
         with open( filename, 'r' + 'b' ) as file:
             #------------------------------------------------------
-            # Read in digimon data
+            # Read in tech name data
             #------------------------------------------------------
 
-            #Read in full digimon stats data block
+            #Read in full tech name data block
             data_read = util.readDataWithExclusions( file,
-                                                     data.digimonDataBlockOffset,
-                                                     data.digimonDataBlockSize,
-                                                     data.digimonDataExclusionOffsets,
-                                                     data.digimonDataExclusionSize )
+                                                     data.techNameBlockOffset,
+                                                     data.techNameBlockSize,
+                                                     data.techNameExclusionOffsets,
+                                                     data.techNameExclusionSize )
 
-            #Parse data block
-            data_unpacked = util.unpackDataArray( data_read,
-                                                  data.digimonDataFormat,
-                                                  data.digimonDataBlockCount )
+            data_unpacked = list( filter( None, data_read.decode( 'ascii' ).split( '\0' ) ) )
 
-            #Store data in digimon objects
-            self.digimonData = []
-            for i, data_tuple in enumerate( data_unpacked ):
-                self.digimonData.append( Digimon( i, data_tuple ) )
-                print( str( self.digimonData[ i ] ) + '\n' )
+            self.techData = []
+            for i, name in enumerate( data_unpacked ):
+                self.techData.append( Tech( self, i, ( name, ) ) )
+                print( str( self.techData[ i ] ) )
 
 
             #------------------------------------------------------
@@ -102,27 +340,31 @@ class DigimonWorldHandler:
             #Store data in item objects
             self.itemData = []
             for i, data_tuple in enumerate( data_unpacked ):
-                self.itemData.append( Item( i, data_tuple ) )
+                self.itemData.append( Item( self, i, data_tuple ) )
                 print( str( self.itemData[ i ] ) )
-
-
+                
+                
             #------------------------------------------------------
-            # Read in tech name data
+            # Read in digimon data
             #------------------------------------------------------
 
-            #Read in full tech name data block
+            #Read in full digimon stats data block
             data_read = util.readDataWithExclusions( file,
-                                                     data.techNameBlockOffset,
-                                                     data.techNameBlockSize,
-                                                     data.techNameExclusionOffsets,
-                                                     data.techNameExclusionSize )
+                                                     data.digimonDataBlockOffset,
+                                                     data.digimonDataBlockSize,
+                                                     data.digimonDataExclusionOffsets,
+                                                     data.digimonDataExclusionSize )
 
-            data_unpacked = list( filter( None, data_read.decode( 'ascii' ).split( '\0' ) ) )
+            #Parse data block
+            data_unpacked = util.unpackDataArray( data_read,
+                                                  data.digimonDataFormat,
+                                                  data.digimonDataBlockCount )
 
-            self.techData = []
-            for i, name in enumerate( data_unpacked ):
-                self.techData.append( Tech( i, ( name, ) ) )
-                print( str( self.techData[ i ] ) )
+            #Store data in digimon objects
+            self.digimonData = []
+            for i, data_tuple in enumerate( data_unpacked ):
+                self.digimonData.append( Digimon( self, i, data_tuple ) )
+                print( str( self.digimonData[ i ] ) + '\n' )
 
 
             #------------------------------------------------------
@@ -410,7 +652,67 @@ class DigimonWorldHandler:
                                          ' to ' + str( randCount ) + 'x \'' + self.itemData[ self.tokoItems[ key ][0] ].name + '\'' )
 
 
-
+    def getItemName( self, id ):
+        """
+        Get item name from data.
+        
+        Keyword arguments:
+        id -- Item ID to get name for.
+        """
+        
+        if( id < len( self.itemData ) ):
+            return self.itemData[ id ].name
+        else:
+            return 'None'
+            
+            
+    def getTechName( self, id ):
+        """
+        Get tech name from data.
+        
+        Keyword arguments:
+        id -- Tech ID to get name for.
+        """
+        
+        if( id < len( self.techData ) ):
+            return self.techData[ id ].name
+        else:
+            return 'None'
+            
+            
+    def getTypeName( self, id ):
+        """
+        Get type name from data.
+        
+        Keyword arguments:
+        id -- Type ID to get name for.
+        """
+        
+        return util.typeIDToName( id )
+            
+            
+    def getSpecialtyName( self, id ):
+        """
+        Get type name from data.
+        
+        Keyword arguments:
+        id -- Specialty ID to get name for.
+        """
+        
+        return util.specIDToName( id )
+            
+            
+    def getLevelName( self, id ):
+        """
+        Get level name from data.
+        
+        Keyword arguments:
+        id -- Level ID to get name for.
+        """
+        
+        return util.levelIDToName( id )
+                                         
+                                         
     def _setStarterTechs( self, default=True ):
         """
         Set starter techs to default techs (lowest tier tech
@@ -423,12 +725,12 @@ class DigimonWorldHandler:
         """
         self.starter1Tech = util.starterTech( self.starter1ID )
         self.starter1TechSlot = util.starterTechSlot( self.starter1ID )
-        print( 'First starter tech set to ' + data.techs[ self.starter1Tech ]
+        print( 'First starter tech set to ' + self.getTechName( self.starter1Tech )
              + ' (' + self.digimonData[ self.starter1ID ].name + '\'s slot ' + str( self.starter1TechSlot ) + ')' )
 
 
         self.starter2Tech = util.starterTech( self.starter2ID )
         self.starter2TechSlot = util.starterTechSlot( self.starter2ID )
-        print( 'Second starter tech set to ' + data.techs[ self.starter2Tech ]
+        print( 'Second starter tech set to ' + self.getTechName( self.starter2Tech )
              + ' (' + self.digimonData[ self.starter2ID ].name + '\'s slot ' + str( self.starter2TechSlot ) + ')' )
-
+            

@@ -175,20 +175,7 @@ def specIDToName( id ):
     if( id in data.specs ):
         return data.specs[ id ]
     return "-"
-
-
-def techIDToName( id ):
-    """
-    Convert tech ID to name.
-
-    Keyword argument:
-    id -- Tech ID to convert.
-    """
-
-    if( id in data.techs ):
-        return data.techs[ id ]
-    return "None"
-
+    
 
 def techSlotAnimID( slot ):
     """
