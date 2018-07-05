@@ -90,6 +90,29 @@ pads to 4-byte alignement AFTER null terminator, e.g.
 list( filter( None, data_packed.split('\0') ) ) should turn a block of tech names into a list of name strings.
 
 
+spawnItem has a few weird things because of the centarumon maze:
+
+'Giant Meat' spawns on the map.
+'Off. Disk' spawns on the map.
+'MP Floppy' spawns on the map.
+'sm.recovery' spawns on the map.
+'Def. Disk' spawns on the map.
+'Meat' spawns on the map.
+'Port. potty' spawns on the map.
+'Hispeed dsk' spawns on the map.
+'med.recovery' spawns on the map.
+'Moldy Meat' spawns on the map.
+'Orange bana' spawns on the map.
+'Happymushrm' spawns on the map.
+'Auto Pilot' spawns on the map.
+'Omni Disk' spawns on the map.
+'Medium MP' spawns on the map.
+
+I think a good solution is to swap food -> food and nonfood -> nonfood (and balance using price)
+This should mean we still have weird crap in centarumon but no MP Floppys in native forest (or....
+allow that?  but also make centarumon's place weird af somehow?)
+
+
 Ideas for things to randomize:
   ✓Starters and their starting tech
   ✓Items in chests

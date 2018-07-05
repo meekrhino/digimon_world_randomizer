@@ -139,9 +139,9 @@ chestItemOffsets = (
             0x14081900, #691
             )
             
-spawnItemFormat = '<BB'
+mapItemFormat = '<BB'
             
-spawnItemOffsets = (
+mapItemOffsets = (
             0x13FDD564,
             0x13FDD57A,
             0x13FDD590,
@@ -357,7 +357,7 @@ spawnItemOffsets = (
             0x140365A4,
             0x140365BA,
             0x14039C8C,
-            0x14039CA0,
+            0x14039CA2,
             0x14010700,
             0x14010716,
             0x1403C144,

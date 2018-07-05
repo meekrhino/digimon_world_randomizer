@@ -424,6 +424,24 @@ class DigimonWorldHandler:
 
             for item in itervalues( self.chestItems ):
                 print( 'Chest contains: \'' + self.itemData[ item ].name + '\'' )
+                
+            #------------------------------------------------------
+            # Read in map item spawn data
+            #------------------------------------------------------
+            
+            self.mapItems = {}
+
+            for ofst in data.mapItemOffsets:
+                file.seek( ofst, 0 )
+                cmd, item = struct.unpack( data.mapItemFormat,
+                                           file.read( struct.calcsize( data.mapItemFormat ) ) )
+                if( cmd != scrutil.spawnItem ):
+                    print( 'Error: Looking for map item, found incorrect command: ' + str( cmd ) + ' @ ' + format( ofst, '08x' ) )
+                else:
+                    self.mapItems[ ofst ] = item
+
+            for item in itervalues( self.mapItems ):
+                print( '\'' + self.itemData[ item ].name + '\' spawns on the map.' )
 
 
             #------------------------------------------------------
