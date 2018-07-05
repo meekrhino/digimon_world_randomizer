@@ -324,15 +324,19 @@ class DigimonWorldHandler:
     # p     char[]
     # P     void *
 
-    def __init__( self, filename ):
+    def __init__( self, filename, verbose, seed=None ):
         """
         Load ROM data into cache so that it can be read
         and manipulated.
 
         Keyword arguments:
         filename -- Name of file to read.
+        seed -- Randomizer seed.
         """
 
+        self.verbose = verbose
+
+        random.seed( a=seed )
         self.inFilename = filename
 
         with open( filename, 'r' + 'b' ) as file:
@@ -495,7 +499,7 @@ class DigimonWorldHandler:
                 print( 'Tokomon gives: ' + str( count ) + 'x \'' + self.itemData[ item ].name + '\'' )
 
 
-    def write( self, filename, verbose=False ):
+    def write( self, filename ):
         """
         Write all ROM data back to binary file.
 
@@ -556,27 +560,27 @@ class DigimonWorldHandler:
             util.writeDataToFile( file,
                                   data.starter1SetDigimonOffset,
                                   struct.pack( data.digimonIDFormat, self.starter1ID ),
-                                  verbose )
+                                  self.verbose )
 
             #Set digimon ID to check when learning first
             #starter's first tech (must match starter!)
             util.writeDataToFile( file,
                                   data.starter1ChkDigimonOffset,
                                   struct.pack( data.digimonIDFormat, self.starter1ID ),
-                                  verbose )
+                                  self.verbose )
 
             #Set tech ID for first starter to learn
             util.writeDataToFile( file,
                                   data.starter1LearnTechOffset,
                                   struct.pack( data.techIDFormat, self.starter1Tech ),
-                                  verbose )
+                                  self.verbose )
 
             #Set animation ID to equip as first stater's
             #first tech
             util.writeDataToFile( file,
                                   data.starter1EquipAnimOffset,
                                   struct.pack( data.animIDFormat, util.techSlotAnimID( self.starter1TechSlot ) ),
-                                  verbose )
+                                  self.verbose )
 
 
             #------------------------------------------------------
@@ -587,27 +591,27 @@ class DigimonWorldHandler:
             util.writeDataToFile( file,
                                   data.starter2SetDigimonOffset,
                                   struct.pack( data.digimonIDFormat, self.starter2ID ),
-                                  verbose )
+                                  self.verbose )
 
             #Set digimon ID to check when learning second
             #starter's first tech (must match starter!)
             util.writeDataToFile( file,
                                   data.starter2ChkDigimonOffset,
                                   struct.pack( data.digimonIDFormat, self.starter2ID ),
-                                  verbose )
+                                  self.verbose )
 
             #Set tech ID for first starter to learn
             util.writeDataToFile( file,
                                   data.starter2LearnTechOffset,
                                   struct.pack( data.techIDFormat, self.starter2Tech ),
-                                  verbose )
+                                  self.verbose )
 
             #Set animation ID to equip as first stater's
             #first tech
             util.writeDataToFile( file,
                                   data.starter2EquipAnimOffset,
                                   struct.pack( data.animIDFormat, util.techSlotAnimID( self.starter2TechSlot ) ),
-                                  verbose )
+                                  self.verbose )
 
 
             #------------------------------------------------------
@@ -619,7 +623,7 @@ class DigimonWorldHandler:
                 util.writeDataToFile( file,
                                       ofst,
                                       struct.pack( data.chestItemFormat, scrutil.spawnChest, item ),
-                                      verbose )
+                                      self.verbose )
 
             #------------------------------------------------------
             # Write out chest item data
@@ -630,7 +634,7 @@ class DigimonWorldHandler:
                 util.writeDataToFile( file,
                                       ofst,
                                       struct.pack( data.mapItemFormat, scrutil.spawnItem, item ),
-                                      verbose )
+                                      self.verbose )
 
             #------------------------------------------------------
             # Write out Tokomon item data
@@ -641,10 +645,10 @@ class DigimonWorldHandler:
                 util.writeDataToFile( file,
                                       ofst,
                                       struct.pack( data.tokoItemFormat, scrutil.giveItem, item, count ),
-                                      verbose )
+                                      self.verbose )
 
 
-    def randomizeStarters( self ):
+    def randomizeStarters( self, useWeakestTech=True ):
         """
         Set starters to two random different rookie Digimon.
         """
@@ -659,7 +663,7 @@ class DigimonWorldHandler:
         self.starter2ID = secondDigi
         print( 'Second starter set to ' + self.digimonData[ secondDigi ].name )
 
-        self._setStarterTechs( default=True )
+        self._setStarterTechs( default=useWeakestTech )
 
 
     def randomizeChestItems( self, allowEvo=False ):
