@@ -21,8 +21,8 @@ def writeDataToFile( file, ofst, str, verbose ):
     """
     file.seek( ofst, 0 )
 
-    if( verbose ):
-        print( 'Writing the following to file: ' + str )
+    #if( verbose ):
+    #    print( 'Writing the following to file: ' + str )
 
     return file.write( str )
 
@@ -175,7 +175,7 @@ def specIDToName( id ):
     if( id in data.specs ):
         return data.specs[ id ]
     return "-"
-    
+
 
 def techSlotAnimID( slot ):
     """

@@ -4,6 +4,7 @@
 import random
 import configparser
 import sys
+from log.logger import Logger
 from digimon.handler import DigimonWorldHandler
 
 if( len(sys.argv) < 1 ):
@@ -13,22 +14,23 @@ if( len(sys.argv) < 1 ):
 config = configparser.ConfigParser()
 config.read( 'settings.ini' )
 
-print( 'Reading data from ' + sys.argv[1] + '...\n' )
-
 verbose = config[ 'general' ].getboolean( 'verbose' )
+logger = Logger( verbose, filename='randomize.log' )
+
+logger.logAlways( 'Reading data from ' + sys.argv[1] + '...\n' )
 
 seedcfg = config[ 'general' ][ 'seed' ]
 
 if( seedcfg == 'None' ):
-    handler = DigimonWorldHandler( sys.argv[1], verbose )
+    handler = DigimonWorldHandler( sys.argv[1], logger )
 else:
     try:
-        handler = DigimonWorldHandler( sys.argv[1], verbose, int( seedcfg ) )
+        handler = DigimonWorldHandler( sys.argv[1], logger, seed=int( seedcfg ) )
     except ValueError:
         print( 'Seed must be an integer. ' + str( seedcfg ) + ' is not a valid value.' )
         exit()
 
-print( 'Modifying data...\n' )
+logger.logAlways( 'Modifying data...\n' )
 if( config[ 'starter' ].getboolean( 'Enabled' ) ):
     handler.randomizeStarters( useWeakestTech=config[ 'starter' ].getboolean( 'UseWeakestTech' ) )
 
@@ -48,7 +50,14 @@ if( len(sys.argv) > 1 ):
 else:
     out = sys.argv[1]
 
-print( 'Writing to ' + out + '...\n' )
+logger.logAlways( 'Writing to ' + out + '...\n' )
 handler.write( out )
 
-print( 'Modifications complete.' )
+logger.logAlways( 'Modifications complete.' )
+
+if( not logger.error ):
+    print( 'Program executed succesfully.  See log file for details (Warning: spoilers!).' )
+    print( 'Seed was ' + str( handler.randomseed ) )
+    print( 'Enter this seed in settings file to produce the same ROM again.' )
+else:
+    print( 'Program ended with errors.  See log file for errors.' )
