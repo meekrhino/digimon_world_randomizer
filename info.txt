@@ -123,5 +123,17 @@ Ideas for things to randomize:
     Vending machines (difficult, hard-coded text boxes)
     Background music (probably easy, but do I want this?)
     Enemy digimon (difficult, but very high value if done.  Requires a change in 2 places for each.)
+    Evolutions (highly requested)
+    Learnable techs (most likely not possible, but cool af)
+    Random recruitments (just the dudes in town, not who you fight -- Syd investigating)
 
+
+Replace AS Decoder with save game?
+    0x14D66940 is description "You can read Ancient Script\0"
+                              "Save the game anywhere!    \0"
+    0x14D688A4 is item name.  Technically 20 characters, but in practice only 12.
+                              "Game Saver"
+                              "Save Floppy"
+    need Save function pointer
+    need item function pointer table (to insert save function)
 

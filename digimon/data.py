@@ -5,7 +5,6 @@
 Hard coded data values and binary offsets.
 """
 
-
 types = {
             0x01 : 'DATA',
             0x02 : 'VACCINE',
@@ -63,7 +62,7 @@ starterTechSlots = {
 
 chestItemFormat   = '<BB'
 
-chestItemOffsets = (            
+chestItemOffsets = (
             0x13FE3118, #706
             0x13FE6844,
             0x13FEE01E,
@@ -138,9 +137,9 @@ chestItemOffsets = (
             0x140818F4, #690
             0x14081900, #691
             )
-            
+
 mapItemFormat = '<BB'
-            
+
 mapItemOffsets = (
             0x13FDD564,
             0x13FDD57A,

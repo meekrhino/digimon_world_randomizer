@@ -61,7 +61,7 @@ class Digimon:
         type  = self.handler.getTypeName( self.type )
         level = self.handler.getLevelName( self.level )
         item  = self.handler.getItemName( self.item )
-        
+
         spec = []
         for i in range( 3 ):
             spec.append( self.handler.getSpecialtyName( self.spec[ i ] ) )
@@ -121,9 +121,16 @@ class Item:
     item.
     """
 
-    #Grey Claws - Moon mirror, Giga Hand, Noble Mane, Metalbanana
-    evoItems = list( range( 0x47, 0x73 ) ) + [ 0x7D, 0x7E, 0x7F ]
-    consumableItems = list( range( 0x00, 0x21 ) ) + list( range( 0x26, 0x73 ) ) + [ 0x7A, 0x7B, 0x7D, 0x7E, 0x7F ]
+    itemSort = {
+            0x00 : 'HEAL',
+            0x01 : 'STATUS',
+            0x02 : 'FOOD',
+            0x03 : 'BATTLE',
+            0x04 : 'STATEVO',
+            0x05 : 'PASSIVEQUEST'
+            }
+
+    consumableItems = list( range( 0x00, 0x21 ) ) + list( range( 0x26, 0x73 ) ) + [ 0x79, 0x7A, 0x7D, 0x7E, 0x7F ]
 
     def __init__( self, handler, id, data ):
         """
@@ -145,8 +152,12 @@ class Item:
         self.color    = data[ 4 ]
         self.dropable = data[ 5 ]
 
-        self.isEvo = id in self.evoItems
+        #Exclude the Stat items, which share a sort value with the Evo items
+        self.isEvo = ( self.itemSort[ self.sort ] == 'STATEVO' and id >= 0x47 )
         self.isConsumable = id in self.consumableItems
+
+        #'Food' sort value is not used for 'Rain Plant' and 'Steak'
+        self.isFood = self.itemSort[ self.sort ] == 'FOOD' or id == 0x79 or id == 0x7A
 
 
     def __str__( self ):
@@ -186,10 +197,11 @@ class Item:
 
     def isAllowedInChest( self, allowEvos ):
         """
-        Check if this items should be allowed in chests,
+        Check if this item should be allowed in chests,
         allowing or disallowing evos as necessary.  Always
         ban quest items (undroppable).
         """
+
         if( allowEvos ):
             return self.dropable
         else:
@@ -198,14 +210,36 @@ class Item:
 
     def isAllowedTokomon( self, onlyConsumables ):
         """
-        Check if this items should be allowed in chests,
-        allowing or disallowing evos as necessary.  Always
-        ban quest items and evos (game breaking).
+        Check if this item should be allowed for Tokomon.
+        Always ban quest items and evos (game breaking).
+        Restrict to consumables if needed.
         """
+
         if( onlyConsumables ):
             return ( self.isConsumable and not self.isEvo )
         else:
             return ( self.dropable and not self.isEvo )
+
+
+    def isAllowedMap( self, onlyFood, lowValue ):
+        """
+        Check if this item should be allowed to spawn on the
+        map.  Always ban quest items and evos (game breaking).
+        """
+
+        ret = False
+
+        if( onlyFood ):
+            ret = self.isFood
+        else:
+            ret = ( self.isConsumable and not self.isEvo )
+
+        if( lowValue and self.price < 1000 ):
+            return ret
+        elif( not lowValue and self.price >= 1000 ):
+            return ret
+        else:
+            return False
 
 
 class Tech:
@@ -342,8 +376,8 @@ class DigimonWorldHandler:
             for i, data_tuple in enumerate( data_unpacked ):
                 self.itemData.append( Item( self, i, data_tuple ) )
                 print( str( self.itemData[ i ] ) )
-                
-                
+
+
             #------------------------------------------------------
             # Read in digimon data
             #------------------------------------------------------
@@ -424,11 +458,11 @@ class DigimonWorldHandler:
 
             for item in itervalues( self.chestItems ):
                 print( 'Chest contains: \'' + self.itemData[ item ].name + '\'' )
-                
+
             #------------------------------------------------------
             # Read in map item spawn data
             #------------------------------------------------------
-            
+
             self.mapItems = {}
 
             for ofst in data.mapItemOffsets:
@@ -438,10 +472,8 @@ class DigimonWorldHandler:
                 if( cmd != scrutil.spawnItem ):
                     print( 'Error: Looking for map item, found incorrect command: ' + str( cmd ) + ' @ ' + format( ofst, '08x' ) )
                 else:
+                    print( format( ofst, '08X' ) + ' \'' + self.itemData[ item ].name + '\' spawns on the map.' )
                     self.mapItems[ ofst ] = item
-
-            for item in itervalues( self.mapItems ):
-                print( '\'' + self.itemData[ item ].name + '\' spawns on the map.' )
 
 
             #------------------------------------------------------
@@ -590,6 +622,17 @@ class DigimonWorldHandler:
                                       verbose )
 
             #------------------------------------------------------
+            # Write out chest item data
+            #------------------------------------------------------
+
+            #Set item IDs in chests
+            for ofst, item in iteritems( self.mapItems ):
+                util.writeDataToFile( file,
+                                      ofst,
+                                      struct.pack( data.mapItemFormat, scrutil.spawnItem, item ),
+                                      verbose )
+
+            #------------------------------------------------------
             # Write out Tokomon item data
             #------------------------------------------------------
 
@@ -669,68 +712,95 @@ class DigimonWorldHandler:
             print( 'Changed Tokomon item from ' + str( preCount ) + 'x \'' + self.itemData[ preItem ].name +
                                          ' to ' + str( randCount ) + 'x \'' + self.itemData[ self.tokoItems[ key ][0] ].name + '\'' )
 
+    def randomizeMapSpawnItems( self, foodOnly=False ):
+        """
+        Randomize items that appear on maps.  Match value using price.
+        If foodOnly is set, replace food items only with other food
+        items.
+
+        Keyword arguments:
+        foodOnly -- Only replace food items with other food items
+        """
+
+        #for each map spawn, choose a random allowed item from data
+        for key in list( self.mapItems ):
+            #if foodOnly is set, swap food items only for other food items
+            fo = foodOnly and self.itemData[ self.mapItems[ key ] ].isFood
+
+            #match low-val and high-val items with similar to keep %
+            #reasonable
+            lowVal = self.itemData[ self.mapItems[ key ] ].price < 1000
+
+            randID = random.randint( 0, len( self.itemData ) - 1 )
+            while( not self.itemData[ randID ].isAllowedMap( fo, lowVal ) ):
+                randID = random.randint( 0, len( self.itemData ) - 1 )
+
+            pre = self.mapItems[ key ]
+            self.mapItems[ key ] = self.itemData[ randID ].id
+            print( 'Changed map item from ' + self.itemData[ pre ].name + ' to ' + self.itemData[ self.mapItems[ key ] ].name )
+
 
     def getItemName( self, id ):
         """
         Get item name from data.
-        
+
         Keyword arguments:
         id -- Item ID to get name for.
         """
-        
+
         if( id < len( self.itemData ) ):
             return self.itemData[ id ].name
         else:
             return 'None'
-            
-            
+
+
     def getTechName( self, id ):
         """
         Get tech name from data.
-        
+
         Keyword arguments:
         id -- Tech ID to get name for.
         """
-        
+
         if( id < len( self.techData ) ):
             return self.techData[ id ].name
         else:
             return 'None'
-            
-            
+
+
     def getTypeName( self, id ):
         """
         Get type name from data.
-        
+
         Keyword arguments:
         id -- Type ID to get name for.
         """
-        
+
         return util.typeIDToName( id )
-            
-            
+
+
     def getSpecialtyName( self, id ):
         """
         Get type name from data.
-        
+
         Keyword arguments:
         id -- Specialty ID to get name for.
         """
-        
+
         return util.specIDToName( id )
-            
-            
+
+
     def getLevelName( self, id ):
         """
         Get level name from data.
-        
+
         Keyword arguments:
         id -- Level ID to get name for.
         """
-        
+
         return util.levelIDToName( id )
-                                         
-                                         
+
+
     def _setStarterTechs( self, default=True ):
         """
         Set starter techs to default techs (lowest tier tech
@@ -751,4 +821,4 @@ class DigimonWorldHandler:
         self.starter2TechSlot = util.starterTechSlot( self.starter2ID )
         print( 'Second starter tech set to ' + self.getTechName( self.starter2Tech )
              + ' (' + self.digimonData[ self.starter2ID ].name + '\'s slot ' + str( self.starter2TechSlot ) + ')' )
-            
+

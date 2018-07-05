@@ -13,6 +13,7 @@ print( 'Modifying data...\n' )
 handler.randomizeStarters()
 handler.randomizeChestItems()
 handler.randomizeTokomonItems()
+handler.randomizeMapSpawnItems()
 
 if( len(sys.argv) > 1 ):
     out = sys.argv[2]
