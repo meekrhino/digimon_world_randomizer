@@ -79,16 +79,14 @@ def compile( inst, *args ):
     
     if( inst == 'spawnChest' ):
         packed = struct.pack( 
-                            '<BBbbhbbhh', 
+                            '<BBhhhhh', 
                             spawnChest,
                             args[0],
                             args[1],
                             args[2],
                             args[3],
                             args[4],
-                            args[5],    
-                            args[6],
-                            args[7]
+                            args[5]
                             )
     elif( inst == 'giveItem' ):
         packed = struct.pack(

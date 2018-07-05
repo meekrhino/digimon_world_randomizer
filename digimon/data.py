@@ -63,7 +63,7 @@ starterTechSlots = {
 
 chestItemFormat   = '<BB'
 
-chestItemOffsets = (
+chestItemOffsets = (            
             0x13FE3118, #706
             0x13FE6844,
             0x13FEE01E,
@@ -373,7 +373,7 @@ spawnItemOffsets = (
             0x14041D24,
             0x14041D3A,
             0x14041D50,
-            0x1407B3EA
+            0x1407B3EA,
             0x1407B400,
             0x1407B416,
             0x1407B42C,
@@ -381,7 +381,7 @@ spawnItemOffsets = (
             0x1407BD0E,
             0x1407BD14,
             0x1407BD2A,
-            0x1407BD40,
+            0x1407BD40
             )
 
 tokoItemFormat = '<BxBB'
