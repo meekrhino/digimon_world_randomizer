@@ -1,5 +1,5 @@
 # Author: Tristan Challener <challenert@gmail.com>
-# Copyright: TODO
+# Copyright: please don't steal this that is all
 
 """
 Hard coded data values and binary offsets.
@@ -418,6 +418,17 @@ digimonDataExclusionOffsets = (
             0x14D70FE8  #in Biyomon
             )
 digimonDataExclusionSize = 0x130
+
+evoToFromFormat = '<11B'
+
+evoToFromBlockOffset     = 0x14D6CE04       #start of evo to/from block
+evoToFromBlockSize       = 0x3FB            #total number of bytes
+evoToFromBlockCount      = 0x41
+
+evoToFromExclusionOffsets = (
+            0x14D6CF98, #in to Bakemon 3-4
+            )
+evoToFromExclusionSize = 0x130
 
 itemDataFormat    = '<20sIHHb?2x'
 

@@ -1,5 +1,5 @@
 # Author: Tristan Challener <challenert@gmail.com>
-# Copyright: TODO
+# Copyright: please don't steal this that is all
 
 import random
 import configparser
@@ -14,7 +14,7 @@ if( len(sys.argv) < 1 ):
 config = configparser.ConfigParser()
 config.read( 'settings.ini' )
 
-verbose = config[ 'general' ].getboolean( 'verbose' )
+verbose = config[ 'general' ].getboolean( 'fullLog' )
 logger = Logger( verbose, filename='randomize.log' )
 
 logger.logAlways( 'Reading data from ' + sys.argv[1] + '...\n' )

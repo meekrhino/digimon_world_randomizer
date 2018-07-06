@@ -1,5 +1,5 @@
 # Author: Tristan Challener <challenert@gmail.com>
-# Copyright: TODO
+# Copyright: please don't steal this that is all
 
 """
 Utilities for writing specific positions in memory.
@@ -19,7 +19,7 @@ def findAll( script, bin, inst ):
     """
     Find all uses of the given instruction.
     """
-    
+
     with open( script, 'r' ) as file:
         out = []
         buf = '\n'
@@ -32,54 +32,54 @@ def findAll( script, bin, inst ):
                     for i in range( 2, len( lineSplit ) ):
                         args.append( int( lineSplit[i] ) )
                     out.append( compile( inst, *args ) )
-                    
+
     ofst = []
     for seq in out:
         ofst.append( findSequenceInFile( bin, seq )  )
-    
+
     if( len( out ) != len( ofst ) ):
         print( 'Error: unable to find some of the ' + inst + ' in the file: ' + str( len( ofst ) ) + '/' + str( len( out ) ) )
-    
+
     strFormat = '(\n'
-    
+
     for o in ofst:
         strFormat += format( o, '08X' ) + ',\n'
-        
+
     strFormat += ')'
-    
+
     print( strFormat )
     pyperclip.copy( strFormat )
-    
+
     return ofst
-    
-    
-    
+
+
+
 def findSequenceInFile( filename, seq ):
     """
     Find the first occurence of the binary sequence in the file.
     """
-    
+
     print( 'Finding seq: ' + str( seq ) )
-    
+
     with open( filename, 'r+b' ) as file:
         mm = mmap.mmap( file.fileno(), 0 )
-        res = mm.find( seq ) 
+        res = mm.find( seq )
         return res
-        
+
 
 def compile( inst, *args ):
     """
-    Convert specified script instruction and args 
+    Convert specified script instruction and args
     into hex instruction.
 
     Keyword arguments:
     inst -- Script instruction code.
     args -- Variable length argument list for instruction.
     """
-    
+
     if( inst == 'spawnChest' ):
-        packed = struct.pack( 
-                            '<BBhhhhh', 
+        packed = struct.pack(
+                            '<BBhhhhh',
                             spawnChest,
                             args[0],
                             args[1],
@@ -104,10 +104,10 @@ def compile( inst, *args ):
                             args[1],
                             args[2]
                             )
-                            
-       
+
+
     #out =  "".join("{:02x}".format(c) for c in packed)
     #print('Copied:'  + '\'' + out  + '\'' + ' to the cipboard')
     #pyperclip.copy(out)
-    
+
     return ( packed )

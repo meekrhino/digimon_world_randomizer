@@ -1,5 +1,5 @@
 # Author: Tristan Challener <challenert@gmail.com>
-# Copyright: TODO
+# Copyright: please don't steal this that is all
 
 """
 Utilities for manipulating digimon data.

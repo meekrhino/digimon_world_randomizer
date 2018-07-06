@@ -73,6 +73,24 @@ data block format:
  1  uint8    color
  1  bool     dropable
  2  pad[1]
+----------
+32  total
+
+
+evo to/from table block begins at 0x14D6CE04 and ends at 0x14D6D1FF
+
+total of 0x3FB (1019) bytes
+
+each block is 0xB (11) bytes
+
+exclusion sections of 0x130 (304) bytes each
+    0x14D6CF98 - 0x14D6D0C8  (inside Bakemon to 3-4)
+
+data block format:
+ 5  uint8[5]    fromEvo
+ 6  uint8[6]    toEvo
+----------
+11  total
 
 
 tech name block begins at 0x14D65494 and ends at 0x14D65BF0
@@ -84,6 +102,7 @@ blocks are variable length strings packed in 4-byte alignment
 exclusion sections of 0x130 (304) bytes each
     0x14D65828 - 0x14D65958 (inside Spiral Twister
 
+(while the following is true, the reason is that this is pointered data -- hence the 4-byte align)
 pads to 4-byte alignement AFTER null terminator, e.g.
 'Meltdown' is 8 characters, but it takes 12 to store it because 'Meltdown\0' is 9 characters and next 4-byte align is 12
 'Giga Freeze' is 11 characters, and only takes 12 to store.

@@ -1,5 +1,5 @@
 # Author: Tristan Challener <challenert@gmail.com>
-# Copyright: TODO
+# Copyright: please don't steal this that is all
 
 """
 Handler that stores all data to be written to the ROM.
@@ -21,6 +21,10 @@ class Digimon:
     digimon.  (currently does not include raise data or
     evolution data)
     """
+
+    #Everything up to MetalEtemon minus WereGarurumon (not implemented!)
+    playableDigimon = list( range( 0x00, 0x3E ) ) + [ 0x3F, 40, 41 ]
+
 
     def __init__( self, handler, id, data ):
         """
@@ -52,6 +56,14 @@ class Digimon:
         self.tech = []
         for i in range( 16 ):
             self.tech.append( data[ 11 + i ] )
+
+        self.fromEvo = []
+        for i in range( 5 ):
+            self.fromEvo.append( 0xFF )
+
+        self.toEvo = []
+        for i in range( 6 ):
+            self.toEvo.append( 0xFF )
 
 
     def __str__( self ):
@@ -91,6 +103,42 @@ class Digimon:
         return out
 
 
+    def setEvoData( self, data ):
+        """
+        Separate out composite data into individual
+        components and attach to existing Digimon.
+
+        Keyword arguments:
+        data -- List of values (unpacked from data string).
+        """
+
+
+        for i in range( 5 ):
+            self.fromEvo[ i ] = data[ i ]
+
+        for i in range( 6 ):
+            self.toEvo[ i ] = data[ 5 + i ]
+
+
+    def evoData( self ):
+        """
+        Produce a string representation of the Digimon's evo
+        data for convenient logging.
+        """
+
+        out = self.name + '\nEvolves from '
+
+        for i in range( 5 ):
+            out += self.handler.getDigimonName( self.fromEvo[ i ] ) + ' '
+
+        out += '\nEvolves to '
+
+        for i in range( 6 ):
+            out += self.handler.getDigimonName( self.toEvo[ i ] ) + ' '
+
+        return out
+
+
     def unpackedFormat( self ):
         """
         Produce a tuple representation of all
@@ -115,6 +163,30 @@ class Digimon:
             repr.append( tech )                     # 11+
 
         return tuple( repr )
+
+
+    def unpackedEvoData( self ):
+        """
+        Produce a tuple representation of the evo
+        data for the object.
+        """
+
+        repr = []
+
+        for e in self.fromEvo:
+            repr.append( e )
+
+        for e in self.toEvo:
+            repr.append( e )
+
+
+    def isValidEvo( self, toReplace ):
+        """
+        Check if this digi is a valid evo replacement for
+        the specified digimon.
+        """
+
+        if toReplace in
 
 
 class Item:
@@ -409,6 +481,29 @@ class DigimonWorldHandler:
             for i, data_tuple in enumerate( data_unpacked ):
                 self.digimonData.append( Digimon( self, i, data_tuple ) )
                 self.logger.log( str( self.digimonData[ i ] ) + '\n' )
+
+
+            #------------------------------------------------------
+            # Read in evo data
+            #------------------------------------------------------
+
+            #Read in evo to/from data block
+            data_read = util.readDataWithExclusions( file,
+                                                     data.evoToFromBlockOffset,
+                                                     data.evoToFromBlockSize,
+                                                     data.evoToFromExclusionOffsets,
+                                                     data.evoToFromExclusionSize )
+
+            #Parse data block
+            data_unpacked = util.unpackDataArray( data_read,
+                                                  data.evoToFromFormat,
+                                                  data.evoToFromBlockCount )
+
+            #Store data in digimon objects
+            for i, data_tuple in enumerate( data_unpacked ):
+                #Index from 1 because player (ID#0) does not have evo entries
+                self.digimonData[ 1 + i ].setEvoData( data_tuple )
+                self.logger.log( self.digimonData[ 1 + i ].evoData() + '\n' )
 
 
             #------------------------------------------------------
@@ -748,6 +843,20 @@ class DigimonWorldHandler:
             pre = self.mapItems[ key ]
             self.mapItems[ key ] = self.itemData[ randID ].id
             self.logger.log( 'Changed map item from ' + self.itemData[ pre ].name + ' to ' + self.itemData[ self.mapItems[ key ] ].name )
+
+
+    def getDigimonName( self, id ):
+        """
+        Get digimon name from data.
+
+        Keyword arguments:
+        id -- Digimon ID to get name for.
+        """
+
+        if( id < len( self.digimonData ) ):
+            return self.digimonData[ id ].name
+        else:
+            return '---'
 
 
     def getItemName( self, id ):
