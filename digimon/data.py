@@ -20,6 +20,14 @@ levels = {
             0x04 : 'CHAMPION',
             0x05 : 'ULTIMATE'
         }
+        
+levelsByName = {
+            'FRESH'         : 0x01,
+            'IN-TRAINING'   : 0x02,    
+            'ROOKIE'        : 0x03,
+            'CHAMPION'      : 0x04,
+            'ULTIMATE'      : 0x05
+        }
 
 specs = {
             0x00 : 'FIRE',

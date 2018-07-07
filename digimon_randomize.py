@@ -43,6 +43,9 @@ if( config[ 'tokomon' ].getboolean( 'Enabled' ) ):
 if( config[ 'mapItems' ].getboolean( 'Enabled' ) ):
     handler.randomizeMapSpawnItems( foodOnly=config[ 'mapItems' ].getboolean( 'FoodOnly' ) )
 
+if( config[ 'evolution' ].getboolean( 'Enabled' ) ):
+    handler.randomizeEvolutions()
+
 #If a second file was passed, use that as the output.
 #Otherwise, read and write the same file
 if( len(sys.argv) > 1 ):

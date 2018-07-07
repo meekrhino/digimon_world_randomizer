@@ -181,6 +181,19 @@ class Digimon:
             
         return tuple( repr )
 
+        
+    def clearEvos( self ):
+        """
+        Clear all of this digimon's evos to/from.
+        """
+        
+        for i in range( 5 ):
+            self.fromEvo[ i ] = 0xFF
+
+        self.toEvo = []
+        for i in range( 6 ):
+            self.toEvo[ i ] = 0xFF
+       
 
     def updateEvosFrom( self ):
         """
@@ -214,12 +227,30 @@ class Digimon:
         evos = []
         
         #Find all digimon that are playable and one level above
-        for digi in self.handler.digimonData:
-            if( digi.id in playableDigimon and digi.level == self.level + 1 ):
-                evos.append( digi.id )
+        return self.handler.getPlayableDigimonByLevel( self.level + 1 )
         
-        return evos
-
+        
+    def addEvoTo( self, id ):
+        """
+        Add a new evolution target to this digimon.
+        
+        Keyword arguments:
+        id -- ID of digimon to add as evolution.
+        """
+        
+        #Search in the order that evos are filled
+        for i in [ 2, 3, 1, 4, 0, 5 ]:
+            #If this digimon already has this evo,
+            #don't add it again.
+            if( self.evosTo[ i ] == id ):
+                break;
+                
+            #If we found an empty slot and the
+            #digimon doesn't have this evo, add
+            #if to the list.
+            if( self.evosTo[ i ] == 0xFF ):
+                self.evosTo[ i ] = id
+    
 
 class Item:
     """
@@ -872,6 +903,7 @@ class DigimonWorldHandler:
             self.logger.log( 'Changed Tokomon item from ' + str( preCount ) + 'x \'' + self.itemData[ preItem ].name +
                                          ' to ' + str( randCount ) + 'x \'' + self.itemData[ self.tokoItems[ key ][0] ].name + '\'' )
 
+                                         
     def randomizeMapSpawnItems( self, foodOnly=False ):
         """
         Randomize items that appear on maps.  Match value using price.
@@ -900,6 +932,37 @@ class DigimonWorldHandler:
             self.logger.log( 'Changed map item from ' + self.itemData[ pre ].name + ' to ' + self.itemData[ self.mapItems[ key ] ].name )
 
 
+    def randomizeEvolutions( self ):
+        """
+        Randomize the lists of evolutions that each digimon
+        is capable of.
+        """
+        
+        for digi in self.digimonData:
+            digi.clearEvos()
+            
+        #Freshes each get one in-training target.
+        for digi in self.getPlayableDigimonByLevel( data.levelsByName[ 'Fresh' ] ):
+            valid = digi.validEvosTo()
+            randID = random.randint( 0, len( valid ) - 1 )
+            digi.addEvoTo( valid[ randID ] )
+        
+        
+    def getPlayableDigimonByLevel( self, level ):
+        """
+        Get a list of digimon with a specified level.
+        
+        Keyword arguments:
+        level -- Level of digimon to get.
+        """
+        
+        out = []
+        
+        for digi in self.digimonData:
+            if( digi.level == level and digi.id in digi.playableDigimon ):
+                out.append( digi )
+            
+            
     def getDigimonName( self, id ):
         """
         Get digimon name from data.
