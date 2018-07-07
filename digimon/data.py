@@ -5,6 +5,8 @@
 Hard coded data values and binary offsets.
 """
 
+lastPartnerDigimon = 0x41
+
 types = {
             0x01 : 'DATA',
             0x02 : 'VACCINE',

@@ -7,15 +7,15 @@ import sys
 from log.logger import Logger
 from digimon.handler import DigimonWorldHandler
 
-if( len(sys.argv) < 1 ):
-	print( 'Must provide file name at command line.' )
-	exit
-
 config = configparser.ConfigParser()
 config.read( 'settings.ini' )
 
 verbose = config[ 'general' ].getboolean( 'fullLog' )
 logger = Logger( verbose, filename='randomize.log' )
+
+if( len(sys.argv) < 1 ):
+	logger.logError( 'Must provide file name at command line.' )
+	exit
 
 logger.logAlways( 'Reading data from ' + sys.argv[1] + '...\n' )
 
@@ -27,7 +27,7 @@ else:
     try:
         handler = DigimonWorldHandler( sys.argv[1], logger, seed=int( seedcfg ) )
     except ValueError:
-        print( 'Seed must be an integer. ' + str( seedcfg ) + ' is not a valid value.' )
+        logger.logError( 'Seed must be an integer. ' + str( seedcfg ) + ' is not a valid value.' )
         exit()
 
 logger.logAlways( 'Modifying data...\n' )

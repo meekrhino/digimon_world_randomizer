@@ -165,7 +165,7 @@ class Digimon:
         return tuple( repr )
 
 
-    def unpackedEvoData( self ):
+    def unpackedEvoFormat( self ):
         """
         Produce a tuple representation of the evo
         data for the object.
@@ -178,15 +178,47 @@ class Digimon:
 
         for e in self.toEvo:
             repr.append( e )
+            
+        return tuple( repr )
 
 
-    def isValidEvo( self, toReplace ):
+    def updateEvosFrom( self ):
         """
-        Check if this digi is a valid evo replacement for
-        the specified digimon.
+        Update this digimon's list of digimon that
+        can evolve into it.
         """
 
-        if toReplace in
+        evos = []
+        for digi in self.handler.digimonData:
+            if( self.id in digi.evosTo ):
+                evos.append( digi.id )
+                
+        #This is the order in which evos are filled
+        #i.e. if there are two evos, they are in
+        #the 3rd slot and the 2nd slot (#2, #1)
+        #Copy up to 5 evos in.  If less, fill with
+        #0xFF, aka none.  Truncate extras.
+        for i, j in enumerate( [ 2, 1, 3, 0, 4 ] ):
+            if( i < len( evos ) ):
+                evosFrom[ j ] = evos[ i ]
+            else:
+                evosFrom[ j ] = 0xFF
+                
+                
+    def validEvosTo( self ):
+        """
+        Produce list of valid digimon IDs that this 
+        digimon could potentially evolve to.
+        """
+        
+        evos = []
+        
+        #Find all digimon that are playable and one level above
+        for digi in self.handler.digimonData:
+            if( digi.id in playableDigimon and digi.level == self.level + 1 ):
+                evos.append( digi.id )
+        
+        return evos
 
 
 class Item:
@@ -557,7 +589,7 @@ class DigimonWorldHandler:
                 cmd, item = struct.unpack( data.chestItemFormat,
                                            file.read( struct.calcsize( data.chestItemFormat ) ) )
                 if( cmd != scrutil.spawnChest ):
-                    self.logger.log( 'Error: Looking for chest item, found incorrect command: ' + str( cmd ) + ' @ ' + format( ofst, '08x' ) )
+                    self.logger.logError( 'Error: Looking for chest item, found incorrect command: ' + str( cmd ) + ' @ ' + format( ofst, '08x' ) )
                 else:
                     self.chestItems[ ofst ] = item
 
@@ -575,7 +607,7 @@ class DigimonWorldHandler:
                 cmd, item = struct.unpack( data.mapItemFormat,
                                            file.read( struct.calcsize( data.mapItemFormat ) ) )
                 if( cmd != scrutil.spawnItem ):
-                    self.logger.log( 'Error: Looking for map item, found incorrect command: ' + str( cmd ) + ' @ ' + format( ofst, '08x' ) )
+                    self.logger.logError( 'Error: Looking for map item, found incorrect command: ' + str( cmd ) + ' @ ' + format( ofst, '08x' ) )
                 else:
                     self.logger.log( ' \'' + self.itemData[ item ].name + '\' spawns on the map.' )
                     self.mapItems[ ofst ] = item
@@ -592,7 +624,7 @@ class DigimonWorldHandler:
                 cmd, item, count = struct.unpack( data.tokoItemFormat,
                                                   file.read( struct.calcsize( data.tokoItemFormat ) ) )
                 if( cmd != scrutil.giveItem ):
-                    self.logger.log( 'Error: Looking for Tokomon item, found incorrect command: ' + str( cmd ) + ' @ ' + format( ofst, '08x' ) )
+                    self.logger.logError( 'Error: Looking for Tokomon item, found incorrect command: ' + str( cmd ) + ' @ ' + format( ofst, '08x' ) )
                 else:
                     self.tokoItems[ ofst ] = ( item, count )
 
@@ -631,6 +663,29 @@ class DigimonWorldHandler:
                                           data.digimonDataBlockSize,
                                           data.digimonDataExclusionOffsets,
                                           data.digimonDataExclusionSize )
+                                          
+                                          
+            #------------------------------------------------------
+            # Write out digimon evo data
+            #------------------------------------------------------
+
+            #Pack digimon data into buffer
+            data_unpacked = []
+            partners = range( 1, data.lastPartnerDigimon + 1 )
+            for i, digi in enumerate( self.digimonData ):
+                if i in partners:
+                    data_unpacked.append( digi.unpackedEvoFormat() )
+
+            data_packed = util.packDataArray( data_unpacked, data.evoToFromFormat )
+            
+
+            #Set all digimon data
+            util.writeDataWithExclusions( file,
+                                          data_packed,
+                                          data.evoToFromBlockOffset,
+                                          data.evoToFromBlockSize,
+                                          data.evoToFromExclusionOffsets,
+                                          data.evoToFromExclusionSize )
 
 
             #------------------------------------------------------
@@ -727,10 +782,10 @@ class DigimonWorldHandler:
                                       self.logger.verbose )
 
             #------------------------------------------------------
-            # Write out chest item data
+            # Write out map spawn item data
             #------------------------------------------------------
 
-            #Set item IDs in chests
+            #Set item spawns in maps
             for ofst, item in iteritems( self.mapItems ):
                 util.writeDataToFile( file,
                                       ofst,

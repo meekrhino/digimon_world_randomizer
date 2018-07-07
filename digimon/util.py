@@ -73,6 +73,7 @@ def writeDataWithExclusions( file, buf, ofst, sz, excls, excl_sz ):
     if not sz == ( len( buf ) + ( len( excls ) * excl_sz ) ):
         print( 'Error: trying to write data with size not '
              + 'matching expected size.' )
+        print( str( sz ) + ' ' + str( len( buf ) + ( len( excls ) * excl_sz ) ) )
         return
 
     file.seek( ofst, 0 )
