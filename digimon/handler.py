@@ -23,7 +23,7 @@ class Digimon:
     """
 
     #Everything up to MetalEtemon minus WereGarurumon (not implemented!)
-    playableDigimon = list( range( 0x00, 0x3E ) ) + [ 0x3F, 40, 41 ]
+    playableDigimon = list( range( 0x01, 0x3E ) ) + [ 0x3F, 0x40, 0x41 ]
 
 
     def __init__( self, handler, id, data ):
@@ -182,6 +182,34 @@ class Digimon:
         return tuple( repr )
 
         
+    def getEvoToCount( self ):
+        """
+        Get current number of digimon this digimon
+        can evolve to.
+        """
+    
+        sum = 0;
+        for e in self.toEvo:
+            if( e != 0xFF ):
+                sum += 1
+                
+        return sum
+
+        
+    def getEvoFromCount( self ):
+        """
+        Get current number of digimon this digimon
+        can evolve from.
+        """
+    
+        sum = 0;
+        for e in self.fromEvo:
+            if( e != 0xFF ):
+                sum += 1
+                
+        return sum
+        
+        
     def clearEvos( self ):
         """
         Clear all of this digimon's evos to/from.
@@ -190,7 +218,6 @@ class Digimon:
         for i in range( 5 ):
             self.fromEvo[ i ] = 0xFF
 
-        self.toEvo = []
         for i in range( 6 ):
             self.toEvo[ i ] = 0xFF
        
@@ -203,7 +230,7 @@ class Digimon:
 
         evos = []
         for digi in self.handler.digimonData:
-            if( self.id in digi.evosTo ):
+            if( self.id in digi.toEvo ):
                 evos.append( digi.id )
                 
         #This is the order in which evos are filled
@@ -213,9 +240,9 @@ class Digimon:
         #0xFF, aka none.  Truncate extras.
         for i, j in enumerate( [ 2, 1, 3, 0, 4 ] ):
             if( i < len( evos ) ):
-                evosFrom[ j ] = evos[ i ]
+                self.fromEvo[ j ] = evos[ i ]
             else:
-                evosFrom[ j ] = 0xFF
+                self.fromEvo[ j ] = 0xFF
                 
                 
     def validEvosTo( self ):
@@ -224,10 +251,18 @@ class Digimon:
         digimon could potentially evolve to.
         """
         
-        evos = []
-        
         #Find all digimon that are playable and one level above
-        return self.handler.getPlayableDigimonByLevel( self.level + 1 )
+        validEvos = self.handler.getPlayableDigimonByLevel( self.level + 1 )
+        
+        exclusionList = []
+        i = 0
+        while( i < len( validEvos ) ):
+            if( validEvos[ i ].name in [ 'Kunemon', 'Devimon', 'Numemon', 'Sukamon', 'Nanimon', 'Vademon' ] ):
+                del validEvos[ i ]
+            else:
+                i += 1
+                
+        return validEvos
         
         
     def addEvoTo( self, id ):
@@ -242,14 +277,15 @@ class Digimon:
         for i in [ 2, 3, 1, 4, 0, 5 ]:
             #If this digimon already has this evo,
             #don't add it again.
-            if( self.evosTo[ i ] == id ):
+            if( self.toEvo[ i ] == id ):
                 break;
                 
             #If we found an empty slot and the
             #digimon doesn't have this evo, add
             #if to the list.
-            if( self.evosTo[ i ] == 0xFF ):
-                self.evosTo[ i ] = id
+            if( self.toEvo[ i ] == 0xFF ):
+                self.toEvo[ i ] = id
+                break
     
 
 class Item:
@@ -942,10 +978,44 @@ class DigimonWorldHandler:
             digi.clearEvos()
             
         #Freshes each get one in-training target.
-        for digi in self.getPlayableDigimonByLevel( data.levelsByName[ 'Fresh' ] ):
+        for digi in self.getPlayableDigimonByLevel( data.levelsByName[ 'FRESH' ] ):
             valid = digi.validEvosTo()
             randID = random.randint( 0, len( valid ) - 1 )
-            digi.addEvoTo( valid[ randID ] )
+            digi.addEvoTo( valid[ randID ].id )
+            
+        #In-trainings each get two Rookie targets.
+        for digi in self.getPlayableDigimonByLevel( data.levelsByName[ 'IN-TRAINING' ] ):
+            digi.updateEvosFrom()
+            valid = digi.validEvosTo()
+            while( digi.getEvoToCount() < 2 ):
+                randID = random.randint( 0, len( valid ) - 1 )
+                digi.addEvoTo( valid[ randID ].id )
+                
+        #Rookies get 4-6 Champion targets.
+        for digi in self.getPlayableDigimonByLevel( data.levelsByName[ 'ROOKIE' ] ):
+            count = random.randint( 4, 6 )
+            digi.updateEvosFrom()
+            valid = digi.validEvosTo()
+            while( digi.getEvoToCount() < count ):
+                randID = random.randint( 0, len( valid ) - 1 )
+                digi.addEvoTo( valid[ randID ].id )
+        
+        #Champions get 1-2 Ultimate targets.
+        for digi in self.getPlayableDigimonByLevel( data.levelsByName[ 'CHAMPION' ] ):
+            count = random.randint( 1, 2 )
+            digi.updateEvosFrom()
+            valid = digi.validEvosTo()
+            while( digi.getEvoToCount() < count ):
+                randID = random.randint( 0, len( valid ) - 1 )
+                digi.addEvoTo( valid[ randID ].id )
+        
+        #Ultimate just need to have their from evos updated.
+        for digi in self.getPlayableDigimonByLevel( data.levelsByName[ 'ULTIMATE' ] ):
+            digi.updateEvosFrom()
+            
+        self.logger.log( 'Changed digimon evolutions to the following: ' )
+        for i in range( 1, data.lastPartnerDigimon + 1 ):
+            self.logger.log( self.digimonData[ i ].evoData() + '\n' )
         
         
     def getPlayableDigimonByLevel( self, level ):
@@ -961,6 +1031,8 @@ class DigimonWorldHandler:
         for digi in self.digimonData:
             if( digi.level == level and digi.id in digi.playableDigimon ):
                 out.append( digi )
+            
+        return out
             
             
     def getDigimonName( self, id ):
