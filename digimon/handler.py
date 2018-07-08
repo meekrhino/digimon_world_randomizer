@@ -1120,6 +1120,35 @@ class DigimonWorldHandler:
                    for other options (random) but that is
                    not possible now.
         """
+        starter = self.digimonData[ self.starterID ]
+        
+        #Find the lowest tier damagin tech that the digimon 
+        #can use
+        #if( default ): #can't do this until we read in the tech data
+        #    lowestTier = 0xFF
+        #    lowestTierID = 0
+        #    for( techID in starter.tech ):
+        #        if( self.getTechName( techID ) != 'None' ):
+        #            tier = self.techData( techID ).tier
+        #            if( self.techData( techID ).power > 0 and tier < lowestTier ):
+        #                lowestTier = tier
+        #                lowestTierID = techID
+        #    self.starter1Tech = lowestTierID
+        #    self.starter1TechSlot = util.starterTechSlot( self.starter1ID ) #THIS IS NOT RIGHT!!!
+        #    self.logger.log( 'First starter tech set to ' + self.getTechName( self.starter1Tech )
+        #         + ' (' + self.digimonData[ self.starter1ID ].name + '\'s slot ' + str( self.starter1TechSlot ) + ')' )
+        #Find a random learnable damaging tech
+        #else:
+        #    randID = random.randint( 0, 15 )
+        #    techID = self.digimonData[ self.starter1ID ].tech[ randID ]
+        #    while( self.getTechName( techID ) == 'None' or self.techData[ techID ].power == 0 ):
+        #        randID = random.randint( 0, 15 )
+        #        techID = self.digimonData[ self.starter1ID ].tech[ randID ]
+        #    self.starter1Tech = techID
+        #    self.starter1TechSlot = util.starterTechSlot( self.starter1ID ) #THIS IS NOT RIGHT!!!
+        #    self.logger.log( 'First starter tech set to ' + self.getTechName( self.starter1Tech )
+        #         + ' (' + self.digimonData[ self.starter1ID ].name + '\'s slot ' + str( self.starter1TechSlot ) + ')' )
+        
         self.starter1Tech = util.starterTech( self.starter1ID )
         self.starter1TechSlot = util.starterTechSlot( self.starter1ID )
         self.logger.log( 'First starter tech set to ' + self.getTechName( self.starter1Tech )
