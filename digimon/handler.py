@@ -126,12 +126,12 @@ class Digimon:
         data for convenient logging.
         """
 
-        out = self.name + '\nEvolves from '
+        out = 'Changed evolutions for ' + self.name + '\nNow evolves from '
 
         for i in range( 5 ):
             out += self.handler.getDigimonName( self.fromEvo[ i ] ) + ' '
 
-        out += '\nEvolves to '
+        out += '\nNow evolves to '
 
         for i in range( 6 ):
             out += self.handler.getDigimonName( self.toEvo[ i ] ) + ' '
@@ -480,15 +480,15 @@ class Tech:
         """
         repr = []
 
-        repr.append( power )
-        repr.append( mp3 )
-        repr.append( itime )
-        repr.append( range )
-        repr.append( spec )
-        repr.append( effect )
-        repr.append( accuracy )
-        repr.append( effChance )
-        repr.append( aiDist )
+        repr.append( self.power )
+        repr.append( self.mp3 )
+        repr.append( self.itime )
+        repr.append( self.range )
+        repr.append( self.spec )
+        repr.append( self.effect )
+        repr.append( self.accuracy )
+        repr.append( self.effChance )
+        repr.append( self.aiDist )
 
         return tuple( repr )
 
@@ -759,6 +759,26 @@ class DigimonWorldHandler:
 
         with open( filename, 'r+' + 'b' ) as file:
             #------------------------------------------------------
+            # Write out tech data
+            #------------------------------------------------------
+
+            #Pack digimon data into buffer
+            data_unpacked = []
+            for tech in self.techData:
+                data_unpacked.append( tech.unpackedFormat() )
+
+            data_packed = util.packDataArray( data_unpacked, data.techDataFormat )
+
+            #Set all digimon data
+            util.writeDataWithExclusions( file,
+                                          data_packed,
+                                          data.techDataBlockOffset,
+                                          data.techDataBlockSize,
+                                          data.techDataExclusionOffsets,
+                                          data.techDataExclusionSize )
+
+
+            #------------------------------------------------------
             # Write out digimon data
             #------------------------------------------------------
 
@@ -829,27 +849,27 @@ class DigimonWorldHandler:
             util.writeDataToFile( file,
                                   data.starter1SetDigimonOffset,
                                   struct.pack( data.digimonIDFormat, self.starter1ID ),
-                                  self.logger.verbose )
+                                  self.logger )
 
             #Set digimon ID to check when learning first
             #starter's first tech (must match starter!)
             util.writeDataToFile( file,
                                   data.starter1ChkDigimonOffset,
                                   struct.pack( data.digimonIDFormat, self.starter1ID ),
-                                  self.logger.verbose )
+                                  self.logger )
 
             #Set tech ID for first starter to learn
             util.writeDataToFile( file,
                                   data.starter1LearnTechOffset,
                                   struct.pack( data.techIDFormat, self.starter1Tech ),
-                                  self.logger.verbose )
+                                  self.logger )
 
             #Set animation ID to equip as first stater's
             #first tech
             util.writeDataToFile( file,
                                   data.starter1EquipAnimOffset,
                                   struct.pack( data.animIDFormat, util.techSlotAnimID( self.starter1TechSlot ) ),
-                                  self.logger.verbose )
+                                  self.logger )
 
 
             #------------------------------------------------------
@@ -860,27 +880,27 @@ class DigimonWorldHandler:
             util.writeDataToFile( file,
                                   data.starter2SetDigimonOffset,
                                   struct.pack( data.digimonIDFormat, self.starter2ID ),
-                                  self.logger.verbose )
+                                  self.logger )
 
             #Set digimon ID to check when learning second
             #starter's first tech (must match starter!)
             util.writeDataToFile( file,
                                   data.starter2ChkDigimonOffset,
                                   struct.pack( data.digimonIDFormat, self.starter2ID ),
-                                  self.logger.verbose )
+                                  self.logger )
 
             #Set tech ID for first starter to learn
             util.writeDataToFile( file,
                                   data.starter2LearnTechOffset,
                                   struct.pack( data.techIDFormat, self.starter2Tech ),
-                                  self.logger.verbose )
+                                  self.logger )
 
             #Set animation ID to equip as first stater's
             #first tech
             util.writeDataToFile( file,
                                   data.starter2EquipAnimOffset,
                                   struct.pack( data.animIDFormat, util.techSlotAnimID( self.starter2TechSlot ) ),
-                                  self.logger.verbose )
+                                  self.logger )
 
 
             #------------------------------------------------------
@@ -892,7 +912,7 @@ class DigimonWorldHandler:
                 util.writeDataToFile( file,
                                       ofst,
                                       struct.pack( data.chestItemFormat, scrutil.spawnChest, item ),
-                                      self.logger.verbose )
+                                      self.logger )
 
             #------------------------------------------------------
             # Write out map spawn item data
@@ -903,7 +923,7 @@ class DigimonWorldHandler:
                 util.writeDataToFile( file,
                                       ofst,
                                       struct.pack( data.mapItemFormat, scrutil.spawnItem, item ),
-                                      self.logger.verbose )
+                                      self.logger )
 
             #------------------------------------------------------
             # Write out Tokomon item data
@@ -914,7 +934,7 @@ class DigimonWorldHandler:
                 util.writeDataToFile( file,
                                       ofst,
                                       struct.pack( data.tokoItemFormat, scrutil.giveItem, item, count ),
-                                      self.logger.verbose )
+                                      self.logger )
 
 
     def randomizeStarters( self, useWeakestTech=True ):
@@ -927,10 +947,10 @@ class DigimonWorldHandler:
             secondDigi = data.rookies[ random.randint( 0, len( data.rookies ) - 1 ) ]
 
         self.starter1ID = firstDigi
-        self.logger.log( 'First starter set to ' + self.digimonData[ firstDigi ].name )
+        self.logger.logChange( 'First starter set to ' + self.digimonData[ firstDigi ].name )
 
         self.starter2ID = secondDigi
-        self.logger.log( 'Second starter set to ' + self.digimonData[ secondDigi ].name )
+        self.logger.logChange( 'Second starter set to ' + self.digimonData[ secondDigi ].name )
 
         self._setStarterTechs( default=useWeakestTech )
 
@@ -952,7 +972,7 @@ class DigimonWorldHandler:
 
             pre = self.chestItems[ key ]
             self.chestItems[ key ] = self.itemData[ randID ].id
-            self.logger.log( 'Changed chest item from ' + self.itemData[ pre ].name + ' to ' + self.itemData[ self.chestItems[ key ] ].name )
+            self.logger.logChange( 'Changed chest item from ' + self.itemData[ pre ].name + ' to ' + self.itemData[ self.chestItems[ key ] ].name )
 
 
     def randomizeTokomonItems( self, consumableOnly=True ):
@@ -982,8 +1002,8 @@ class DigimonWorldHandler:
             preItem, preCount = self.tokoItems[ key ]
             self.tokoItems[ key ] = ( self.itemData[ randID ].id, randCount )
 
-            self.logger.log( 'Changed Tokomon item from ' + str( preCount ) + 'x \'' + self.itemData[ preItem ].name +
-                                         ' to ' + str( randCount ) + 'x \'' + self.itemData[ self.tokoItems[ key ][0] ].name + '\'' )
+            self.logger.logChange( 'Changed Tokomon item from ' + str( preCount )  + 'x \'' + self.itemData[ preItem ].name +
+                                                         ' to ' + str( randCount ) + 'x \'' + self.itemData[ self.tokoItems[ key ][0] ].name + '\'' )
 
 
     def randomizeMapSpawnItems( self, foodOnly=False ):
@@ -1011,7 +1031,7 @@ class DigimonWorldHandler:
 
             pre = self.mapItems[ key ]
             self.mapItems[ key ] = self.itemData[ randID ].id
-            self.logger.log( 'Changed map item from ' + self.itemData[ pre ].name + ' to ' + self.itemData[ self.mapItems[ key ] ].name )
+            self.logger.logChange( 'Changed map item from ' + self.itemData[ pre ].name + ' to ' + self.itemData[ self.mapItems[ key ] ].name )
 
 
     def randomizeEvolutions( self ):
@@ -1059,9 +1079,9 @@ class DigimonWorldHandler:
         for digi in self.getPlayableDigimonByLevel( data.levelsByName[ 'ULTIMATE' ] ):
             digi.updateEvosFrom()
 
-        self.logger.log( 'Changed digimon evolutions to the following: ' )
+        self.logger.logChange( 'Changed digimon evolutions to the following: ' )
         for i in range( 1, data.lastPartnerDigimon + 1 ):
-            self.logger.log( self.digimonData[ i ].evoData() + '\n' )
+            self.logger.logChange( self.digimonData[ i ].evoData() + '\n' )
 
 
     def getPlayableDigimonByLevel( self, level ):
@@ -1117,8 +1137,8 @@ class DigimonWorldHandler:
         id -- Tech ID to get name for.
         """
 
-        if( id < len( self.techData ) ):
-            return self.techData[ id ].name
+        if( id < len( data.techs ) ):
+            return data.techs[ id ]
         else:
             return 'None'
 
@@ -1206,8 +1226,8 @@ class DigimonWorldHandler:
         #                lowestTierID = techID
         #    self.starter1Tech = lowestTierID
         #    self.starter1TechSlot = util.starterTechSlot( self.starter1ID ) #THIS IS NOT RIGHT!!!
-        #    self.logger.log( 'First starter tech set to ' + self.getTechName( self.starter1Tech )
-        #         + ' (' + self.digimonData[ self.starter1ID ].name + '\'s slot ' + str( self.starter1TechSlot ) + ')' )
+        #    self.logger.logChange( 'First starter tech set to ' + self.getTechName( self.starter1Tech )
+        #                         + ' (' + self.digimonData[ self.starter1ID ].name + '\'s slot ' + str( self.starter1TechSlot ) + ')' )
         #Find a random learnable damaging tech
         #else:
         #    randID = random.randint( 0, 15 )
@@ -1217,17 +1237,17 @@ class DigimonWorldHandler:
         #        techID = self.digimonData[ self.starter1ID ].tech[ randID ]
         #    self.starter1Tech = techID
         #    self.starter1TechSlot = util.starterTechSlot( self.starter1ID ) #THIS IS NOT RIGHT!!!
-        #    self.logger.log( 'First starter tech set to ' + self.getTechName( self.starter1Tech )
-        #         + ' (' + self.digimonData[ self.starter1ID ].name + '\'s slot ' + str( self.starter1TechSlot ) + ')' )
+        #    self.logger.logChange( 'First starter tech set to ' + self.getTechName( self.starter1Tech )
+        #                         + ' (' + self.digimonData[ self.starter1ID ].name + '\'s slot ' + str( self.starter1TechSlot ) + ')' )
 
         self.starter1Tech = util.starterTech( self.starter1ID )
         self.starter1TechSlot = util.starterTechSlot( self.starter1ID )
-        self.logger.log( 'First starter tech set to ' + self.getTechName( self.starter1Tech )
-             + ' (' + self.digimonData[ self.starter1ID ].name + '\'s slot ' + str( self.starter1TechSlot ) + ')' )
+        self.logger.logChange( 'First starter tech set to ' + self.getTechName( self.starter1Tech )
+                             + ' (' + self.digimonData[ self.starter1ID ].name + '\'s slot ' + str( self.starter1TechSlot ) + ')' )
 
 
         self.starter2Tech = util.starterTech( self.starter2ID )
         self.starter2TechSlot = util.starterTechSlot( self.starter2ID )
-        self.logger.log( 'Second starter tech set to ' + self.getTechName( self.starter2Tech )
-             + ' (' + self.digimonData[ self.starter2ID ].name + '\'s slot ' + str( self.starter2TechSlot ) + ')' )
+        self.logger.logChange( 'Second starter tech set to ' + self.getTechName( self.starter2Tech )
+                             + ' (' + self.digimonData[ self.starter2ID ].name + '\'s slot ' + str( self.starter2TechSlot ) + ')' )
 

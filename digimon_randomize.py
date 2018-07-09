@@ -7,30 +7,33 @@ import sys
 from log.logger import Logger
 from digimon.handler import DigimonWorldHandler
 
-config = configparser.ConfigParser()
+config = configparser.ConfigParser( allow_no_value=True )
 config.read( 'settings.ini' )
 
-verbose = config[ 'general' ].getboolean( 'fullLog' )
+verbose = config[ 'general' ][ 'LogLevel' ]
 logger = Logger( verbose, filename='randomize.log' )
 
-if( len(sys.argv) < 1 ):
-	logger.logError( 'Must provide file name at command line.' )
-	exit
+if( len(sys.argv) > 1 ):
+    input = sys.argv[1]
+elif( config[ 'general' ][ 'Input' ] != '' ):
+    input = config[ 'general' ][ 'Input' ]
+else:
+    logger.fatalError( 'Must provide file name via command line or settings.' )
+    exit()
 
-logger.logAlways( 'Reading data from ' + sys.argv[1] + '...\n' )
+print( 'Reading data from ' + input + '...\n' )
 
-seedcfg = config[ 'general' ][ 'seed' ]
+seedcfg = config[ 'general' ][ 'Seed' ]
 
-if( seedcfg == 'None' ):
-    handler = DigimonWorldHandler( sys.argv[1], logger )
+if( seedcfg == '' ):
+    handler = DigimonWorldHandler( input, logger )
 else:
     try:
-        handler = DigimonWorldHandler( sys.argv[1], logger, seed=int( seedcfg ) )
+        handler = DigimonWorldHandler( input, logger, seed=int( seedcfg ) )
     except ValueError:
-        logger.logError( 'Seed must be an integer. ' + str( seedcfg ) + ' is not a valid value.' )
-        exit()
+        logger.fatalError( 'Seed must be an integer. ' + str( seedcfg ) + ' is not a valid value.' )
 
-logger.logAlways( 'Modifying data...\n' )
+print( 'Modifying data...\n' )
 if( config[ 'starter' ].getboolean( 'Enabled' ) ):
     handler.randomizeStarters( useWeakestTech=config[ 'starter' ].getboolean( 'UseWeakestTech' ) )
 
@@ -46,21 +49,23 @@ if( config[ 'mapItems' ].getboolean( 'Enabled' ) ):
 if( config[ 'evolution' ].getboolean( 'Enabled' ) ):
     handler.randomizeEvolutions()
 
-#If a second file was passed, use that as the output.
+#If an output file was passed or set, use that as the output.
 #Otherwise, read and write the same file
-if( len(sys.argv) > 1 ):
-    out = sys.argv[2]
+if( len(sys.argv) > 2 ):
+    output = sys.argv[2]
+elif( config[ 'general' ][ 'Output' ] != '' ):
+    output = config[ 'general' ][ 'Output' ]
 else:
-    out = sys.argv[1]
+    output = input
 
-logger.logAlways( 'Writing to ' + out + '...\n' )
-handler.write( out )
-
-logger.logAlways( 'Modifications complete.' )
+print( 'Writing to ' + output + '...\n' )
+handler.write( output )
 
 if( not logger.error ):
-    print( 'Program executed succesfully.  See log file for details (Warning: spoilers!).' )
+    print( 'Modifications complete.  See log file for details (Warning: spoilers!).' )
     print( 'Seed was ' + str( handler.randomseed ) )
     print( 'Enter this seed in settings file to produce the same ROM again.' )
+    input( 'Press Enter to finish...' )
 else:
-    print( 'Program ended with errors.  See log file for errors.' )
+    print( 'Program ended with errors.  See log file for details.' )
+    input( 'Press Enter to finish...' )

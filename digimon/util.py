@@ -10,21 +10,21 @@ import sys
 import struct
 
 
-def writeDataToFile( file, ofst, str, verbose ):
+def writeDataToFile( file, ofst, data, logger ):
     """
     Convert specified value to bytes and write to file.
 
     Keyword arguments:
     file -- File pointer opened in binary mode.
-    ofst -- Offset to write.
-    value -- Value to write.
+    ofst -- Offset to write to.
+    data -- String of data to write.
+    logger -- Logger to use to record activity.
     """
     file.seek( ofst, 0 )
 
-    #if( verbose ):
-    #    print( 'Writing the following to file: ' + str )
+    logger.log( 'Writing ' + str( len( data ) ) + ' bytes to the file.' )
 
-    return file.write( str )
+    return file.write( data )
 
 
 def readDataWithExclusions( file, ofst, sz, excls, excl_sz ):
