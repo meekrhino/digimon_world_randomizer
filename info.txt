@@ -72,7 +72,7 @@ data block format:
  2  uint16   sort
  1  uint8    color
  1  bool     dropable
- 2  pad[1]
+ 2  pad[2]
 ----------
 32  total
 
@@ -93,6 +93,33 @@ data block format:
 11  total
 
 
+tech data table block begins at 0x14D66DF8 and ends at 0x14D676A8
+
+total of 0x8B0 (2224) bytes
+
+each block is 0x10 (16) bytes
+
+exclusion sections of 0x130 (304) bytes each
+    0x14D673B8 - 0x14D674E8
+
+data block format:
+ 2 uint16       power
+ 1 uint8        mp/3
+ 1 uint8        itime
+ 1 uint8        range
+ 1 uint8        spec
+ 1 uint8        effect
+ 1 uint8        accuracy
+ 1 uint8        effChance
+ 5 pad[5]
+ 1 uint8        aiDist
+ 1 pad[1]
+----------
+16 total
+
+Unknown4 looks like flags to me, uses bits 5, 7, and 8 (0x10, 0x40, 0x90)
+
+
 tech name block begins at 0x14D65494 and ends at 0x14D65BF0
 
 total of 0x75C (1884) bytes
@@ -100,13 +127,15 @@ total of 0x75C (1884) bytes
 blocks are variable length strings packed in 4-byte alignment
 
 exclusion sections of 0x130 (304) bytes each
-    0x14D65828 - 0x14D65958 (inside Spiral Twister
+    0x14D65828 - 0x14D65958 (inside Spiral Twister)
 
 (while the following is true, the reason is that this is pointered data -- hence the 4-byte align)
 pads to 4-byte alignement AFTER null terminator, e.g.
 'Meltdown' is 8 characters, but it takes 12 to store it because 'Meltdown\0' is 9 characters and next 4-byte align is 12
 'Giga Freeze' is 11 characters, and only takes 12 to store.
 list( filter( None, data_packed.split('\0') ) ) should turn a block of tech names into a list of name strings.
+
+this useless shit is pointered all over the place.  Most of it is together but some is scattered (e.g. Bubble and Tremar)
 
 
 spawnItem has a few weird things because of the centarumon maze:

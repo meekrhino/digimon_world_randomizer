@@ -178,49 +178,49 @@ class Digimon:
 
         for e in self.toEvo:
             repr.append( e )
-            
+
         return tuple( repr )
 
-        
+
     def getEvoToCount( self ):
         """
         Get current number of digimon this digimon
         can evolve to.
         """
-    
+
         sum = 0;
         for e in self.toEvo:
             if( e != 0xFF ):
                 sum += 1
-                
+
         return sum
 
-        
+
     def getEvoFromCount( self ):
         """
         Get current number of digimon this digimon
         can evolve from.
         """
-    
+
         sum = 0;
         for e in self.fromEvo:
             if( e != 0xFF ):
                 sum += 1
-                
+
         return sum
-        
-        
+
+
     def clearEvos( self ):
         """
         Clear all of this digimon's evos to/from.
         """
-        
+
         for i in range( 5 ):
             self.fromEvo[ i ] = 0xFF
 
         for i in range( 6 ):
             self.toEvo[ i ] = 0xFF
-       
+
 
     def updateEvosFrom( self ):
         """
@@ -232,7 +232,7 @@ class Digimon:
         for digi in self.handler.digimonData:
             if( self.id in digi.toEvo ):
                 evos.append( digi.id )
-                
+
         #This is the order in which evos are filled
         #i.e. if there are two evos, they are in
         #the 3rd slot and the 2nd slot (#2, #1)
@@ -243,17 +243,17 @@ class Digimon:
                 self.fromEvo[ j ] = evos[ i ]
             else:
                 self.fromEvo[ j ] = 0xFF
-                
-                
+
+
     def validEvosTo( self ):
         """
-        Produce list of valid digimon IDs that this 
+        Produce list of valid digimon IDs that this
         digimon could potentially evolve to.
         """
-        
+
         #Find all digimon that are playable and one level above
         validEvos = self.handler.getPlayableDigimonByLevel( self.level + 1 )
-        
+
         exclusionList = []
         i = 0
         while( i < len( validEvos ) ):
@@ -261,32 +261,32 @@ class Digimon:
                 del validEvos[ i ]
             else:
                 i += 1
-                
+
         return validEvos
-        
-        
+
+
     def addEvoTo( self, id ):
         """
         Add a new evolution target to this digimon.
-        
+
         Keyword arguments:
         id -- ID of digimon to add as evolution.
         """
-        
+
         #Search in the order that evos are filled
         for i in [ 2, 3, 1, 4, 0, 5 ]:
             #If this digimon already has this evo,
             #don't add it again.
             if( self.toEvo[ i ] == id ):
                 break;
-                
+
             #If we found an empty slot and the
             #digimon doesn't have this evo, add
             #if to the list.
             if( self.toEvo[ i ] == 0xFF ):
                 self.toEvo[ i ] = id
                 break
-    
+
 
 class Item:
     """
@@ -421,6 +421,8 @@ class Tech:
     tech.  Currently only names (read ONLY)
     """
 
+    finishers = list( range( 0x3A, 0x71 ) )
+
     def __init__( self, handler, id, data ):
         """
         Separate out composite data into individual
@@ -433,8 +435,20 @@ class Tech:
         self.handler  = handler
         self.id       = id
 
-        self.name     = data[ 0 ]
+        self.name     = 'None'
 
+        self.power    = data[ 0 ]
+        self.mp3      = data[ 1 ]
+        self.itime    = data[ 2 ]
+        self.range    = data[ 3 ]
+        self.spec     = data[ 4 ]
+        self.effect   = data[ 5 ]
+        self.accuracy = data[ 6 ]
+        self.effChance= data[ 7 ]
+        self.aiDist   = data[ 8 ]
+
+        self.isDamaging = self.power > 0
+        self.isFinisher = self.id in self.finishers
 
 
     def __str__( self ):
@@ -443,7 +457,20 @@ class Tech:
         for convenient logging.
         """
 
-        return self.name
+        out = '{:>3d} {:<20s}\n   {:>3d} {:>3d} {:>2d} {:>5s} {:>6s} {:>7s} {:>3d} {:>3d}% {:>2d}'.format(
+                        self.id,
+                        self.name,
+                        self.power,
+                        self.mp3 * 3,
+                        self.itime,
+                        self.handler.getRangeName( self.range ),
+                        self.handler.getSpecialtyName( self.spec ),
+                        self.handler.getEffectName( self.effect ),
+                        self.accuracy,
+                        self.effChance,
+                        self.aiDist )
+
+        return out
 
 
     def unpackedFormat( self ):
@@ -453,14 +480,28 @@ class Tech:
         """
         repr = []
 
-        #convert to binary, add null terminator, and pad to 4 bytes
-        name = self.name.encode( 'ascii' ) + b'\00'
-        while( len( name ) % 4 != 0 ):
-            name += b'\00'
-
-        repr.append( self.name )
+        repr.append( power )
+        repr.append( mp3 )
+        repr.append( itime )
+        repr.append( range )
+        repr.append( spec )
+        repr.append( effect )
+        repr.append( accuracy )
+        repr.append( effChance )
+        repr.append( aiDist )
 
         return tuple( repr )
+
+
+    def setName( self, name ):
+        """
+        Assign a name to the tech
+
+        Keyword arguments:
+        name -- Name to set.
+        """
+
+        self.name     = name
 
 
 class DigimonWorldHandler:
@@ -518,21 +559,26 @@ class DigimonWorldHandler:
 
         with open( filename, 'r' + 'b' ) as file:
             #------------------------------------------------------
-            # Read in tech name data
+            # Read in tech data
             #------------------------------------------------------
 
-            #Read in full tech name data block
+            #Read in full item data block
             data_read = util.readDataWithExclusions( file,
-                                                     data.techNameBlockOffset,
-                                                     data.techNameBlockSize,
-                                                     data.techNameExclusionOffsets,
-                                                     data.techNameExclusionSize )
+                                                     data.techDataBlockOffset,
+                                                     data.techDataBlockSize,
+                                                     data.techDataExclusionOffsets,
+                                                     data.techDataExclusionSize )
 
-            data_unpacked = list( filter( None, data_read.decode( 'ascii' ).split( '\0' ) ) )
+            #Parse data block
+            data_unpacked = util.unpackDataArray( data_read,
+                                                  data.techDataFormat,
+                                                  data.techDataBlockCount )
 
+            #Store data in item objects
             self.techData = []
-            for i, name in enumerate( data_unpacked ):
-                self.techData.append( Tech( self, i, ( name, ) ) )
+            for i, data_tuple in enumerate( data_unpacked ):
+                self.techData.append( Tech( self, i, data_tuple ) )
+                self.techData[ i ].setName( data.techs[ i ] )
                 self.logger.log( str( self.techData[ i ] ) )
 
 
@@ -730,8 +776,8 @@ class DigimonWorldHandler:
                                           data.digimonDataBlockSize,
                                           data.digimonDataExclusionOffsets,
                                           data.digimonDataExclusionSize )
-                                          
-                                          
+
+
             #------------------------------------------------------
             # Write out digimon evo data
             #------------------------------------------------------
@@ -744,7 +790,7 @@ class DigimonWorldHandler:
                     data_unpacked.append( digi.unpackedEvoFormat() )
 
             data_packed = util.packDataArray( data_unpacked, data.evoToFromFormat )
-            
+
 
             #Set all digimon data
             util.writeDataWithExclusions( file,
@@ -939,7 +985,7 @@ class DigimonWorldHandler:
             self.logger.log( 'Changed Tokomon item from ' + str( preCount ) + 'x \'' + self.itemData[ preItem ].name +
                                          ' to ' + str( randCount ) + 'x \'' + self.itemData[ self.tokoItems[ key ][0] ].name + '\'' )
 
-                                         
+
     def randomizeMapSpawnItems( self, foodOnly=False ):
         """
         Randomize items that appear on maps.  Match value using price.
@@ -973,16 +1019,16 @@ class DigimonWorldHandler:
         Randomize the lists of evolutions that each digimon
         is capable of.
         """
-        
+
         for digi in self.digimonData:
             digi.clearEvos()
-            
+
         #Freshes each get one in-training target.
         for digi in self.getPlayableDigimonByLevel( data.levelsByName[ 'FRESH' ] ):
             valid = digi.validEvosTo()
             randID = random.randint( 0, len( valid ) - 1 )
             digi.addEvoTo( valid[ randID ].id )
-            
+
         #In-trainings each get two Rookie targets.
         for digi in self.getPlayableDigimonByLevel( data.levelsByName[ 'IN-TRAINING' ] ):
             digi.updateEvosFrom()
@@ -990,7 +1036,7 @@ class DigimonWorldHandler:
             while( digi.getEvoToCount() < 2 ):
                 randID = random.randint( 0, len( valid ) - 1 )
                 digi.addEvoTo( valid[ randID ].id )
-                
+
         #Rookies get 4-6 Champion targets.
         for digi in self.getPlayableDigimonByLevel( data.levelsByName[ 'ROOKIE' ] ):
             count = random.randint( 4, 6 )
@@ -999,7 +1045,7 @@ class DigimonWorldHandler:
             while( digi.getEvoToCount() < count ):
                 randID = random.randint( 0, len( valid ) - 1 )
                 digi.addEvoTo( valid[ randID ].id )
-        
+
         #Champions get 1-2 Ultimate targets.
         for digi in self.getPlayableDigimonByLevel( data.levelsByName[ 'CHAMPION' ] ):
             count = random.randint( 1, 2 )
@@ -1008,33 +1054,33 @@ class DigimonWorldHandler:
             while( digi.getEvoToCount() < count ):
                 randID = random.randint( 0, len( valid ) - 1 )
                 digi.addEvoTo( valid[ randID ].id )
-        
+
         #Ultimate just need to have their from evos updated.
         for digi in self.getPlayableDigimonByLevel( data.levelsByName[ 'ULTIMATE' ] ):
             digi.updateEvosFrom()
-            
+
         self.logger.log( 'Changed digimon evolutions to the following: ' )
         for i in range( 1, data.lastPartnerDigimon + 1 ):
             self.logger.log( self.digimonData[ i ].evoData() + '\n' )
-        
-        
+
+
     def getPlayableDigimonByLevel( self, level ):
         """
         Get a list of digimon with a specified level.
-        
+
         Keyword arguments:
         level -- Level of digimon to get.
         """
-        
+
         out = []
-        
+
         for digi in self.digimonData:
             if( digi.level == level and digi.id in digi.playableDigimon ):
                 out.append( digi )
-            
+
         return out
-            
-            
+
+
     def getDigimonName( self, id ):
         """
         Get digimon name from data.
@@ -1110,6 +1156,32 @@ class DigimonWorldHandler:
         return util.levelIDToName( id )
 
 
+    def getRangeName( self, id ):
+        """
+        Get range name from data.
+
+        Keyword arguments:
+        id -- Range ID to get name for.
+        """
+
+        if( id in data.ranges ):
+            return data.ranges[ id ]
+        return "UNDEF"
+
+
+    def getEffectName( self, id ):
+        """
+        Get effect name from data.
+
+        Keyword arguments:
+        id -- Effect ID to get name for.
+        """
+
+        if( id in data.effects ):
+            return data.effects[ id ]
+        return "NONE"
+
+
     def _setStarterTechs( self, default=True ):
         """
         Set starter techs to default techs (lowest tier tech
@@ -1120,17 +1192,16 @@ class DigimonWorldHandler:
                    for other options (random) but that is
                    not possible now.
         """
-        starter = self.digimonData[ self.starterID ]
-        
-        #Find the lowest tier damagin tech that the digimon 
+
+        #Find the lowest tier damagin tech that the digimon
         #can use
         #if( default ): #can't do this until we read in the tech data
         #    lowestTier = 0xFF
         #    lowestTierID = 0
-        #    for( techID in starter.tech ):
+        #    for( techID in self.digimonData[ self.starterID ].tech ):
         #        if( self.getTechName( techID ) != 'None' ):
-        #            tier = self.techData( techID ).tier
-        #            if( self.techData( techID ).power > 0 and tier < lowestTier ):
+        #            tier = self.techData[ techID ].tier
+        #            if( self.techData[ techID ].isDamaging and not self.techData[ techID ].isFinisher and tier < lowestTier ):
         #                lowestTier = tier
         #                lowestTierID = techID
         #    self.starter1Tech = lowestTierID
@@ -1141,14 +1212,14 @@ class DigimonWorldHandler:
         #else:
         #    randID = random.randint( 0, 15 )
         #    techID = self.digimonData[ self.starter1ID ].tech[ randID ]
-        #    while( self.getTechName( techID ) == 'None' or self.techData[ techID ].power == 0 ):
+        #    while( self.getTechName( techID ) == 'None' or not self.techData[ techID ].isDamaging or self.techData[ techID ].isFinisher ):
         #        randID = random.randint( 0, 15 )
         #        techID = self.digimonData[ self.starter1ID ].tech[ randID ]
         #    self.starter1Tech = techID
         #    self.starter1TechSlot = util.starterTechSlot( self.starter1ID ) #THIS IS NOT RIGHT!!!
         #    self.logger.log( 'First starter tech set to ' + self.getTechName( self.starter1Tech )
         #         + ' (' + self.digimonData[ self.starter1ID ].name + '\'s slot ' + str( self.starter1TechSlot ) + ')' )
-        
+
         self.starter1Tech = util.starterTech( self.starter1ID )
         self.starter1TechSlot = util.starterTechSlot( self.starter1ID )
         self.logger.log( 'First starter tech set to ' + self.getTechName( self.starter1Tech )
