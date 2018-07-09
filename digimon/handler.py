@@ -23,7 +23,9 @@ class Digimon:
     """
 
     #Everything up to MetalEtemon minus WereGarurumon (not implemented!)
-    playableDigimon = list( range( 0x01, 0x3E ) ) + [ 0x3F, 0x40, 0x41 ]
+    #Panjyamon, Gigadramon, and Metaletemon need evo req updates to be
+    #added back in.
+    playableDigimon = list( range( 0x01, 0x3E ) )# + [ 0x3F, 0x40, 0x41 ]
 
 
     def __init__( self, handler, id, data ):
