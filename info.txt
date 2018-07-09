@@ -166,12 +166,13 @@ Ideas for things to randomize:
   ✓Items in chests
   ✓Items given by Tokomon
     Seadramon tech gifts (easy)
-    Map items (time consuming)
+  ✓Map items (time consuming)
     Meat farm 5x bonus -> random food (difficult!! string encoding etc)
     Vending machines (difficult, hard-coded text boxes)
     Background music (probably easy, but do I want this?)
     Enemy digimon (difficult, but very high value if done.  Requires a change in 2 places for each.)
-    Evolutions (highly requested)
+  ✓Evolutions (highly requested)
+  ----MUST FIX REQS FOR PANJYAMON, GIGADRAMON, METALETEMON!!!
     Learnable techs (most likely not possible, but cool af)
     Random recruitments (just the dudes in town, not who you fight -- Syd investigating)
 
