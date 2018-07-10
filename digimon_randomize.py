@@ -63,11 +63,13 @@ print( 'Writing to ' + outFile + '...\n' )
 handler.write( outFile )
 
 if( not logger.error ):
-    print( 'Modifications complete.  See log file for details (Warning: spoilers!).' )
+    print( 'Modifications completed successfully.  See log file for details (Warning: spoilers!).' )
     print( 'Seed was ' + str( handler.randomseed ) )
     print( 'Enter this seed in settings file to produce the same ROM again.' )
 else:
     print( 'Program ended with errors.  See log file for details.' )
+
+logger.logAlways( 'End of log.' )
 
 input( 'Press Enter to finish...' )
 exit()

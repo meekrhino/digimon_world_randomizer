@@ -603,12 +603,8 @@ itemDataExclusionOffsets = (
             )
 itemDataExclusionSize = 0x130
 
-starter1SetDigimonOffset = 0x14D271C0       #set digimon id for agumon
-starter1ChkDigimonOffset = 0x14CD1D24       #check digimon id to set agumon's tech
-starter1LearnTechOffset  = 0x14CD1D40       #tech to learn for agumon
-starter1EquipAnimOffset  = 0x14CD1D30       #animation to equip for agumon
+starterSetDigimonOffset  = ( 0x14D271C0, 0x14D271B8 )   #set digimon id
+starterChkDigimonOffset  = ( 0x14CD1D24, 0x14CD1D44 )   #check digimon id to set tech
+starterLearnTechOffset   = ( 0x14CD1D40, 0x14CD1D60 )   #tech to learn
+starterEquipAnimOffset   = ( 0x14CD1D30, 0x14CD1D50 )   #animation to equip
 
-starter2SetDigimonOffset = 0x14D271B8       #set digimon id for gabumon
-starter2ChkDigimonOffset = 0x14CD1D44       #check digimon id to set gabumon's tech
-starter2LearnTechOffset  = 0x14CD1D60       #tech to learn for gabuumon
-starter2EquipAnimOffset  = 0x14CD1D50       #animation to equip for gabumon

@@ -128,7 +128,7 @@ class Digimon:
         data for convenient logging.
         """
 
-        out = 'Changed evolutions for ' + self.name + '\nNow evolves from '
+        out = self.name + '\nNow evolves from '
 
         for i in range( 5 ):
             out += self.handler.getDigimonName( self.fromEvo[ i ] ) + ' '
@@ -680,43 +680,27 @@ class DigimonWorldHandler:
 
 
             #------------------------------------------------------
-            # Read in first starter data
+            # Read in starter data
             #------------------------------------------------------
+            self.starterID = []
+            self.starterTech = []
+            self.starterTechSlot = []
 
-            #Read in first starter digimon ID
-            file.seek( data.starter1SetDigimonOffset, 0 )
-            self.starter1ID = struct.unpack( data.digimonIDFormat, file.read( 1 ) )[0]
-            self.logger.log( self.digimonData[ self.starter1ID ].name )
+            for i in [ 0, 1 ]:
+                #Read in first starter digimon ID
+                file.seek( data.starterSetDigimonOffset[ i ], 0 )
+                self.starterID.append( struct.unpack( data.digimonIDFormat, file.read( 1 ) )[0] )
+                self.logger.log( self.digimonData[ self.starterID[ i ] ].name )
 
-            #Read in first starter learned tech ID
-            file.seek( data.starter1LearnTechOffset, 0 )
-            self.starter1Tech = struct.unpack( data.techIDFormat, file.read( 1 ) )[0]
-            self.logger.log( '0x' + format( self.starter1Tech, '02x' ) + ' = tech ID' )
+                #Read in first starter learned tech ID
+                file.seek( data.starterLearnTechOffset[ i ], 0 )
+                self.starterTech.append( struct.unpack( data.techIDFormat, file.read( 1 ) )[0] )
+                self.logger.log( '0x' + format( self.starterTech[ i ], '02x' ) + ' = tech ID' )
 
-            #Read in first starter learned tech slot
-            file.seek( data.starter1EquipAnimOffset, 0 )
-            self.starter1TechSlot = util.animIDTechSlot( struct.unpack( data.animIDFormat, file.read( 1 ) )[0] )
-            self.logger.log( '0x' + format( self.starter1TechSlot, '02x' ) + ' = tech slot' )
-
-
-            #------------------------------------------------------
-            # Read in first starter data
-            #------------------------------------------------------
-
-            #Read in second starter ID
-            file.seek( data.starter2SetDigimonOffset, 0 )
-            self.starter2ID = struct.unpack( data.digimonIDFormat, file.read( 1 ) )[0]
-            self.logger.log( self.digimonData[ self.starter2ID ].name )
-
-            #Read in second starter learned tech ID
-            file.seek( data.starter2LearnTechOffset, 0 )
-            self.starter2Tech = struct.unpack( data.techIDFormat, file.read( 1 ) )[0]
-            self.logger.log( '0x' + format( self.starter2Tech, '02x' ) + ' = tech ID' )
-
-            #Read in second starter learned tech slot
-            file.seek( data.starter2EquipAnimOffset, 0 )
-            self.starter2TechSlot = util.animIDTechSlot( struct.unpack( data.animIDFormat, file.read( 1 ) )[0] )
-            self.logger.log( '0x' + format( self.starter2TechSlot, '02x' ) + ' = tech slot' )
+                #Read in first starter learned tech slot
+                file.seek( data.starterEquipAnimOffset[ i ], 0 )
+                self.starterTechSlot.append( util.animIDTechSlot( struct.unpack( data.animIDFormat, file.read( 1 ) )[0] ) )
+                self.logger.log( '0x' + format( self.starterTechSlot[ i ], '02x' ) + ' = tech slot' )
 
 
             #------------------------------------------------------
@@ -870,65 +854,35 @@ class DigimonWorldHandler:
 
 
             #------------------------------------------------------
-            # Write out first starter data
+            # Write out starter data
             #------------------------------------------------------
 
-            #Set digimon ID for first starter
-            util.writeDataToFile( file,
-                                  data.starter1SetDigimonOffset,
-                                  struct.pack( data.digimonIDFormat, self.starter1ID ),
-                                  self.logger )
+            for i in [ 0, 1 ]:
+                #Set digimon ID for starter
+                util.writeDataToFile( file,
+                                      data.starterSetDigimonOffset[ i ],
+                                      struct.pack( data.digimonIDFormat, self.starterID[ i ] ),
+                                      self.logger )
 
-            #Set digimon ID to check when learning first
-            #starter's first tech (must match starter!)
-            util.writeDataToFile( file,
-                                  data.starter1ChkDigimonOffset,
-                                  struct.pack( data.digimonIDFormat, self.starter1ID ),
-                                  self.logger )
+                #Set digimon ID to check when learning
+                #starter's first tech (must match starter!)
+                util.writeDataToFile( file,
+                                      data.starterChkDigimonOffset[ i ],
+                                      struct.pack( data.digimonIDFormat, self.starterID[ i ] ),
+                                      self.logger )
 
-            #Set tech ID for first starter to learn
-            util.writeDataToFile( file,
-                                  data.starter1LearnTechOffset,
-                                  struct.pack( data.techIDFormat, self.starter1Tech ),
-                                  self.logger )
+                #Set tech ID for first starter to learn
+                util.writeDataToFile( file,
+                                      data.starterLearnTechOffset[ i ],
+                                      struct.pack( data.techIDFormat, self.starterTech[ i ] ),
+                                      self.logger )
 
-            #Set animation ID to equip as first stater's
-            #first tech
-            util.writeDataToFile( file,
-                                  data.starter1EquipAnimOffset,
-                                  struct.pack( data.animIDFormat, util.techSlotAnimID( self.starter1TechSlot ) ),
-                                  self.logger )
-
-
-            #------------------------------------------------------
-            # Write out second starter data
-            #------------------------------------------------------
-
-            #Set digimon ID for second starter
-            util.writeDataToFile( file,
-                                  data.starter2SetDigimonOffset,
-                                  struct.pack( data.digimonIDFormat, self.starter2ID ),
-                                  self.logger )
-
-            #Set digimon ID to check when learning second
-            #starter's first tech (must match starter!)
-            util.writeDataToFile( file,
-                                  data.starter2ChkDigimonOffset,
-                                  struct.pack( data.digimonIDFormat, self.starter2ID ),
-                                  self.logger )
-
-            #Set tech ID for first starter to learn
-            util.writeDataToFile( file,
-                                  data.starter2LearnTechOffset,
-                                  struct.pack( data.techIDFormat, self.starter2Tech ),
-                                  self.logger )
-
-            #Set animation ID to equip as first stater's
-            #first tech
-            util.writeDataToFile( file,
-                                  data.starter2EquipAnimOffset,
-                                  struct.pack( data.animIDFormat, util.techSlotAnimID( self.starter2TechSlot ) ),
-                                  self.logger )
+                #Set animation ID to equip as first stater's
+                #first tech
+                util.writeDataToFile( file,
+                                      data.starterEquipAnimOffset[ i ],
+                                      struct.pack( data.animIDFormat, util.techSlotAnimID( self.starterTechSlot[ i ] ) ),
+                                      self.logger )
 
 
             #------------------------------------------------------
@@ -974,13 +928,13 @@ class DigimonWorldHandler:
         while secondDigi == firstDigi:
             secondDigi = data.rookies[ random.randint( 0, len( data.rookies ) - 1 ) ]
 
-        self.starter1ID = firstDigi
+        self.starterID[ 0 ] = firstDigi
         self.logger.logChange( 'First starter set to ' + self.digimonData[ firstDigi ].name )
 
-        self.starter2ID = secondDigi
+        self.starterID[ 1 ] = secondDigi
         self.logger.logChange( 'Second starter set to ' + self.digimonData[ secondDigi ].name )
 
-        self._setStarterTechs( default=useWeakestTech )
+        self._setStarterTechs( useWeakestTech )
 
 
     def randomizeChestItems( self, allowEvo=False ):
@@ -1109,7 +1063,7 @@ class DigimonWorldHandler:
 
         self.logger.logChange( 'Changed digimon evolutions to the following: ' )
         for i in range( 1, data.lastPartnerDigimon + 1 ):
-            self.logger.logChange( self.digimonData[ i ].evoData() + '\n' )
+            self.logger.logChange( 'Changed evolutions for ' + self.digimonData[ i ].evoData() + '\n' )
 
 
     def getPlayableDigimonByLevel( self, level ):
@@ -1230,52 +1184,41 @@ class DigimonWorldHandler:
         return "NONE"
 
 
-    def _setStarterTechs( self, default=True ):
+    def _setStarterTechs( self, useWeakest=True ):
         """
-        Set starter techs to default techs (lowest tier tech
-        learnable by default) for current starters.
+        Set starter techs to either weakest or random.
 
         Keyword arguments:
-        default -- No handling for now.  Support to be added
-                   for other options (random) but that is
-                   not possible now.
+        default -- If true, use the lowest tier move available.
+                   Otherwise, pick one at random.
         """
 
-        #Find the lowest tier damagin tech that the digimon
-        #can use
-        #if( default ): #can't do this until we read in the tech data
-        #    lowestTier = 0xFF
-        #    lowestTierID = 0
-        #    for( techID in self.digimonData[ self.starterID ].tech ):
-        #        if( self.getTechName( techID ) != 'None' ):
-        #            tier = self.techData[ techID ].tier
-        #            if( self.techData[ techID ].isDamaging and not self.techData[ techID ].isFinisher and tier < lowestTier ):
-        #                lowestTier = tier
-        #                lowestTierID = techID
-        #    self.starter1Tech = lowestTierID
-        #    self.starter1TechSlot = util.starterTechSlot( self.starter1ID ) #THIS IS NOT RIGHT!!!
-        #    self.logger.logChange( 'First starter tech set to ' + self.getTechName( self.starter1Tech )
-        #                         + ' (' + self.digimonData[ self.starter1ID ].name + '\'s slot ' + str( self.starter1TechSlot ) + ')' )
-        #Find a random learnable damaging tech
-        #else:
-        #    randID = random.randint( 0, 15 )
-        #    techID = self.digimonData[ self.starter1ID ].tech[ randID ]
-        #    while( self.getTechName( techID ) == 'None' or not self.techData[ techID ].isDamaging or self.techData[ techID ].isFinisher ):
-        #        randID = random.randint( 0, 15 )
-        #        techID = self.digimonData[ self.starter1ID ].tech[ randID ]
-        #    self.starter1Tech = techID
-        #    self.starter1TechSlot = util.starterTechSlot( self.starter1ID ) #THIS IS NOT RIGHT!!!
-        #    self.logger.logChange( 'First starter tech set to ' + self.getTechName( self.starter1Tech )
-        #                         + ' (' + self.digimonData[ self.starter1ID ].name + '\'s slot ' + str( self.starter1TechSlot ) + ')' )
-
-        self.starter1Tech = util.starterTech( self.starter1ID )
-        self.starter1TechSlot = util.starterTechSlot( self.starter1ID )
-        self.logger.logChange( 'First starter tech set to ' + self.getTechName( self.starter1Tech )
-                             + ' (' + self.digimonData[ self.starter1ID ].name + '\'s slot ' + str( self.starter1TechSlot ) + ')' )
-
-
-        self.starter2Tech = util.starterTech( self.starter2ID )
-        self.starter2TechSlot = util.starterTechSlot( self.starter2ID )
-        self.logger.logChange( 'Second starter tech set to ' + self.getTechName( self.starter2Tech )
-                             + ' (' + self.digimonData[ self.starter2ID ].name + '\'s slot ' + str( self.starter2TechSlot ) + ')' )
+        for i in [ 0, 1 ]:
+            #Find the lowest tier damaging tech that the digimon
+            #can use
+            if( useWeakest ):
+                lowestTier = 0xFF
+                lowestTierID = 0
+                for slot, techID in enumerate( self.digimonData[ self.starterID[ i ] ].tech ) :
+                    if( self.getTechName( techID ) != 'None' ):
+                        tier = self.techData[ techID ].tier
+                        if( self.techData[ techID ].isDamaging and not self.techData[ techID ].isFinisher and tier < lowestTier ):
+                            lowestTier = tier
+                            lowestTierID = techID
+                            lowestTierSlot = slot + 1
+                self.starterTech[ i ] = lowestTierID
+                self.starterTechSlot[ i ] = lowestTierSlot
+                self.logger.logChange( 'Starter tech set to ' + self.getTechName( self.starterTech[ i ] )
+                                     + ' (' + self.digimonData[ self.starterID[ i ] ].name + '\'s slot ' + str( self.starterTechSlot[ i ] ) + ')' )
+            #Select a random learnable damaging tech
+            else:
+                randID = random.randint( 0, 15 )
+                techID = self.digimonData[ self.starterID[ i ] ].tech[ randID ]
+                while( self.getTechName( techID ) == 'None' or not self.techData[ techID ].isDamaging or self.techData[ techID ].isFinisher ):
+                    randID = random.randint( 0, 15 )
+                    techID = self.digimonData[ self.starterID[ i ] ].tech[ randID ]
+                self.starterTech[ i ] = techID
+                self.starterTechSlot[ i ] = randID + 1
+                self.logger.logChange( 'Starter tech set to ' + self.getTechName( self.starterTech[ i ] )
+                                     + ' (' + self.digimonData[ self.starterID[ i ] ].name + '\'s slot ' + str( self.starterTechSlot[ i ] ) + ')' )
 

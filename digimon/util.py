@@ -22,7 +22,7 @@ def writeDataToFile( file, ofst, data, logger ):
     """
     file.seek( ofst, 0 )
 
-    logger.log( 'Writing ' + str( len( data ) ) + ' bytes to the file.' )
+    #logger.log( 'Writing ' + str( len( data ) ) + ' bytes to the file.' )
 
     return file.write( data )
 
