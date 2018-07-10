@@ -1,5 +1,9 @@
 *.pyc
 *.bin
 *.log
+*.spec
+
+build/
+dist/
 
 out.txt

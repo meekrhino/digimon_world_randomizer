@@ -72,4 +72,3 @@ else:
 logger.logAlways( 'End of log.' )
 
 input( 'Press Enter to finish...' )
-exit()

@@ -8,7 +8,7 @@ Utilities for writing specific positions in memory.
 import digimon.data as data
 import struct
 import mmap
-import pyperclip
+#import pyperclip
 
 giveItem = 0x28
 spawnChest = 0x75

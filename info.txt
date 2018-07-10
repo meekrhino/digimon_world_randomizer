@@ -207,3 +207,9 @@ Replace AS Decoder with save game?
     need Save function pointer
     need item function pointer table (to insert save function)
 ----------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
+To build distributable:
+    1. pip install pyinstaller
+    2. pyinstaller --onefile <path/to/digimon_randomize.py>
+    3. distribute with settings.ini
