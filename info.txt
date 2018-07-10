@@ -1,3 +1,6 @@
+----------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
 starting digimon offsets (agumon + gabumon)
 0x14D271B8 and 0x14D271C0 single byte value (0x03 and 0x11)
 
@@ -24,8 +27,9 @@ Static Elect	Electric Cloud	Water Blit	Aqua Magic	Electric Shock
 45 > 0x2D + 0x02   (biyomon,	spit fire)		1
 46 > 0x2E + 0x25   (palmon, 	poison claw)	1
 57 > 0x39 + 0x25   (penguinmon, poison claw)	1
---------------
+----------------------------------------------------------------------------------------------------
 
+----------------------------------------------------------------------------------------------------
 digimon stats data block begins at 0x14D6E9DC and ends at 0x14D7145C
 
 total of 0x2A80 (10880) bytes
@@ -53,8 +57,9 @@ data block format:
  1  pad[1]
 ----------
 52  total
+----------------------------------------------------------------------------------------------------
 
-
+----------------------------------------------------------------------------------------------------
 item info block begins at 0x14D676C4 and ends at 0x14D68924
 
 total of 0x1260 (4704) bytes
@@ -75,8 +80,9 @@ data block format:
  2  pad[2]
 ----------
 32  total
+----------------------------------------------------------------------------------------------------
 
-
+----------------------------------------------------------------------------------------------------
 evo to/from table block begins at 0x14D6CE04 and ends at 0x14D6D1FF
 
 total of 0x3FB (1019) bytes
@@ -91,8 +97,9 @@ data block format:
  6  uint8[6]    toEvo
 ----------
 11  total
+----------------------------------------------------------------------------------------------------
 
-
+----------------------------------------------------------------------------------------------------
 tech data table block begins at 0x14D66DF8 and ends at 0x14D676A8
 
 total of 0x8B0 (2224) bytes
@@ -118,8 +125,25 @@ data block format:
 16 total
 
 Unknown4 looks like flags to me, uses bits 5, 7, and 8 (0x10, 0x40, 0x90)
+----------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
+Tech "tier" is determined by order of appearance in the brains training
+learning table.
+
+tech tier list block begins at 0x14C8E554 and ends at 0x0x14C8E58C
+
+total of 0x38 (56) bytes
+
+consists of a double array of bytes, where each bytes is a tech id
+the indices are specialty and then tier
+
+so table[x][y] is the tech ID with specialty x and tier y
 
 
+----------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
 tech name block begins at 0x14D65494 and ends at 0x14D65BF0
 
 total of 0x75C (1884) bytes
@@ -129,15 +153,10 @@ blocks are variable length strings packed in 4-byte alignment
 exclusion sections of 0x130 (304) bytes each
     0x14D65828 - 0x14D65958 (inside Spiral Twister)
 
-(while the following is true, the reason is that this is pointered data -- hence the 4-byte align)
-pads to 4-byte alignement AFTER null terminator, e.g.
-'Meltdown' is 8 characters, but it takes 12 to store it because 'Meltdown\0' is 9 characters and next 4-byte align is 12
-'Giga Freeze' is 11 characters, and only takes 12 to store.
-list( filter( None, data_packed.split('\0') ) ) should turn a block of tech names into a list of name strings.
+this info is largely useless because the techs are pointered (not all in one block!)
+----------------------------------------------------------------------------------------------------
 
-this useless shit is pointered all over the place.  Most of it is together but some is scattered (e.g. Bubble and Tremar)
-
-
+----------------------------------------------------------------------------------------------------
 spawnItem has a few weird things because of the centarumon maze:
 
 'Giant Meat' spawns on the map.
@@ -159,8 +178,9 @@ spawnItem has a few weird things because of the centarumon maze:
 I think a good solution is to swap food -> food and nonfood -> nonfood (and balance using price)
 This should mean we still have weird crap in centarumon but no MP Floppys in native forest (or....
 allow that?  but also make centarumon's place weird af somehow?)
+----------------------------------------------------------------------------------------------------
 
-
+----------------------------------------------------------------------------------------------------
 Ideas for things to randomize:
   ✓Starters and their starting tech
   ✓Items in chests
@@ -175,8 +195,9 @@ Ideas for things to randomize:
   ----MUST FIX REQS FOR PANJYAMON, GIGADRAMON, METALETEMON!!!
     Learnable techs (most likely not possible, but cool af)
     Random recruitments (just the dudes in town, not who you fight -- Syd investigating)
+----------------------------------------------------------------------------------------------------
 
-
+----------------------------------------------------------------------------------------------------
 Replace AS Decoder with save game?
     0x14D66940 is description "You can read Ancient Script\0"
                               "Save the game anywhere!    \0"
@@ -185,4 +206,4 @@ Replace AS Decoder with save game?
                               "Save Floppy"
     need Save function pointer
     need item function pointer table (to insert save function)
-
+----------------------------------------------------------------------------------------------------

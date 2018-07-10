@@ -4,6 +4,7 @@
 import random
 import configparser
 import sys
+from builtins import input
 from log.logger import Logger
 from digimon.handler import DigimonWorldHandler
 
@@ -14,22 +15,22 @@ verbose = config[ 'general' ][ 'LogLevel' ]
 logger = Logger( verbose, filename='randomize.log' )
 
 if( len(sys.argv) > 1 ):
-    input = sys.argv[1]
+    inFile = sys.argv[1]
 elif( config[ 'general' ][ 'Input' ] != '' ):
-    input = config[ 'general' ][ 'Input' ]
+    inFile = config[ 'general' ][ 'Input' ]
 else:
     logger.fatalError( 'Must provide file name via command line or settings.' )
     exit()
 
-print( 'Reading data from ' + input + '...\n' )
+print( 'Reading data from ' + inFile + '...\n' )
 
 seedcfg = config[ 'general' ][ 'Seed' ]
 
 if( seedcfg == '' ):
-    handler = DigimonWorldHandler( input, logger )
+    handler = DigimonWorldHandler( inFile, logger )
 else:
     try:
-        handler = DigimonWorldHandler( input, logger, seed=int( seedcfg ) )
+        handler = DigimonWorldHandler( inFile, logger, seed=int( seedcfg ) )
     except ValueError:
         logger.fatalError( 'Seed must be an integer. ' + str( seedcfg ) + ' is not a valid value.' )
 
@@ -52,20 +53,21 @@ if( config[ 'evolution' ].getboolean( 'Enabled' ) ):
 #If an output file was passed or set, use that as the output.
 #Otherwise, read and write the same file
 if( len(sys.argv) > 2 ):
-    output = sys.argv[2]
+    outFile = sys.argv[2]
 elif( config[ 'general' ][ 'Output' ] != '' ):
-    output = config[ 'general' ][ 'Output' ]
+    outFile = config[ 'general' ][ 'Output' ]
 else:
-    output = input
+    outFile = inFile
 
-print( 'Writing to ' + output + '...\n' )
-handler.write( output )
+print( 'Writing to ' + outFile + '...\n' )
+handler.write( outFile )
 
 if( not logger.error ):
     print( 'Modifications complete.  See log file for details (Warning: spoilers!).' )
     print( 'Seed was ' + str( handler.randomseed ) )
     print( 'Enter this seed in settings file to produce the same ROM again.' )
-    input( 'Press Enter to finish...' )
 else:
     print( 'Program ended with errors.  See log file for details.' )
-    input( 'Press Enter to finish...' )
+
+input( 'Press Enter to finish...' )
+exit()

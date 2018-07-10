@@ -555,6 +555,16 @@ techDataExclusionOffsets = (
             )
 techDataExclusionSize    = 0x130
 
+techTierListFormat       = '<8B'
+
+techTierListBlockOffset  = 0x14C8E554
+techTierListBlockSize    = 0x38
+techTierListBlockCount   = 0x07
+
+techTierListExclusionOffsets = (    #no exclusions in this block since it is tiny
+            )
+techTierListExclusionSize= 0x130
+
 digimonDataFormat        = '<20sihh23Bx'
 
 digimonDataBlockOffset   = 0x14D6E9DC       #start of digimon data block

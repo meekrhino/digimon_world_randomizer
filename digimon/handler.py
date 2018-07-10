@@ -438,6 +438,7 @@ class Tech:
         self.id       = id
 
         self.name     = 'None'
+        self.tier     = 0xFF
 
         self.power    = data[ 0 ]
         self.mp3      = data[ 1 ]
@@ -459,9 +460,10 @@ class Tech:
         for convenient logging.
         """
 
-        out = '{:>3d} {:<20s}\n   {:>3d} {:>3d} {:>2d} {:>5s} {:>6s} {:>7s} {:>3d} {:>3d}% {:>2d}'.format(
+        out = '{:>3d} {:<20s} (Tier: {:<2d})\n   {:>3d} {:>3d} {:>2d} {:>5s} {:>6s} {:>7s} {:>3d} {:>3d}% {:>2d}'.format(
                         self.id,
                         self.name,
+                        self.tier,
                         self.power,
                         self.mp3 * 3,
                         self.itime,
@@ -581,7 +583,31 @@ class DigimonWorldHandler:
             for i, data_tuple in enumerate( data_unpacked ):
                 self.techData.append( Tech( self, i, data_tuple ) )
                 self.techData[ i ].setName( data.techs[ i ] )
-                self.logger.log( str( self.techData[ i ] ) )
+
+
+            #------------------------------------------------------
+            # Read in tech tier list
+            #------------------------------------------------------
+
+            #Read in tier list data block
+            data_read = util.readDataWithExclusions( file,
+                                                     data.techTierListBlockOffset,
+                                                     data.techTierListBlockSize,
+                                                     data.techTierListExclusionOffsets,
+                                                     data.techTierListExclusionSize )
+
+            #Parse data block
+            data_unpacked = util.unpackDataArray( data_read,
+                                                  data.techTierListFormat,
+                                                  data.techTierListBlockCount )
+
+            #Extract tiers for all techs
+            for data_tuple in data_unpacked:
+                for i, techID in enumerate( data_tuple ):
+                    self.techData[ techID ].tier = i + 1
+
+            for tech in self.techData:
+                self.logger.log( str( tech ) )
 
 
             #------------------------------------------------------
