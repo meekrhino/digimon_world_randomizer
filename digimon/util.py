@@ -213,31 +213,3 @@ def animIDTechSlot( anim ):
 
     return slot
 
-
-def starterTech( id ):
-    """
-    Get the starter tech ID for the specified starter digimon ID.
-
-    Keyword arguments:
-    id -- Digimon ID to get starter tech for.
-    """
-    if( id not in data.starterTechs ):
-        print( 'Error: Tried to get starter tech for invalid digimon: ' + format( id, '02x' ) )
-        id = data.rookies[ 0 ]
-
-    return data.starterTechs[ id ]
-
-
-def starterTechSlot( id ):
-    """
-    Get the starter tech slot for the specified starter digimon ID.
-
-    Keyword arguments:
-    id -- Digimon ID to get starter tech slot for
-    """
-    if( id not in data.starterTechSlots ):
-        print( 'Error: Tried to get starter tech slot for invalid digimon: ' + format( id, '02x' ) )
-        id = data.rookies[ 0 ]
-
-    return data.starterTechSlots[ id ]
-
