@@ -196,6 +196,8 @@ Ideas for things to randomize:
   ----MUST FIX REQS FOR PANJYAMON, GIGADRAMON, METALETEMON!!!
     Learnable techs (most likely not possible, but cool af)
     Random recruitments (just the dudes in town, not who you fight -- Syd investigating)
+    Digimon drops/droprates from fights
+    Mojyamon item trading items
 ----------------------------------------------------------------------------------------------------
 
 ----------------------------------------------------------------------------------------------------

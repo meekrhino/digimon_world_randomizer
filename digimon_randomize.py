@@ -51,6 +51,11 @@ else:
         logger.fatalError( 'Seed must be an integer. ' + str( seedcfg ) + ' is not a valid value.' )
 
 print( 'Modifying data...\n' )
+
+if( config[ 'digimon' ].getboolean( 'Enabled' ) ):
+    handler.randomizeDigimonData( dropItem=config[ 'digimon' ].getboolean( 'DropItem' ),
+                                  dropRate=config[ 'digimon' ].getboolean( 'DropRate' ) )
+
 if( config[ 'starter' ].getboolean( 'Enabled' ) ):
     handler.randomizeStarters( useWeakestTech=config[ 'starter' ].getboolean( 'UseWeakestTech' ) )
 

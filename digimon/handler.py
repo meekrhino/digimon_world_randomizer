@@ -370,53 +370,6 @@ class Item:
         return tuple( repr )
 
 
-    def isAllowedInChest( self, allowEvos ):
-        """
-        Check if this item should be allowed in chests,
-        allowing or disallowing evos as necessary.  Always
-        ban quest items (undroppable).
-        """
-
-        if( allowEvos ):
-            return self.dropable
-        else:
-            return ( self.dropable and not self.isEvo )
-
-
-    def isAllowedTokomon( self, onlyConsumables ):
-        """
-        Check if this item should be allowed for Tokomon.
-        Always ban quest items and evos (game breaking).
-        Restrict to consumables if needed.
-        """
-
-        if( onlyConsumables ):
-            return ( self.isConsumable and not self.isEvo )
-        else:
-            return ( self.dropable and not self.isEvo )
-
-
-    def isAllowedMap( self, onlyFood, lowValue ):
-        """
-        Check if this item should be allowed to spawn on the
-        map.  Always ban quest items and evos (game breaking).
-        """
-
-        ret = False
-
-        if( onlyFood ):
-            ret = self.isFood
-        else:
-            ret = ( self.isConsumable and not self.isEvo )
-
-        if( lowValue and self.price < 1000 ):
-            return ret
-        elif( not lowValue and self.price >= 1000 ):
-            return ret
-        else:
-            return False
-
-
 class Tech:
     """
     Tech data object.  Stores all data about a given
@@ -929,6 +882,43 @@ class DigimonWorldHandler:
                                       self.logger )
 
 
+    def randomizeDigimonData( self, dropItem=False, dropRate=False ):
+        """
+        Randomize digimon data.
+
+        Keyword arguments:
+        dropItem -- Randomize dropped item?
+        dropRate -- Randomize item drop chance?
+        """
+
+        for digi in self.digimonData:
+            if( dropItem ):
+                digi.item = self._getRandomItem( consumableOnly=True,
+                                                             notQuest=True,
+                                                             notEvo=True,
+                                                             matchValueOf=digi.item )
+
+            if( dropRate ):
+                rate = digi.drop_rate
+
+                #Seperately handle 100% drops and never create new 100% drops
+                defaultRates = [ 1, 5, 10, 20, 25, 30, 40, 50 ]
+                chooseFromRates = [ 1, 1, 1, 5, 10, 20, 25, 30, 40, 50, 50, 50 ]
+
+                #don't change the 100% drops away from being 100%
+                if( rate == 0 ):
+                    rate = random.choice( defaultRates )
+                    digi.drop_rate = newRate
+                elif( rate != 100 ):
+                    i = defaultRates.index( rate ) + 2
+                    newRate = random.choice( chooseFromRates[ i - 2 : i + 3 ] )
+                    digi.drop_rate = newRate
+
+            self.logger.logChange( 'Set {:s} to drop {:s} {:d}% of the time'.format( digi.name,
+                                                                                     self.getItemName( digi.item ),
+                                                                                     digi.drop_rate ) )
+
+
     def randomizeStarters( self, useWeakestTech=True ):
         """
         Set starters to two random different rookie Digimon.
@@ -958,9 +948,7 @@ class DigimonWorldHandler:
 
         #for each chest, choose a random allowed item from data
         for key in list( self.chestItems ):
-            randID = random.randint( 0, len( self.itemData ) - 1 )
-            while( not self.itemData[ randID ].isAllowedInChest( allowEvo ) ):
-                randID = random.randint( 0, len( self.itemData ) - 1 )
+            randID = self._getRandomItem( notQuest=True, notEvo=( not allowEvo ) )
 
             pre = self.chestItems[ key ]
             self.chestItems[ key ] = self.itemData[ randID ].id
@@ -979,9 +967,7 @@ class DigimonWorldHandler:
         #for each tokomon item, choose a random allowed item
         #and a random quantity
         for key in list( self.tokoItems ):
-            randID = random.randint( 0, len( self.itemData ) - 1 )
-            while( not self.itemData[ randID ].isAllowedTokomon( consumableOnly ) ):
-                randID = random.randint( 0, len( self.itemData ) - 1 )
+            randID = self._getRandomItem( notQuest=True, notEvo=True, consumableOnly=consumableOnly )
 
             #choose random number 1-3.  Make valuable items less likely
             #to come in large numbers
@@ -1010,16 +996,12 @@ class DigimonWorldHandler:
 
         #for each map spawn, choose a random allowed item from data
         for key in list( self.mapItems ):
+            id = self.mapItems[ key ]
+
             #if foodOnly is set, swap food items only for other food items
-            fo = foodOnly and self.itemData[ self.mapItems[ key ] ].isFood
+            fo = foodOnly and self.itemData[ id ].isFood
 
-            #match low-val and high-val items with similar to keep %
-            #reasonable
-            lowVal = self.itemData[ self.mapItems[ key ] ].price < 1000
-
-            randID = random.randint( 0, len( self.itemData ) - 1 )
-            while( not self.itemData[ randID ].isAllowedMap( fo, lowVal ) ):
-                randID = random.randint( 0, len( self.itemData ) - 1 )
+            randID = self._getRandomItem( foodOnly=fo, consumableOnly=True, notQuest=True, notEvo=True, matchValueOf=id )
 
             pre = self.mapItems[ key ]
             self.mapItems[ key ] = self.itemData[ randID ].id
@@ -1192,6 +1174,47 @@ class DigimonWorldHandler:
         if( id in data.effects ):
             return data.effects[ id ]
         return "NONE"
+
+
+    def _getRandomItem( self, foodOnly=False, consumableOnly=False, notEvo=False, notQuest=False, matchValueOf=None ):
+        """
+        Get a random item that satisfies the conditions.
+
+        Keyword arguments:
+        foodOnly -- Only allow food items
+        consumableOnly -- Only allow consumable items
+        notEvo --
+        notQuest=False
+        matchValueOf=None
+        """
+
+        randID = 0
+        valid = False
+        while( not valid ):
+            randID = random.randint( 0, len( self.itemData ) - 1 )
+            item = self.itemData[ randID ]
+            valid = True
+
+            if( foodOnly and not item.isFood ):
+                valid = False
+
+            if( consumableOnly and not item.isConsumable ):
+                valid = False
+
+            if( notEvo and item.isEvo ):
+                valid = False
+
+            if( notQuest and not item.dropable ):
+                valid = False
+
+
+            if( matchValueOf is not None ):
+                itemToMatch = self.itemData[ matchValueOf ]
+                if( ( item.price < 1000 ) != ( itemToMatch.price < 1000 ) ):
+                    valid = False
+
+
+        return randID
 
 
     def _setStarterTechs( self, useWeakest=True ):
