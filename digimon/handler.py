@@ -561,7 +561,12 @@ class DigimonWorldHandler:
 
         self.inFilename = filename
 
-        with open( filename, 'r' + 'b' ) as file:
+        try:
+            file = open( filename, 'r' + 'b' )
+        except IOError:
+            self.logger.fatalError( 'Error: input file could not be read (it probably doesn\'t exist)\nMake sure the filename and relative path in settings.ini \'Input\' are correct.' )
+
+        with file:
             #------------------------------------------------------
             # Read in tech data
             #------------------------------------------------------
@@ -769,7 +774,12 @@ class DigimonWorldHandler:
         if( self.inFilename != filename ):
             copyfile( self.inFilename, filename )
 
-        with open( filename, 'r+' + 'b' ) as file:
+        try:
+            file = open( filename, 'r+' + 'b' )
+        except IOError:
+            self.logger.fatalError( 'Error: output file could not be read (it probably doesn\'t exist)\nMake sure the filename and relative path in settings.ini \'Output\' are correct.' )
+
+        with  file:
             #------------------------------------------------------
             # Write out tech data
             #------------------------------------------------------

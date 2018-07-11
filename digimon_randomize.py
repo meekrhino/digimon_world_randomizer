@@ -22,6 +22,22 @@ else:
     logger.fatalError( 'Must provide file name via command line or settings.' )
     exit()
 
+#If an output file was passed or set, use that as the output.
+#Otherwise, read and write the same file
+if( len(sys.argv) > 2 ):
+    outFile = sys.argv[2]
+elif( config[ 'general' ][ 'Output' ] != '' ):
+    outFile = config[ 'general' ][ 'Output' ]
+else:
+    outFile = inFile
+
+#Give the user a warning when we are going to overwrite the base ROM
+if( outFile == inFile ):
+    qa = input( 'Warning: currently set to overwrite the input file.\nAre you sure you want to continue? (y/n)' )
+    if( qa != 'y' ):
+        print( 'Exiting.  Please update settings.ini \'Output\' to select a different output location.' )
+        exit()
+
 print( 'Reading data from ' + inFile + '...\n' )
 
 seedcfg = config[ 'general' ][ 'Seed' ]
@@ -50,14 +66,7 @@ if( config[ 'mapItems' ].getboolean( 'Enabled' ) ):
 if( config[ 'evolution' ].getboolean( 'Enabled' ) ):
     handler.randomizeEvolutions()
 
-#If an output file was passed or set, use that as the output.
-#Otherwise, read and write the same file
-if( len(sys.argv) > 2 ):
-    outFile = sys.argv[2]
-elif( config[ 'general' ][ 'Output' ] != '' ):
-    outFile = config[ 'general' ][ 'Output' ]
-else:
-    outFile = inFile
+
 
 print( 'Writing to ' + outFile + '...\n' )
 handler.write( outFile )

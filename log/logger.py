@@ -68,6 +68,7 @@ class Logger:
         error = True
         self.logAlways( str )
 
+
     def fatalError( self, str ):
         """
         Write string to log file (or console) regardless
@@ -80,6 +81,7 @@ class Logger:
         self.logError( str )
         print( 'Program ended with errors.  See log file for errors.' )
         exit()
+
 
     def logAlways( self, str ):
         """

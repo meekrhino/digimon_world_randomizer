@@ -8,7 +8,7 @@ Utilities for writing specific positions in memory.
 import digimon.data as data
 import struct
 import mmap
-#import pyperclip
+import pyperclip
 
 giveItem = 0x28
 spawnChest = 0x75
@@ -106,8 +106,8 @@ def compile( inst, *args ):
                             )
 
 
-    #out =  "".join("{:02x}".format(c) for c in packed)
-    #print('Copied:'  + '\'' + out  + '\'' + ' to the cipboard')
-    #pyperclip.copy(out)
+    out =  "".join("{:02x}".format(c) for c in packed)
+    print('Copied:'  + '\'' + out  + '\'' + ' to the cipboard')
+    pyperclip.copy(out)
 
     return ( packed )
