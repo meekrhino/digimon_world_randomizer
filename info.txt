@@ -157,6 +157,15 @@ this info is largely useless because the techs are pointered (not all in one blo
 ----------------------------------------------------------------------------------------------------
 
 ----------------------------------------------------------------------------------------------------
+seadramon tech gifts + bug
+
+bug is set by learnMove 33 at 0x14029E3E
+seadramon learnMove @ 0x13FE219A and if move @ 0x13FE2192
+                    @ 0x13FE21E4             @ 0x13FE21DC
+                    @ 0x13FE2232             @ 0x13FE222A
+----------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
 spawnItem has a few weird things because of the centarumon maze:
 
 'Giant Meat' spawns on the map.
@@ -185,7 +194,7 @@ Ideas for things to randomize:
   ✓Starters and their starting tech
   ✓Items in chests
   ✓Items given by Tokomon
-    Seadramon tech gifts (easy)
+    Seadramon tech gifts and bug (easy)
   ✓Map items (time consuming)
     Meat farm random food?
     Meat farm 5x bonus -> random food (difficult!! string encoding etc)
@@ -196,7 +205,7 @@ Ideas for things to randomize:
   ----MUST FIX REQS FOR PANJYAMON, GIGADRAMON, METALETEMON!!!
     Learnable techs (most likely not possible, but cool af)
     Random recruitments (just the dudes in town, not who you fight -- Syd investigating)
-    Digimon drops/droprates from fights
+  ✓Digimon drops/droprates from fights
     Mojyamon item trading items
 ----------------------------------------------------------------------------------------------------
 

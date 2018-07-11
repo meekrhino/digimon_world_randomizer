@@ -10,9 +10,11 @@ import struct
 import mmap
 import pyperclip
 
-giveItem = 0x28
-spawnChest = 0x75
-spawnItem = 0x74
+setDialogOwner = 0x1B
+giveItem       = 0x28
+spawnItem      = 0x74
+learnMove      = 0x2D
+spawnChest     = 0x75
 
 
 def findAll( script, bin, inst ):
@@ -77,6 +79,8 @@ def compile( inst, *args ):
     args -- Variable length argument list for instruction.
     """
 
+    print args
+
     if( inst == 'spawnChest' ):
         packed = struct.pack(
                             '<BBhhhhh',
@@ -104,9 +108,28 @@ def compile( inst, *args ):
                             args[1],
                             args[2]
                             )
+    elif( inst == 'learnMove' ):
+        packed = struct.pack(
+                            '<BB',
+                            learnMove,
+                            args[0]
+                            )
+    elif( inst == 'move' ):
+        packed = struct.pack(
+                            '<BB',
+                            learnMove,
+                            args[0]
+                            )
+    elif( inst == 'setDialogOwner' ):
+        packed = struct.pack(
+                            '<BB',
+                            setDialogOwner,
+                            args[0]
+                            )
 
 
-    out =  "".join("{:02x}".format(c) for c in packed)
+
+    out =  "".join("{:02x}".format(ord(c)) for c in packed)
     print('Copied:'  + '\'' + out  + '\'' + ' to the cipboard')
     pyperclip.copy(out)
 
