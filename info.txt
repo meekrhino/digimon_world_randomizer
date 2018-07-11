@@ -160,7 +160,7 @@ this info is largely useless because the techs are pointered (not all in one blo
 seadramon tech gifts + bug
 
 bug is set by learnMove 33 at 0x14029E3E
-seadramon learnMove @ 0x13FE219A and if move @ 0x13FE2192
+seadramon learnMove @ 0x13FE219A and if move @ 0x13FE2192 (this one is the exact byte, cuz ifs suck)
                     @ 0x13FE21E4             @ 0x13FE21DC
                     @ 0x13FE2232             @ 0x13FE222A
 ----------------------------------------------------------------------------------------------------
