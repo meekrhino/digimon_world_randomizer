@@ -374,7 +374,6 @@ mapItemOffsets = (
             0x13FF7C16,
             0x13FF7C2C,
             0x13FF7C42,
-            0x13FF7C58,
             0x13FF852C,
             0x13FF8542,
             0x13FF8558,
