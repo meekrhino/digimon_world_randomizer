@@ -187,6 +187,7 @@ Ideas for things to randomize:
   ✓Items given by Tokomon
     Seadramon tech gifts (easy)
   ✓Map items (time consuming)
+    Meat farm random food?
     Meat farm 5x bonus -> random food (difficult!! string encoding etc)
     Vending machines (difficult, hard-coded text boxes)
     Background music (probably easy, but do I want this?)
@@ -212,4 +213,4 @@ Replace AS Decoder with save game?
 To build distributable:
     1. pip install pyinstaller
     2. pyinstaller --onefile <path/to/digimon_randomize.py>
-    3. distribute with settings.ini
+    3. distribute with settings.ini and README.md
