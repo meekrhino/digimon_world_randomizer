@@ -194,7 +194,7 @@ Ideas for things to randomize:
   ✓Starters and their starting tech
   ✓Items in chests
   ✓Items given by Tokomon
-    Seadramon tech gifts and bug (easy)
+  ✓Seadramon tech gifts and bug (easy)
   ✓Map items (time consuming)
     Meat farm random food?
     Meat farm 5x bonus -> random food (difficult!! string encoding etc)
@@ -207,6 +207,7 @@ Ideas for things to randomize:
     Random recruitments (just the dudes in town, not who you fight -- Syd investigating)
   ✓Digimon drops/droprates from fights
     Mojyamon item trading items
+    Bakemon/Numemon evo
 ----------------------------------------------------------------------------------------------------
 
 ----------------------------------------------------------------------------------------------------

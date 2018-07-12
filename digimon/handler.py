@@ -928,6 +928,8 @@ class DigimonWorldHandler:
             for patch in self.patches:
                 if( patch == 'fixEvoItems' ):
                     self._applyPatchFixEvoItems( file )
+                elif( patch == 'woah' ):
+                    self._applyPatchWoah( file )
 
 
     def randomizeDigimonData( self, dropItem=False, dropRate=False ):
@@ -1361,7 +1363,6 @@ class DigimonWorldHandler:
                                      + '\'s slot ' + str( self.starterTechSlot[ i ] ) + ')' )
 
 
-
     def _applyPatchFixEvoItems( self, file ):
         """
         Change evo items to give stats and lifetime.
@@ -1370,5 +1371,16 @@ class DigimonWorldHandler:
         util.writeDataToFile( file,
                               data.evoItemPatchOffset,
                               struct.pack( data.evoitemPatchFormat, data.evoItemPatchValue ),
+                              self.logger )
+
+
+    def _applyPatchWoah( self, file ):
+        """
+        Change "Woah!" to something else.
+        """
+
+        util.writeDataToFile( file,
+                              data.woahPatchOffset,
+                              struct.pack( data.woahPatchFormat, data.woahPatchValue ),
                               self.logger )
 

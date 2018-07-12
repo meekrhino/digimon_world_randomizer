@@ -214,6 +214,10 @@ evoItemPatchOffset = 0x14CF5AFC
 evoItemPatchValue  = 0x00
 evoitemPatchFormat = '<B'
 
+woahPatchOffset = 0x14D76EF4
+woahPatchValue = 'Oh shit!'
+woahPatchFormat = '<10s'
+
 chestItemFormat   = '<BB'
 
 chestItemOffsets = (
