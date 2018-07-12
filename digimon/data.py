@@ -543,6 +543,24 @@ tokoItemOffsets = (
             0x14071078,
             )
 
+learnMoveFormat = '<2B'
+
+learnMoveOffsets = (
+            0x14029E3E,     #bug
+            0x13FE219A,     #seadra1
+            0x13FE21E4,     #seadra2
+            0x13FE2232      #seadra3
+            )
+
+checkMoveFormat = '<B'
+
+checkMoveOffsets = (
+            0x14029B32,     #bug
+            0x13FE2192,     #seadra1
+            0x13FE21DC,     #seadra2
+            0x13FE222A      #seadra3
+            )
+
 techDataFormat           = '<H7B5xBx'
 
 techDataBlockOffset      = 0x14D66DF8
