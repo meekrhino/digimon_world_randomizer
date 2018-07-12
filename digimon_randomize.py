@@ -74,6 +74,9 @@ if( config[ 'mapItems' ].getboolean( 'Enabled' ) ):
 if( config[ 'evolution' ].getboolean( 'Enabled' ) ):
     handler.randomizeEvolutions()
 
+if( config[ 'patches' ].getboolean( 'FixEvoItemStatGain' ) ):
+    handler.applyPatch( 'fixEvoItems' )
+
 
 
 print( 'Writing to ' + outFile + '...\n' )

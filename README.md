@@ -18,6 +18,7 @@ Version log:
 Closed Beta 0.3.0
 @New Features
     *randomize techs taught by Seadramon + Beetle Land
+    *patch evo items to give stats/lifetime
 
 Closed Beta 0.2.0
 @New Features

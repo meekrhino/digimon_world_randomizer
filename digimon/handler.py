@@ -510,6 +510,8 @@ class DigimonWorldHandler:
 
         self.logger = logger
 
+        self.patches = []
+
         self.randomseed = seed
         if( seed == None ):
             self.randomseed = random.randrange( sys.maxsize )
@@ -920,6 +922,12 @@ class DigimonWorldHandler:
                                       struct.pack( data.checkMoveFormat, tech ),
                                       self.logger )
 
+            #------------------------------------------------------
+            # Apply patches
+            #------------------------------------------------------
+            for patch in self.patches:
+                if( patch == 'fixEvoItems' ):
+                    self._applyPatchFixEvoItems( file )
 
 
     def randomizeDigimonData( self, dropItem=False, dropRate=False ):
@@ -1111,6 +1119,18 @@ class DigimonWorldHandler:
         self.logger.logChange( 'Changed digimon evolutions to the following: ' )
         for i in range( 1, data.lastPartnerDigimon + 1 ):
             self.logger.logChange( 'Changed evolutions for ' + self.digimonData[ i ].evoData() + '\n' )
+
+
+    def applyPatch( self, patch ):
+        """
+        Set specified patch to be applied to the ROM.
+
+        Keyword arguments:
+        patch -- one of the following:
+                 'fixEvoItems'  Make evo items give stats + lifetime
+        """
+
+        self.patches.append( patch )
 
 
     def getPlayableDigimonByLevel( self, level ):
@@ -1337,5 +1357,18 @@ class DigimonWorldHandler:
                 self.starterTech[ i ] = techID
                 self.starterTechSlot[ i ] = randID + 1
                 self.logger.logChange( 'Starter tech set to ' + self.getTechName( self.starterTech[ i ] )
-                                     + ' (' + self.digimonData[ self.starterID[ i ] ].name + '\'s slot ' + str( self.starterTechSlot[ i ] ) + ')' )
+                                     + ' (' + self.digimonData[ self.starterID[ i ] ].name
+                                     + '\'s slot ' + str( self.starterTechSlot[ i ] ) + ')' )
+
+
+
+    def _applyPatchFixEvoItems( self, file ):
+        """
+        Change evo items to give stats and lifetime.
+        """
+
+        util.writeDataToFile( file,
+                              data.evoItemPatchOffset,
+                              struct.pack( data.evoitemPatchFormat, data.evoItemPatchValue ),
+                              self.logger )
 

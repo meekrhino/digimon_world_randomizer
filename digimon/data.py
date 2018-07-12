@@ -210,6 +210,10 @@ starterTechSlots = {
             0x39 : 0x01
             }
 
+evoItemPatchOffset = 0x14CF5AFC
+evoItemPatchValue  = 0x00
+evoitemPatchFormat = '<B'
+
 chestItemFormat   = '<BB'
 
 chestItemOffsets = (
