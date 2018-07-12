@@ -8,7 +8,7 @@ Utilities for writing specific positions in memory.
 import digimon.data as data
 import struct
 import mmap
-import pyperclip
+#import pyperclip
 
 setDialogOwner = 0x1B
 giveItem       = 0x28
@@ -131,6 +131,6 @@ def compile( inst, *args ):
 
     out =  "".join("{:02x}".format(ord(c)) for c in packed)
     print('Copied:'  + '\'' + out  + '\'' + ' to the cipboard')
-    pyperclip.copy(out)
+    #pyperclip.copy(out)
 
     return ( packed )

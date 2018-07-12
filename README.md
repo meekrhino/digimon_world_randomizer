@@ -23,7 +23,7 @@ Closed Beta 0.2.0
 
 Closed Beta 0.1.1
 @Bug fixes
-    *exclude myotismon steak from randomizing (breaks that quests if not)
+    *exclude myotismon steak from randomizing (breaks that quest if not)
 
 Closed Beta 0.1.0
 @New Features
