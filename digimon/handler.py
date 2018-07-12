@@ -334,6 +334,8 @@ class Item:
         #'Food' sort value is not used for 'Rain Plant' and 'Steak'
         self.isFood = self.itemSort[ self.sort ] == 'FOOD' or id == 0x79 or id == 0x7A
 
+        self.isQuest = self.dropable
+
 
     def __str__( self ):
         """
@@ -758,6 +760,18 @@ class DigimonWorldHandler:
 
         with  file:
             #------------------------------------------------------
+            # Apply patches
+            #------------------------------------------------------
+            for patch in self.patches:
+                if( patch == 'fixEvoItems' ):
+                    self._applyPatchFixEvoItems( file )
+                elif( patch == 'allowDrop' ):
+                    self._applyPatchAllowDrop( file )
+                elif( patch == 'woah' ):
+                    self._applyPatchWoah( file )
+
+
+            #------------------------------------------------------
             # Write out tech data
             #------------------------------------------------------
 
@@ -921,15 +935,6 @@ class DigimonWorldHandler:
                                       ofst,
                                       struct.pack( data.checkMoveFormat, tech ),
                                       self.logger )
-
-            #------------------------------------------------------
-            # Apply patches
-            #------------------------------------------------------
-            for patch in self.patches:
-                if( patch == 'fixEvoItems' ):
-                    self._applyPatchFixEvoItems( file )
-                elif( patch == 'woah' ):
-                    self._applyPatchWoah( file )
 
 
     def randomizeDigimonData( self, dropItem=False, dropRate=False ):
@@ -1372,6 +1377,15 @@ class DigimonWorldHandler:
                               data.evoItemPatchOffset,
                               struct.pack( data.evoitemPatchFormat, data.evoItemPatchValue ),
                               self.logger )
+
+
+    def _applyPatchAllowDrop( self, file ):
+        """
+        Allow all items to be dropped form the item menu.
+        """
+
+        for item in self.itemData:
+            item.dropable = True
 
 
     def _applyPatchWoah( self, file ):

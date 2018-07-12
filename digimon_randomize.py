@@ -77,6 +77,9 @@ if( config[ 'evolution' ].getboolean( 'Enabled' ) ):
 if( config[ 'patches' ].getboolean( 'FixEvoItemStatGain' ) ):
     handler.applyPatch( 'fixEvoItems' )
 
+if( config[ 'patches' ].getboolean( 'AllowDropQuestItems' ) ):
+    handler.applyPatch( 'allowDrop' )
+
 if( config[ 'patches' ].getboolean( 'Woah' ) ):
     handler.applyPatch( 'woah' )
 
