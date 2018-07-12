@@ -65,6 +65,9 @@ if( config[ 'chests' ].getboolean( 'Enabled' ) ):
 if( config[ 'tokomon' ].getboolean( 'Enabled' ) ):
     handler.randomizeTokomonItems( consumableOnly=config[ 'tokomon' ].getboolean( 'ConsumableOnly' ) )
 
+if( config[ 'techgifts' ].getboolean( 'Enabled' ) ):
+    handler.randomizeTechGifts()
+
 if( config[ 'mapItems' ].getboolean( 'Enabled' ) ):
     handler.randomizeMapSpawnItems( foodOnly=config[ 'mapItems' ].getboolean( 'FoodOnly' ) )
 

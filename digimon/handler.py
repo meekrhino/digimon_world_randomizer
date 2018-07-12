@@ -377,6 +377,8 @@ class Tech:
     """
 
     finishers = list( range( 0x3A, 0x71 ) )
+    bubbles = list( range( 0x71, 0x79 ) )
+    altTechs = [ 0x30, 0x39 ]
 
     def __init__( self, handler, id, data ):
         """
@@ -405,6 +407,7 @@ class Tech:
 
         self.isDamaging = self.power > 0
         self.isFinisher = self.id in self.finishers
+        self.isLearnable = ( not self.isFinisher ) and ( self.id not in self.altTechs ) and ( self.id not in self.bubbles )
 
 
     def __str__( self ):
@@ -1045,6 +1048,21 @@ class DigimonWorldHandler:
             self.logger.logChange( 'Changed map item from ' + self.itemData[ pre ].name + ' to ' + self.itemData[ self.mapItems[ key ] ].name )
 
 
+    def randomizeTechGifts( self ):
+        """
+        Randomize techs that are taught by Seadramon and the tech taught
+        in Beetle Land.
+        """
+
+        #for each tech gift, choose a random usable tech
+        for key in list( self.techGifts ):
+            randID = self._getRandomTech( learnableOnly=True )
+
+            pre = self.techGifts[ key ]
+            self.techGifts[ key ] = self.techData[ randID ].id
+            self.logger.logChange( 'Changed tech gift from ' + self.getTechName( pre ) + ' to ' + self.getTechName( self.techGifts[ key ] ) )
+
+
     def randomizeEvolutions( self ):
         """
         Randomize the lists of evolutions that each digimon
@@ -1220,9 +1238,9 @@ class DigimonWorldHandler:
         Keyword arguments:
         foodOnly -- Only allow food items
         consumableOnly -- Only allow consumable items
-        notEvo --
-        notQuest=False
-        matchValueOf=None
+        notEvo -- Exclude evolution items
+        notQuest -- Exclude quest items
+        matchValueOf -- Only items that are on the same side of the low-value price cutoff
         """
 
         randID = 0
@@ -1250,6 +1268,35 @@ class DigimonWorldHandler:
                 if( ( item.price < 1000 ) != ( itemToMatch.price < 1000 ) ):
                     valid = False
 
+
+        return randID
+
+
+    def _getRandomTech( self, learnableOnly=False, notFinisher=False, damagingOnly=False ):
+        """
+        Get a random tech that satisfies the conditions.
+
+        Keyword arguments:
+        learnableOnly -- Only moves that can be learned
+        notFinisher -- Exclude finishers
+        damagingOnly -- Only moves that deal damage
+        """
+
+        randID = 0
+        valid = False
+        while( not valid ):
+            randID = random.randint( 0, len( self.techData ) - 1 )
+            tech = self.techData[ randID ]
+            valid = True
+
+            if( notFinisher and tech.isFinisher ):
+                valid = False
+
+            if( damagingOnly and not tech.isDamaging ):
+                valid = False
+
+            if( learnableOnly and not tech.isLearnable ):
+                valid = False
 
         return randID
 

@@ -15,6 +15,10 @@ If you are doing a race, have your racing opponent(s) put that seed value in the
 
 Version log:
 
+Closed Beta 0.3.0
+@New Features
+    *randomize techs taught by Seadramon + Beetle Land
+
 Closed Beta 0.2.0
 @New Features
     *randomize digimon data
