@@ -56,6 +56,13 @@ if( config[ 'digimon' ].getboolean( 'Enabled' ) ):
     handler.randomizeDigimonData( dropItem=config[ 'digimon' ].getboolean( 'DropItem' ),
                                   dropRate=config[ 'digimon' ].getboolean( 'DropRate' ) )
 
+if( config[ 'techs' ].getboolean( 'Enabled' ) ):
+    handler.randomizeTechData( power=config[ 'techs' ].getboolean( 'Power' ),
+                               cost=config[ 'techs' ].getboolean( 'Cost' ),
+                               accuracy=config[ 'techs' ].getboolean( 'Accuracy' ),
+                               effect=config[ 'techs' ].getboolean( 'Effect' ),
+                               effectChance=config[ 'techs' ].getboolean( 'EffectChance' ) )
+
 if( config[ 'starter' ].getboolean( 'Enabled' ) ):
     handler.randomizeStarters( useWeakestTech=config[ 'starter' ].getboolean( 'UseWeakestTech' ) )
 

@@ -974,6 +974,64 @@ class DigimonWorldHandler:
                                                                                      digi.drop_rate ) )
 
 
+    def randomizeTechData( self, power=False, cost=False, accuracy=False, effect=False, effectChance=False ):
+        """
+        Randomize tech data.
+
+        power -- Randomize power?
+        cost -- Randomize the mp cost?
+        accuracy -- Randomize the accuracy?
+        effect -- Randomize the effect?
+        effectChance -- Randomize the chance of the effect happening?
+        """
+
+        for tech in self.techData:
+            if( not tech.isLearnable ):
+                continue
+
+            if( power ):
+                if( tech.power > 0 ):
+                    swapWith = self.techData[ self._getRandomTech( learnableOnly=True, damagingOnly=True ) ]
+                    tech.power, swapWith.power =  swapWith.power, tech.power
+
+            if( cost ):
+                swapWith = self.techData[ self._getRandomTech( learnableOnly=True ) ]
+                tech.mp3, swapWith.mp3 =  swapWith.mp3, tech.mp3
+
+            if( accuracy ):
+                swapWith = self.techData[ self._getRandomTech( learnableOnly=True ) ]
+                tech.accuracy, swapWith.accuracy =  swapWith.accuracy, tech.accuracy
+
+            if( effect ):
+                #50% chance of no effect or random effect
+                if( random.randint( 0, 1 ) > 0 ):
+                    tech.effect = random.randint( 1, 4 )
+                else:
+                    tech.effect = 0
+                    tech.effChance = 0
+
+            if( effectChance ):
+                #if no effect, set chance to zero
+                if( tech.effect == 0 ):
+                    tech.effChance = 0
+                else:
+                    #otherwise, random chance up to 70%
+                    tech.effChance = random.randint( 1, 70 )
+
+        #This has to be at the end due to power/mp/accuracy swapping around
+        for tech in self.techData:
+            if( not tech.isLearnable ):
+                continue
+            self.logger.logChange( '{:<2d} Set \'{:s}\' to {:d} power {:d} MP with {:d} accuracy\n   {:s} {:d}% of the time.'.format(
+                                                             tech.id,
+                                                             tech.name,
+                                                             tech.power,
+                                                             tech.mp3 * 3,
+                                                             tech.accuracy,
+                                                             self.getEffectName( tech.effect ),
+                                                             tech.effChance ) )
+
+
     def randomizeStarters( self, useWeakestTech=True ):
         """
         Set starters to two random different rookie Digimon.

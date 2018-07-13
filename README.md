@@ -7,6 +7,9 @@ i.e. if your DW binary file is called Digimon World.bin and is in the same folde
 Input = Digimon World.bin
 Output = Digimon World Rando.bin
 
+Note:
+For most sections of the settings file, there is an "Enabled" field that must be set to yes before any of the other options will be used.
+
 After you have the settings you want, run digimon_randomize.py or digimon_randomize.exe.  The seed used (whether you set it manually or left it blank) will be printed out to the console.
 If you are doing a race, have your racing opponent(s) put that seed value in their settings.ini file (and make sure they have the same settings selected!)
 
@@ -18,7 +21,14 @@ Version log:
 Closed Beta 0.3.0
 @New Features
     *randomize techs taught by Seadramon + Beetle Land
+    *randomize tech data
+        --random power option
+        --random MP cost option
+        --random accuracy option
+        --random effect option
+        --random effect chance option
     *patch evo items to give stats/lifetime
+    *patch to make quest items dropable
 
 Closed Beta 0.2.0
 @New Features
