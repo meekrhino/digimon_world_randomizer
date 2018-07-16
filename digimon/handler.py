@@ -306,6 +306,7 @@ class Item:
             }
 
     consumableItems = list( range( 0x00, 0x21 ) ) + list( range( 0x26, 0x73 ) ) + [ 0x79, 0x7A, 0x7D, 0x7E, 0x7F ]
+    questItems = list( range( 0x73, 0x79 ) ) + list( range( 0x7B, 0x7D ) )
 
     def __init__( self, handler, id, data ):
         """
@@ -334,7 +335,7 @@ class Item:
         #'Food' sort value is not used for 'Rain Plant' and 'Steak'
         self.isFood = self.itemSort[ self.sort ] == 'FOOD' or id == 0x79 or id == 0x7A
 
-        self.isQuest = self.dropable
+        self.isQuest = self.id in self.questItems
 
 
     def __str__( self ):

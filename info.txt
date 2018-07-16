@@ -229,8 +229,12 @@ Patch for evo items giving stats/lifespan:
 
 ----------------------------------------------------------------------------------------------------
 Known bugs:
+CURRENT:
+
+FIXED:
 --When dropable quest item patch has already been applied to the target rom, they will start to
   appear all over the place (chests in particular) and this is no bueno
+--Myotismon quest steak gets randomized and the quest cannot be finished
 ----------------------------------------------------------------------------------------------------
 
 ----------------------------------------------------------------------------------------------------

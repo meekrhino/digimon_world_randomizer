@@ -18,6 +18,10 @@ If you are doing a race, have your racing opponent(s) put that seed value in the
 
 Version log:
 
+Closed Beta 0.3.1
+@Bug fixes
+    *Quests items will no longer appear in chests when the randomizer is run twice on the same file
+
 Closed Beta 0.3.0
 @New Features
     *randomize techs taught by Seadramon + Beetle Land
