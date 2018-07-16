@@ -11,13 +11,14 @@ import mmap
 #import pyperclip
 
 setDialogOwner = 0x1B
+setTrigger     = 0x1C
 giveItem       = 0x28
 spawnItem      = 0x74
 learnMove      = 0x2D
 spawnChest     = 0x75
 
 
-def findAll( script, bin, inst ):
+def findAll( script, bin, inst, valueList=None ):
     """
     Find all uses of the given instruction.
     """
@@ -33,6 +34,8 @@ def findAll( script, bin, inst ):
                     args = []
                     for i in range( 2, len( lineSplit ) ):
                         args.append( int( lineSplit[i] ) )
+                    if( valueList != None and ( args[0] not in valueList ) ):
+                        continue
                     out.append( compile( inst, *args ) )
 
     ofst = []
@@ -44,16 +47,15 @@ def findAll( script, bin, inst ):
 
     strFormat = '(\n'
 
-    for o in ofst:
-        strFormat += format( o, '08X' ) + ',\n'
+    for ofsts in ofst:
+        strFormat += "(" + "".join("{:08X}, ".format(o) for o in ofsts) + "),\n"
 
     strFormat += ')'
 
     print( strFormat )
-    pyperclip.copy( strFormat )
+    #pyperclip.copy( strFormat )
 
     return ofst
-
 
 
 def findSequenceInFile( filename, seq ):
@@ -65,8 +67,14 @@ def findSequenceInFile( filename, seq ):
 
     with open( filename, 'r+b' ) as file:
         mm = mmap.mmap( file.fileno(), 0 )
-        res = mm.find( seq )
-        return res
+        found = []
+        res = data.scriptOffsetInBinary
+        while( res != -1 and res < mm.size() ):
+            res =  mm.find( seq, res + len( seq ) )
+            if( res != -1 ):
+                found.append( res )
+
+    return found
 
 
 def compile( inst, *args ):
@@ -124,6 +132,12 @@ def compile( inst, *args ):
         packed = struct.pack(
                             '<BB',
                             setDialogOwner,
+                            args[0]
+                            )
+    elif( inst == 'setTrigger' ):
+        packed = struct.pack(
+                            '<BxH',
+                            setTrigger,
                             args[0]
                             )
 

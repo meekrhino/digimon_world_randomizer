@@ -190,6 +190,18 @@ allow that?  but also make centarumon's place weird af somehow?)
 ----------------------------------------------------------------------------------------------------
 
 ----------------------------------------------------------------------------------------------------
+Recruitment trigger research:
+    Recruitment triggers are: 203-258  minus 215, 216, 229, 230, 243, 244
+
+    don't mess with agumon's recruitment trigger! breaks stuff
+
+
+
+    Need to change the which of these triggers is set for which event.
+
+----------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
 Ideas for things to randomize:
   ✓Starters and their starting tech
   ✓Items in chests
@@ -204,10 +216,10 @@ Ideas for things to randomize:
   ✓Evolutions (highly requested)
   ----MUST FIX REQS FOR PANJYAMON, GIGADRAMON, METALETEMON!!!
     Learnable techs (most likely not possible, but cool af)
-    Random recruitments (just the dudes in town, not who you fight -- Syd investigating)
+    Random recruitments (who you get from what recruitment)
   ✓Digimon drops/droprates from fights
     Mojyamon item trading items
-    Bakemon/Numemon evo
+    All special evos
   ✓Tech Data
 ----------------------------------------------------------------------------------------------------
 
