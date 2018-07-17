@@ -242,7 +242,10 @@ Patch for evo items giving stats/lifespan:
 ----------------------------------------------------------------------------------------------------
 Known bugs:
 CURRENT:
-
+--Alternate version of dynamite and horizontal kick are not being randomized (partner digimon can
+  actually learn these, contrary to what I thought before)
+--Properity value can get messed up by randomizing recruitments and then saving the game (saving
+  the game recalculates the PP from what you have, but is added when you recruit)
 FIXED:
 --When dropable quest item patch has already been applied to the target rom, they will start to
   appear all over the place (chests in particular) and this is no bueno
@@ -251,6 +254,5 @@ FIXED:
 
 ----------------------------------------------------------------------------------------------------
 To build distributable:
-    1. pip install pyinstaller
-    2. pyinstaller --onefile <path/to/digimon_randomize.py>
-    3. distribute with settings.ini and README.md
+    1. run build.bat
+    2. share digimon_randomize.zip
