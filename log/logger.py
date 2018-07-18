@@ -65,7 +65,7 @@ class Logger:
         str -- Error string to write
         """
 
-        error = True
+        self.error = True
         self.logAlways( str )
 
 

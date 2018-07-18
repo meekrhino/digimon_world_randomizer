@@ -191,13 +191,114 @@ allow that?  but also make centarumon's place weird af somehow?)
 
 ----------------------------------------------------------------------------------------------------
 Recruitment trigger research:
-    Recruitment triggers are: 203-258  minus 215, 216, 229, 230, 243, 244
+    Recruitment triggers are: 203-258  minus 215, 216, 229, 230, 243, 244 (and a couple others)
 
     don't mess with agumon's recruitment trigger! breaks stuff
 
+    much more complicated... need to change a billion ifs.  May not be feasible after all.
+
+    The idea: when you beat Gabumon, you recruit Elecmon instead.  To make the fewest changes, we do
+              this by letting it still set/check trigger #217 for defeat/spawn of Gabumon.  However,
+              we change all of Elecmon's triggers outside of spawn/defeat to use #217 now (Gabumon's
+              trigger).  So now you defeat Gabumon and he will not show up anymore, and now Elecmon
+              shows up in town.
+
+    Elecmon triggers:
+        NO TOUCH:       (must be 218)
+            _71     04330   Spawn fightable elecmon
+            _254    03234   Rumor about elecmon
+
+        MUST CHANGE:    (must be new val)
+            _192    10096   Elecmon intro
+            _192    10438   Show elecmon hanging out
+            _162    00974   Show objects (lights?)
+            _163    00330   some other object shared with shellmon
+            _163    00442   more objects (night only)
+            _163    00462   more objects
+            _163    00506   more objetcs (night only)
+            _163    00582   more objects
+            _5      02760   Jijimon
 
 
-    Need to change the which of these triggers is set for which event.
+    Meramon triggers:
+        NO TOUCH:       (must be 209)
+            _29     02686   Spawn fightable meramon
+            _31     02732   Spawn fightable meramon
+            _52     02992   Meramon cutscene
+            _51     00044   Warp to hot/cold volcano
+            _254    02100   Some part of meramon recruiting
+            _52     02426   Warp to hot/cold volcano also?
+            _254    02270   Rumor about meramon
+
+        MUST CHANGE:    (must be new val)
+            _214    11310   Meramon intro
+            _214    11612   Meramon hangin out
+            _215    11728   Meramon intro
+            _215    12030   Meramon hangin out
+            _52     03002   Show restaurant
+            _52     03230   Show restaurant
+            _52     03458   Show restaurant
+            _52     00618   Show restaurant
+            _52     00846   Show restaurant
+            _52     01074   Show restaurant
+            _51     01366   Show restaurant
+            _51     01594   Show restaurant
+            _51     01822   Show restaurant
+            _81     00390   Show restaurant
+            _254    00756   Show restaurant
+            _51     01200   Show restaurant
+            _51     01428   Show restaurant
+            _51     01656   Show restaurant
+            _254    00534   Show restaurant
+            _51     00368   Show restaurant
+            _51     00596   Show restaurant
+            _51     00824   Show restaurant
+            _52     02546   Show restaurant
+            _52     02774   Show restaurant
+            _52     03002   Show restaurant
+            _51     02522   Show restaurant
+            _51     02750   Show restaurant
+            _51     02978   Show restaurant
+            _81     00054   Meramon intro as chef
+            _81     01094   Meramon intro as chef alternate
+            _51     02242   Show restaurant
+            _51     02470   Show restaurant
+            _51     02698   Show restaurant
+            _81     00058   Meramon intro as chef
+            _81     01076   Meramon intro as chef alternate
+            _51     02656   Show restaurant
+            _51     02884   Show restaurant
+            _51     03114   Show restaurant
+            _51     00198   Show restaurant
+            _51     00426   Show restaurant
+            _51     00654   Show restaurant
+            _51     00014   Restaurant dialog
+            _5      01844   Jijimon
+
+    Tyrannomon triggers:
+        NO TOUCH:       (must be 208)
+            _82     05056   Dino region quest stuff
+            _82     05076   Dino region quest stuff
+            _86     05226   Dino region quest stuff
+            _6      02246   Dino region quest stuff
+            _254    02074   Rumor about Tyrannomon
+
+
+        MUST CHANGE:    (must be new val)
+            _214    11338   Tyrannomon intro
+            _214    11636   Tyrannomon hangin out
+            _215    11756   Tyrannomon intro
+            _215    12056   Tyrannomon hangin out
+            _254    00354   Tyrannomon intro as chef
+            _254    01288   Tyrannomon intro as chef alternate
+            _81     00362   Tyrannomon intro as chef
+            _81     01290   Tyrannomon intro as chef alternate
+            _51     00110   Restaurant dialog
+            _5      01652   Jijimon
+
+            see meramon for all "show restaurant" cues
+
+
 
 ----------------------------------------------------------------------------------------------------
 

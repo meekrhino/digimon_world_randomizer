@@ -670,6 +670,36 @@ class DigimonWorldHandler:
 
 
             #------------------------------------------------------
+            # Read in recruitment data
+            #------------------------------------------------------
+
+            self.recruits = {}
+            self.recruitChecks = {}
+
+            for ( sets, chk ) in data.recruitOffsets:
+                err = False
+                for set in sets:
+                    file.seek( set, 0 )
+                    cmd, trigger = struct.unpack( data.recruitFormat,
+                                                  file.read( struct.calcsize( data.recruitFormat ) ) )
+                    if( cmd != scrutil.setTrigger ):
+                        self.logger.logError( 'Error: Looking for recruitment, found incorrect command: ' + str( cmd ) + ' @ ' + format( set, '08x' ) )
+                        err = True
+                    else:
+                        self.recruits[ ( sets, chk ) ] = trigger
+
+                if( not err ):
+                    file.seek( chk, 0 )
+                    trigger = struct.unpack( data.recruitCheckFormat,
+                                             file.read( struct.calcsize( data.recruitCheckFormat ) ) )[ 0 ]
+                    if( trigger != self.recruits[ ( sets, chk ) ] ):
+                        self.logger.logError( 'Error: Looking for recruitment check, found incorrect value: ' + str( trigger ) + ' @ ' + format( chk, '08x' ) )
+
+            for trigger in itervalues( self.recruits ):
+                self.logger.log( 'Recruitment: setTrigger ' + str( trigger ) )
+
+
+            #------------------------------------------------------
             # Read in chest item data
             #------------------------------------------------------
 
@@ -886,6 +916,22 @@ class DigimonWorldHandler:
                                       struct.pack( data.animIDFormat, util.techSlotAnimID( self.starterTechSlot[ i ] ) ),
                                       self.logger )
 
+            #------------------------------------------------------
+            # Write out recruitment data
+            #------------------------------------------------------
+
+            #Set trigger in each recruitment event and Jijimon check
+            for ( sets, chk ), trigger in iteritems( self.recruits ):
+                for s in sets:
+                    util.writeDataToFile( file,
+                                          s,
+                                          struct.pack( data.recruitFormat, scrutil.setTrigger, trigger ),
+                                          self.logger )
+
+                util.writeDataToFile( file,
+                                          chk,
+                                          struct.pack( data.recruitCheckFormat, trigger ),
+                                          self.logger )
 
             #------------------------------------------------------
             # Write out chest item data
@@ -1185,6 +1231,24 @@ class DigimonWorldHandler:
         self.logger.logChange( 'Changed digimon evolutions to the following: ' )
         for i in range( 1, data.lastPartnerDigimon + 1 ):
             self.logger.logChange( 'Changed evolutions for ' + self.digimonData[ i ].evoData() + '\n' )
+
+
+    def randomizeRecruitments( self ):
+        """
+        Randomize the digimon that is recruited when each
+        event is accomplished (e.g. defeat Gabumon, recruit
+        Frigimon)
+        """
+
+        #randomly shuffle all recruits
+        for setChkA in self.recruits:
+            valA = self.recruits[ setChkA ]
+            setChkB, valB = random.choice( list( iteritems( self.recruits ) ) )
+
+            self.recruits[ setChkA ] = valB
+            self.recruits[ setChkB ] = valA
+
+            self.logger.log( 'Swapped recruitment triggers ' + str( valA ) + ' and ' + str( valB ) )
 
 
     def applyPatch( self, patch ):
