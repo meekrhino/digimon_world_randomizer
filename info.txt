@@ -197,6 +197,17 @@ Recruitment trigger research:
 
     much more complicated... need to change a billion ifs.  May not be feasible after all.
 
+    format for big trigger ifs (which I need often here) is:
+        1900 <S True or False> <S trigger> <opt S comparator S trigger list> 1800 <S jump address> 1900
+
+e.g.
+        if trigger(80) == true OR trigger(218) == false then 10122
+        19 00 01 00        50 00   8  0     00 DA 00 18 00 8A 27         19 00
+        if    trigger true 80      or false    218   then  jump to 10122 (end)
+
+
+
+
     The idea: when you beat Gabumon, you recruit Elecmon instead.  To make the fewest changes, we do
               this by letting it still set/check trigger #217 for defeat/spawn of Gabumon.  However,
               we change all of Elecmon's triggers outside of spawn/defeat to use #217 now (Gabumon's
@@ -204,14 +215,14 @@ Recruitment trigger research:
               shows up in town.
 
     Elecmon triggers:
-        NO TOUCH:       (must be 218)
+        NO TOUCH:       (must be 218 = 0xDA)
             _71     04330   Spawn fightable elecmon
             _254    03234   Rumor about elecmon
 
         MUST CHANGE:    (must be new val)
-            _192    10096   Elecmon intro
-            _192    10438   Show elecmon hanging out
-            _162    00974   Show objects (lights?)
+13FD89F0    _192    10096   Elecmon intro
+13FD8C72    _192    10438   Show elecmon hanging out
+1405997A    _162    00974   Show objects (lights?)
             _163    00330   some other object shared with shellmon
             _163    00442   more objects (night only)
             _163    00462   more objects
