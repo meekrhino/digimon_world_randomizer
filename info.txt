@@ -223,13 +223,15 @@ e.g.
 13FD89F0    _192    10096   Elecmon intro
 13FD8C72    _192    10438   Show elecmon hanging out
 1405997A    _162    00974   Show objects (lights?)
-            _163    00330   some other object shared with shellmon
-            _163    00442   more objects (night only)
-            _163    00462   more objects
-            _163    00506   more objetcs (night only)
-            _163    00582   more objects
+1405C4E6    _163    00330   some other object shared with shellmon
+1405C556    _163    00442   more objects (night only)
+1405C56A    _163    00462   more objects
+1405C596    _163    00506   more objetcs (night only)
+1405C5E2    _163    00582   more objects
             _5      02760   Jijimon
 
+show in restaurant if: 19000000D1004000D0004000DE004000DF001800<jump>1900
+                               209 +4B 208 +4B 222 +4B 223
 
     Meramon triggers:
         NO TOUCH:       (must be 209)
@@ -242,49 +244,51 @@ e.g.
             _254    02270   Rumor about meramon
 
         MUST CHANGE:    (must be new val)
-            _214    11310   Meramon intro
-            _214    11612   Meramon hangin out
-            _215    11728   Meramon intro
-            _215    12030   Meramon hangin out
-            _52     03002   Show restaurant
-            _52     03230   Show restaurant
-            _52     03458   Show restaurant
-            _52     00618   Show restaurant
-            _52     00846   Show restaurant
-            _52     01074   Show restaurant
-            _51     01366   Show restaurant
-            _51     01594   Show restaurant
-            _51     01822   Show restaurant
-            _81     00390   Show restaurant
-            _254    00756   Show restaurant
-            _51     01200   Show restaurant
-            _51     01428   Show restaurant
-            _51     01656   Show restaurant
-            _254    00534   Show restaurant
-            _51     00368   Show restaurant
-            _51     00596   Show restaurant
-            _51     00824   Show restaurant
-            _52     02546   Show restaurant
-            _52     02774   Show restaurant
-            _52     03002   Show restaurant
-            _51     02522   Show restaurant
-            _51     02750   Show restaurant
-            _51     02978   Show restaurant
-            _81     00054   Meramon intro as chef
-            _81     01094   Meramon intro as chef alternate
-            _51     02242   Show restaurant
-            _51     02470   Show restaurant
-            _51     02698   Show restaurant
-            _81     00058   Meramon intro as chef
-            _81     01076   Meramon intro as chef alternate
-            _51     02656   Show restaurant
-            _51     02884   Show restaurant
-            _51     03114   Show restaurant
-            _51     00198   Show restaurant
-            _51     00426   Show restaurant
-            _51     00654   Show restaurant
-            _51     00014   Restaurant dialog
+140BA15A    _214    11310   Meramon intro
+140BA288    _214    11612   Meramon hangin out
+13FD917C    _215    11728   Meramon intro
+13FD92AA    _215    12030   Meramon hangin out
+13FE5056    _52     03002   Show restaurant
+13FE513A    _52     03230   Show restaurant
+13FE521E    _52     03458   Show restaurant
+13FE5836    _52     00618   Show restaurant
+13FE591A    _52     00846   Show restaurant
+13FE59FE    _52     01074   Show restaurant
+13FE5D4E    _51     01366   Show restaurant
+1402BC02    _51     01594   Show restaurant
+1402BCE6    _51     01822   Show restaurant
+1402BDCA    _81     00390   Show restaurant
+1402C5CA    _254    00756   Show restaurant
+1402C6AE    _51     01200   Show restaurant
+1402C792    _51     01428   Show restaurant
+14051FC2    _51     01656   Show restaurant
+14052186    _254    00534   Show restaurant
+140598A0    _51     00368   Show restaurant
+14059A5C    _51     00596   Show restaurant
+14059B40    _51     00824   Show restaurant
+14059C24    _52     02546   Show restaurant
+1405BFAA    _52     02774   Show restaurant
+1405C166    _52     03002   Show restaurant
+1405C24A    _51     02522   Show restaurant
+1405C5B2    _51     02750   Show restaurant
+1405E9CC    _51     02978   Show restaurant
+1406B2B2    _81     00054   Meramon intro as chef
+1406B6C2    _81     01094   Meramon intro as chef alternate
+1405EAB0    _51     02242   Show restaurant
+1405EB94    _51     02470   Show restaurant
+140608AC    _51     02698   Show restaurant
+1406C516    _81     00058   Meramon intro as chef
+1406C910    _81     01076   Meramon intro as chef alternate
+14060990    _51     02656   Show restaurant
+14060A74    _51     02884   Show restaurant
+14063CFE    _51     03114   Show restaurant
+14063DE2    _51     00198   Show restaurant
+14063EC6    _51     00426   Show restaurant
+1406AB26    _51     00654   Show restaurant
+140AD31A    _51     00014   Restaurant dialog
             _5      01844   Jijimon
+
+extra restaurant (probably garbage): 1406AC0A, 1406ACEE, 1406BC6E, 1406BD52, 1406BE36, 1406D06C, 1406D150, 1406D234, 1406D802, 1406D8E6, 1406D9CA, 1406F14A
 
     Tyrannomon triggers:
         NO TOUCH:       (must be 208)
@@ -296,19 +300,56 @@ e.g.
 
 
         MUST CHANGE:    (must be new val)
-            _214    11338   Tyrannomon intro
-            _214    11636   Tyrannomon hangin out
-            _215    11756   Tyrannomon intro
-            _215    12056   Tyrannomon hangin out
-            _254    00354   Tyrannomon intro as chef
-            _254    01288   Tyrannomon intro as chef alternate
-            _81     00362   Tyrannomon intro as chef
-            _81     01290   Tyrannomon intro as chef alternate
-            _51     00110   Restaurant dialog
+13FD8FF6    _214    11338   Tyrannomon intro
+13FD9120    _214    11636   Tyrannomon hangin out
+13FD9198    _215    11756   Tyrannomon intro
+13FD92C2    _215    12056   Tyrannomon hangin out
+1406B3DE    _254    00354   Tyrannomon intro as chef
+1406B784    _254    01288   Tyrannomon intro as chef alternate
+1406C646    _81     00362   Tyrannomon intro as chef
+1406C9E6    _81     01290   Tyrannomon intro as chef alternate
+140AD37A    _51     00110   Restaurant dialog
             _5      01652   Jijimon
 
             see meramon for all "show restaurant" cues
 
+
+    Frigimon triggers:
+        NO TOUCH:       (must be 223)
+            _127    07574   Frigimon in his igloo
+            _8      02454   Rumor about Frigimon
+
+        MUST CHANGE:    (must be new val)
+13FD902E    _214    11394   Frigimon intro
+13FD9150    _214    11684   Frigimon hangin out
+13FD91D0    _215    11812   Frigimon intro
+13FD92F2    _215    12102   Frigimon hangin out
+1406B5E0    _81     00868   Frigimon intro as chef
+1406B99A    _81     01822   Frigimon intro as chef alternate
+1406C844    _81     00872   Frigimon intro as chef
+1406CC16    _81     01850   Frigimon intro as chef alternate
+140AEEAA    _51     00014   Restaurant dialog
+            _5      02052   Jijimon
+
+
+    Garurumon triggers:
+        NO TOUCH:       (must be 222)
+            _95     05716   Second Garurumon fight
+            _95     05752   First Garurumon fight
+            _8      02682   Rumor about Garurumon
+
+
+        MUST CHANGE:    (must be new val)
+13FD9012    _214    11366   Garurumon intro
+13FD9138    _214    11660   Garurumon hangin out
+13FD91B4    _215    11784   Garurumon intro
+13FD92DA    _215    12078   Garurumon hangin out
+1406B4DA    _81     00606   Garurumon intro as chef
+1406B880    _81     01540   Garurumon intro as chef alternate
+1406C742    _81     00614   Garurumon intro as chef
+1406CADA    _81     01534   Garurumon intro as chef alternate
+140AD3C6    _51     00186   Restaurant dialog
+            _5      02218   Jijimon
 
 
 ----------------------------------------------------------------------------------------------------

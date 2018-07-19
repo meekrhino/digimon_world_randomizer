@@ -523,52 +523,82 @@ recruitCheckFormat = '<H'
 
 #(if trigger list, trigger).  Starts with Jijimon conversation
 recruitOffsets = (
-            ( ( 0x140B4572, ), 204 ), #Betamon
-            ( ( 0x140B51F6, ), 205 ), #Greymon
-            ( ( 0x140B6668, ), 206 ), #Devimon
-            ( ( 0x140B672A, ), 207 ), #Airdramon
-            ( ( 0x140B47C0, ), 208 ), #Tyrannomon
-            ( ( 0x140B4880, ), 209 ), #Meramon
-            ( ( 0x140B5A62, ), 211 ), #Numemon
-            ( ( 0x140B6316, ), 212 ), #MetalGreymon
-            ( ( 0x140B598E, ), 213 ), #Mamemon
-            ( ( 0x140B644A, ), 214 ), #Monzaemon
-            ( ( 0x140B563C, ), 217 ), #Gabumon
-            ( ( 0x140B4D44, ), 218 ), #Elecmon
-            ( ( 0x140B5B3A, ), 219 ), #Kabuterimon
-            ( ( 0x140B54BA, ), 220 ), #Angemon
-            ( ( 0x140B4BCE, ), 221 ), #Birdramon
-            ( ( 0x140B4B26, ), 222 ), #Garurumon
-            ( ( 0x140B4A80, ), 223 ), #Frigimon
-            ( ( 0x140B57F4, ), 224 ), #Whamon
-            ( ( 0x140B46F0, ), 225 ), #Vegiemon
-            ( ( 0x140B68BE, ), 226 ), #SkullGreymon
-            ( ( 0x140B617C, ), 227 ), #MetalMamemon
-            ( ( 0x140B626E, ), 228 ), #Vademon
-            ( ( 0x140B507C, ), 231 ), #Patamon
-            ( ( 0x140B432E, ), 232 ), #Kunemon
-            ( ( 0x140B4FB8, ), 233 ), #Unimon
-            ( ( 0x140B5E82, ), 234 ), #Ogremon
-            ( ( 0x140B4C64, ), 235 ), #Shellmon
-            ( ( 0x140B43DC, ), 236 ), #Centarumon
-            ( ( 0x140B462E, ), 237 ), #Bakemon
-            ( ( 0x140B5568, ), 238 ), #Drimogemon
-            ( ( 0x140B6990, ), 240 ), #Andromon
-            ( ( 0x140B5DE0, ), 241 ), #Giromon
-            ( ( 0x140B60CE, ), 242 ), #Etemon
-            ( ( 0x140B5132, ), 245 ), #Biyomon
-            ( ( 0x140B4266, ), 246 ), #Palmon
-            ( ( 0x140B4ED0, ), 247 ), #Monochromon
-            ( ( 0x140B5F30, ), 248 ), #Leomon
-            ( ( 0x140B44C0, ), 249 ), #Coelamon
-            ( ( 0x140B4E06, ), 250 ), #Kokatorimon
-            ( ( 0x140B5D3C, ), 251 ), #Kuwagamon
-            ( ( 0x140B58A4, ), 252 ), #Mojyamon
-            ( ( 0x140B63C6, ), 253 ), #Nanimon
-            ( ( 0x140B600A, ), 255 ), #Piximon
-            ( ( 0x140B67EE, ), 256 ), #Digitamamon
-            ( ( 0x140B53E6, ), 257 ), #Penguinmon
-            ( ( 0x140B573A, ), 258 )  #Ninjamon
+            #( ( 0x140B4572, ), 204 ), #Betamon
+            #( ( 0x140B51F6, ), 205 ), #Greymon
+            #( ( 0x140B6668, ), 206 ), #Devimon
+            #( ( 0x140B672A, ), 207 ), #Airdramon
+            ( ( 0x140B47C0, 0x13FD8FF6, 0x13FD9120, 0x13FD9198, 0x13FD92C2, 0x1406B3DE, 0x1406B784, 0x1406C646,
+                0x1406C9E6, 0x140AD37A, 0x13FE505A, 0x13FE513E, 0x13FE5222, 0x13FE583A, 0x13FE591E, 0x13FE5A02,
+                0x13FE5D52, 0x1402BC06, 0x1402BCEA, 0x1402BDCE, 0x1402C5CE, 0x1402C6B2, 0x1402C796, 0x14051FC6,
+                0x1405218A, 0x140598A4, 0x14059A60, 0x14059B44, 0x14059C28, 0x1405BFAE, 0x1405C16A, 0x1405C24E,
+                0x1405C5B6, 0x1405E9D0, 0x1405EAB4, 0x1405EB98, 0x140608B0, 0x14060994, 0x14060A78, 0x14063D02,
+                0x14063DE6, 0x14063ECA, 0x1406AB2A, 0x1406AC0E, 0x1406ACF2, 0x1406BC72, 0x1406BD56, 0x1406BE3A,
+                0x1406D070, 0x1406D154, 0x1406D238, 0x1406D804, 0x1406D8EA, 0x1406D9CE, 0x1406F14E ),
+              208 ), #Tyrannomon
+            ( ( 0x140B4880, 0x140BA15A, 0x140BA288, 0x13FD917C, 0x13FD92AA, 0x13FE5056, 0x13FE513A, 0x13FE521E,
+                0x13FE5836, 0x13FE591A, 0x13FE59FE, 0x13FE5D4E, 0x1402BC02, 0x1402BCE6, 0x1402BDCA, 0x1402C5CA,
+                0x1402C6AE, 0x1402C792, 0x14051FC2, 0x14052186, 0x140598A0, 0x14059A5C, 0x14059B40, 0x14059C24,
+                0x1405BFAA, 0x1405C166, 0x1405C24A, 0x1405C5B2, 0x1405E9CC, 0x1406B2B2, 0x1406B6C2, 0x1405EAB0,
+                0x1405EB94, 0x140608AC, 0x1406C516, 0x1406C910, 0x14060990, 0x14060A74, 0x14063CFE, 0x14063DE2,
+                0x14063EC6, 0x1406AB26, 0x140AD31A, 0x1406AC0A, 0x1406ACEE, 0x1406BC6E, 0x1406BD52, 0x1406BE36,
+                0x1406D06C, 0x1406D150, 0x1406D234, 0x1406D802, 0x1406D8E6, 0x1406D9CA, 0x1406F14A ),
+              209 ), #Meramon
+            #( ( 0x140B5A62, ), 211 ), #Numemon
+            #( ( 0x140B6316, ), 212 ), #MetalGreymon
+            #( ( 0x140B598E, ), 213 ), #Mamemon
+            #( ( 0x140B644A, ), 214 ), #Monzaemon
+            #( ( 0x140B563C, ), 217 ), #Gabumon
+            ( ( 0x140B4D44, 0x13FD89F0, 0x13FD8C72, 0x1405997A, 0x1405C4E6, 0x1405C556, 0x1405C56A, 0x1405C596,
+                0x1405C5E2 ),
+              218 ), #Elecmon
+            #( ( 0x140B5B3A, ), 219 ), #Kabuterimon
+            #( ( 0x140B54BA, ), 220 ), #Angemon
+            #( ( 0x140B4BCE, ), 221 ), #Birdramon
+            ( ( 0x140B4B26, 0x13FD9012, 0x13FD9138, 0x13FD91B4, 0x13FD92DA, 0x1406B4DA, 0x1406B880, 0x1406C742,
+                0x1406CADA, 0x140AD3C6, 0x13FE505E, 0x13FE5142, 0x13FE5226, 0x13FE583E, 0x13FE5922, 0x13FE5A06,
+                0x13FE5D56, 0x1402BC0A, 0x1402BCEE, 0x1402BDD2, 0x1402C5D2, 0x1402C6B6, 0x1402C79A, 0x14051FCA,
+                0x1405218E, 0x140598A8, 0x14059A64, 0x14059B48, 0x14059C2C, 0x1405BFB2, 0x1405C16E, 0x1405C252,
+                0x1405C5BA, 0x1405E9D4, 0x1405EAB8, 0x1405EB9C, 0x140608B4, 0x14060998, 0x14060A7C, 0x14063D06,
+                0x14063DEA, 0x14063ECE, 0x1406AB2E, 0x1406AC12, 0x1406ACF6, 0x1406BC76, 0x1406BD5C, 0x1406BE3E,
+                0x1406D074, 0x1406D158, 0x1406D23C, 0x1406D808, 0x1406D8EE, 0x1406D9D2, 0x1406F152 ),
+              222 ), #Garurumon
+            ( ( 0x140B4A80, 0x13FD902E, 0x13FD9150, 0x13FD91D0, 0x13FD92F2, 0x1406B5E0, 0x1406B99A, 0x1406C844,
+                0x1406CC16, 0x140AEEAA, 0x13FE5062, 0x13FE5146, 0x13FE522A, 0x13FE5842, 0x13FE5926, 0x13FE5A0A,
+                0x13FE5D5A, 0x1402BC0E, 0x1402BCF2, 0x1402BDD6, 0x1402C5D6, 0x1402C6BA, 0x1402C79E, 0x14051FCE,
+                0x14052192, 0x140598AC, 0x14059A68, 0x14059B4C, 0x14059C30, 0x1405BFB6, 0x1405C172, 0x1405C256,
+                0x1405C5BE, 0x1405E9D8, 0x1405EABC, 0x1405EBA0, 0x140608B8, 0x1406099C, 0x14060A80, 0x14063D0A,
+                0x14063DEE, 0x14063ED2, 0x1406AB32, 0x1406AC16, 0x1406ACFA, 0x1406BC7A, 0x1406BD5E, 0x1406BE42,
+                0x1406D078, 0x1406D15C, 0x1406D240, 0x1406D80C, 0x1406D8F6, 0x1406D9D6, 0x1406F156 ),
+              223 ), #Frigimon
+            #( ( 0x140B57F4, ), 224 ), #Whamon
+            #( ( 0x140B46F0, ), 225 ), #Vegiemon
+            #( ( 0x140B68BE, ), 226 ), #SkullGreymon
+            #( ( 0x140B617C, ), 227 ), #MetalMamemon
+            #( ( 0x140B626E, ), 228 ), #Vademon
+            #( ( 0x140B507C, ), 231 ), #Patamon
+            #( ( 0x140B432E, ), 232 ), #Kunemon
+            #( ( 0x140B4FB8, ), 233 ), #Unimon
+            #( ( 0x140B5E82, ), 234 ), #Ogremon
+            #( ( 0x140B4C64, ), 235 ), #Shellmon
+            #( ( 0x140B43DC, ), 236 ), #Centarumon
+            #( ( 0x140B462E, ), 237 ), #Bakemon
+            #( ( 0x140B5568, ), 238 ), #Drimogemon
+            #( ( 0x140B6990, ), 240 ), #Andromon
+            #( ( 0x140B5DE0, ), 241 ), #Giromon
+            #( ( 0x140B60CE, ), 242 ), #Etemon
+            #( ( 0x140B5132, ), 245 ), #Biyomon
+            #( ( 0x140B4266, ), 246 ), #Palmon
+            #( ( 0x140B4ED0, ), 247 ), #Monochromon
+            #( ( 0x140B5F30, ), 248 ), #Leomon
+            #( ( 0x140B44C0, ), 249 ), #Coelamon
+            #( ( 0x140B4E06, ), 250 ), #Kokatorimon
+            #( ( 0x140B5D3C, ), 251 ), #Kuwagamon
+            #( ( 0x140B58A4, ), 252 ), #Mojyamon
+            #( ( 0x140B63C6, ), 253 ), #Nanimon
+            #( ( 0x140B600A, ), 255 ), #Piximon
+            #( ( 0x140B67EE, ), 256 ), #Digitamamon
+            #( ( 0x140B53E6, ), 257 ), #Penguinmon
+            #( ( 0x140B573A, ), 258 )  #Ninjamon
             )
 
 tokoItemFormat = '<BxBB'
