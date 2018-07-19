@@ -338,7 +338,6 @@ extra restaurant (probably garbage): 1406AC0A, 1406ACEE, 1406BC6E, 1406BD52, 140
             _95     05752   First Garurumon fight
             _8      02682   Rumor about Garurumon
 
-
         MUST CHANGE:    (must be new val)
 13FD9012    _214    11366   Garurumon intro
 13FD9138    _214    11660   Garurumon hangin out
@@ -351,6 +350,20 @@ extra restaurant (probably garbage): 1406AC0A, 1406ACEE, 1406BC6E, 1406BD52, 140
 140AD3C6    _51     00186   Restaurant dialog
             _5      02218   Jijimon
 
+
+    Kabuterimon triggers:
+        NO TOUCH:       (must be 219)
+                    06194   Spwan recruitable Kabuterimon
+
+        MUST CHANGE:    (must be new val)
+                    06436   Kabuterimon hangin out
+                    00064   Revised HP training sign
+                    00712   Revised MP training sign
+                    01316   Revised OFF training sign
+                    01948   Revised DEF training sign
+                    02594   Revised SPD training sign
+                    03172   Revised BRN training sign
+                    06030   Jijimon
 
 ----------------------------------------------------------------------------------------------------
 

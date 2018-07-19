@@ -673,30 +673,25 @@ class DigimonWorldHandler:
             # Read in recruitment data
             #------------------------------------------------------
 
-            self.recruits = {}
-            self.recruitChecks = {}
+            self.recruitData = {}
 
-            for ( sets, chk ) in data.recruitOffsets:
-                err = False
-                for set in sets:
-                    file.seek( set, 0 )
-                    cmd, trigger = struct.unpack( data.recruitFormat,
-                                                  file.read( struct.calcsize( data.recruitFormat ) ) )
-                    if( cmd != scrutil.setTrigger ):
-                        self.logger.logError( 'Error: Looking for recruitment, found incorrect command: ' + str( cmd ) + ' @ ' + format( set, '08x' ) )
+            err = False
+            for ( ofsts, trigger ) in data.recruitOffsets:
+                verifiedOfsts = []
+                for ofst in ofsts:
+                    file.seek( ofst, 0 )
+                    value = struct.unpack( data.recruitFormat,
+                                             file.read( struct.calcsize( data.recruitFormat ) ) )[0]
+                    if( value != trigger ):
+                        self.logger.logError( 'Error: Looking for recruit trigger check, found incorrect value: ' + str( value ) + ' @ ' + format( ofst, '08x' ) )
                         err = True
                     else:
-                        self.recruits[ ( sets, chk ) ] = trigger
+                        verifiedOfsts.append( ofst )
 
-                if( not err ):
-                    file.seek( chk, 0 )
-                    trigger = struct.unpack( data.recruitCheckFormat,
-                                             file.read( struct.calcsize( data.recruitCheckFormat ) ) )[ 0 ]
-                    if( trigger != self.recruits[ ( sets, chk ) ] ):
-                        self.logger.logError( 'Error: Looking for recruitment check, found incorrect value: ' + str( trigger ) + ' @ ' + format( chk, '08x' ) )
+                self.recruitData[ trigger ] = tuple( verifiedOfsts )
 
-            for trigger in itervalues( self.recruits ):
-                self.logger.log( 'Recruitment: setTrigger ' + str( trigger ) )
+            if( not err ):
+                self.logger.log( 'All recruitment check values verified.' )
 
 
             #------------------------------------------------------
@@ -920,17 +915,12 @@ class DigimonWorldHandler:
             # Write out recruitment data
             #------------------------------------------------------
 
-            #Set trigger in each recruitment event and Jijimon check
-            for ( sets, chk ), trigger in iteritems( self.recruits ):
-                for s in sets:
+            #Set trigger in each recruitment check
+            for trigger in self.recruitData:
+                for ofst in self.recruitData[ trigger ]:
                     util.writeDataToFile( file,
-                                          s,
-                                          struct.pack( data.recruitFormat, scrutil.setTrigger, trigger ),
-                                          self.logger )
-
-                util.writeDataToFile( file,
-                                          chk,
-                                          struct.pack( data.recruitCheckFormat, trigger ),
+                                          ofst,
+                                          struct.pack( data.recruitFormat, trigger ),
                                           self.logger )
 
             #------------------------------------------------------
@@ -1241,14 +1231,15 @@ class DigimonWorldHandler:
         """
 
         #randomly shuffle all recruits
-        for setChkA in self.recruits:
-            valA = self.recruits[ setChkA ]
-            setChkB, valB = random.choice( list( iteritems( self.recruits ) ) )
+        for triggerA in self.recruitData:
+            triggerB = random.choice( list( self.recruitData ) )
 
-            self.recruits[ setChkA ] = valB
-            self.recruits[ setChkB ] = valA
+            ofstsA = self.recruitData[ triggerA ]
+            ofstsB = self.recruitData[ triggerB ]
 
-            self.logger.log( 'Swapped recruitment triggers ' + str( valA ) + ' and ' + str( valB ) )
+            self.recruits[ triggerA ], self.recruits[ triggerB ] = ofstsB, ofstsA
+
+            self.logger.log( 'Swapped recruitment triggers ' + str( triggerA ) + ' and ' + str( triggerB ) )
 
 
     def applyPatch( self, patch ):
