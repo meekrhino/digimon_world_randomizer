@@ -368,10 +368,10 @@ extra restaurant (probably garbage): 1406AC0A, 1406ACEE, 1406BC6E, 1406BD52, 140
 
 
     Birdrarmon ~35
-
     Angemon ~21
-
     Monzaemon ~24
+    Betamon ~24
+    Greymon ~130
 
 
     Vademon triggers:
@@ -387,7 +387,6 @@ extra restaurant (probably garbage): 1406AC0A, 1406ACEE, 1406BC6E, 1406BD52, 140
 140AEEEA            00078   Restaurant dialog
                     07570   Jijimon
 
-    Greymon ~130
 
     Gabumon triggers:
         NO TOUCH:       (must be 217)
@@ -399,6 +398,71 @@ extra restaurant (probably garbage): 1406AC0A, 1406ACEE, 1406BC6E, 1406BD52, 140
 140672CE            02210   Gabumon treasure hunt results
 14067588            02908   Gabumon treasure hunt results
                     04752   Jijimon
+
+
+    Numemon triggers:
+        NO TOUCH:       (must be 211)
+                    12960   Spawn recruitable Numemon
+                    12984   Spawn unrecruitable Numemon (haven't done giromon/andromon quest)
+                    02380   Factory quest stuff
+                    04300   Factory quest stuff
+                    00044   Factory quest stuff
+                    05766   Rumor about Numemon
+
+        MUST CHANGE:    (must be new val)
+13FD95E0            12548   Numemon intro
+13FD96D0            12788   Numemon hangin out
+13FE44A6            00310   Spawn secret shop       19000000CE004000D3004000FC004000D500180052011900
+1406D760            00032   Spawn secret shop       19000000CE004000D3004000D5004000FC00180040001900
+1406FC62            02150   Numemon intro
+1406FFC8            03020   Numemon intro
+                    05814   Jijimon
+
+
+    Devimon triggers:
+        NO TOUCH:       (must be 206)
+
+        MUST CHANGE:    (must be new val)
+13FD9634            12632   Devimon intro
+13FD9718            12860   Devimon hangin out
+13FE44A2            00310   Spawn secret shop
+1406D75C            00032   Spawn secret shop
+1406FE82            02694   Devimon shop intro
+140701D2            03542   Devimon shop intro
+                    08284   Jijimon
+
+
+    Mamemon triggers:
+        NO TOUCH:       (must be 213)
+                    02210   Spawn recruitable Mamemon (3% chance)
+                    05544   Rumor about Mamemon
+
+
+        MUST CHANGE:    (must be new val)
+13FD9618            12604   Mamemon intro
+13FD9700            12836   Mamemon hangin out
+13FE44AE            00310   Spawn secret shop
+1406D764            00032   Spawn secret shop
+1406FDDC            02528   Mamemon shop intro
+1407012E            03378   Mamemon shop intro
+                    05602   Jijimon
+
+
+    Mojyamon triggers:
+        NO TOUCH:       (must be 252)
+                    00729   Mojyamon recruitment 1
+                    01534   Mojyamon recruitment 2
+                    00624   Mojyamon recruitment 3
+                    05352   Rumor about Mojyamon
+
+        MUST CHANGE:    (must be new val)
+13FD95FC            12576   Mojyamon intro
+13FD96E8            12812   Mojyamon hangin out
+13FE44AA            00310   Spawn secret shop
+1406D768            00032   Spawn secret shop
+                    02348   Mojyamon shop intro
+                    03186   Mojyamon shop intro
+                    05368   Jijimon
 
 
 ----------------------------------------------------------------------------------------------------
