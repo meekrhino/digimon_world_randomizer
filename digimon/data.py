@@ -525,7 +525,6 @@ recruitOffsets = (
             #( ( 0x140B4572, ), 204 ), #Betamon
             #( ( 0x140B51F6, ), 205 ), #Greymon
             #( ( 0x140B6668, ), 206 ), #Devimon
-            #( ( 0x140B672A, ), 207 ), #Airdramon
             ( ( 0x140B47C0, 0x13FD8FF6, 0x13FD9120, 0x13FD9198, 0x13FD92C2, 0x1406B3DE, 0x1406B784, 0x1406C646,
                 0x1406C9E6, 0x140AD37A, 0x13FE505A, 0x13FE513E, 0x13FE5222, 0x13FE583A, 0x13FE591E, 0x13FE5A02,
                 0x13FE5D52, 0x1402BC06, 0x1402BCEA, 0x1402BDCE, 0x1402C5CE, 0x1402C6B2, 0x1402C796, 0x14051FC6,
@@ -543,14 +542,16 @@ recruitOffsets = (
                 0x1406D06C, 0x1406D150, 0x1406D234, 0x1406D802, 0x1406D8E6, 0x1406D9CA, 0x1406F14A ),
               209 ), #Meramon
             #( ( 0x140B5A62, ), 211 ), #Numemon
-            #( ( 0x140B6316, ), 212 ), #MetalGreymon
             #( ( 0x140B598E, ), 213 ), #Mamemon
             #( ( 0x140B644A, ), 214 ), #Monzaemon
-            #( ( 0x140B563C, ), 217 ), #Gabumon
+            ( ( 0x140B563C, 0x13FD8F0C, 0x140672CE, 0x14067588 ),
+              217 ), #Gabumon
             ( ( 0x140B4D44, 0x13FD89F0, 0x13FD8C72, 0x1405997A, 0x1405C4E6, 0x1405C556, 0x1405C56A, 0x1405C596,
                 0x1405C5E2 ),
               218 ), #Elecmon
-            #( ( 0x140B5B3A, ), 219 ), #Kabuterimon
+            ( ( 0x140B5B3A, 0x13FD7A70, 0x1402DBAC, 0x1402DE34, 0x1402E090, 0x1402E308, 0x1402E6BE, 0x1402E900 ),
+              219 ), #Kabuterimon
+
             #( ( 0x140B54BA, ), 220 ), #Angemon
             #( ( 0x140B4BCE, ), 221 ), #Birdramon
             ( ( 0x140B4B26, 0x13FD9012, 0x13FD9138, 0x13FD91B4, 0x13FD92DA, 0x1406B4DA, 0x1406B880, 0x1406C742,
@@ -573,7 +574,8 @@ recruitOffsets = (
             #( ( 0x140B46F0, ), 225 ), #Vegiemon
             #( ( 0x140B68BE, ), 226 ), #SkullGreymon
             #( ( 0x140B617C, ), 227 ), #MetalMamemon
-            #( ( 0x140B626E, ), 228 ), #Vademon
+            ( ( 0x140B626E, 0x13FD904E, 0x13FD91F0, 0x140AEEEA ),
+              228 ), #Vademon
             #( ( 0x140B507C, ), 231 ), #Patamon
             #( ( 0x140B432E, ), 232 ), #Kunemon
             #( ( 0x140B4FB8, ), 233 ), #Unimon

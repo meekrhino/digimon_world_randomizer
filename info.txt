@@ -193,6 +193,8 @@ allow that?  but also make centarumon's place weird af somehow?)
 Recruitment trigger research:
     Recruitment triggers are: 203-258  minus 215, 216, 229, 230, 243, 244 (and a couple others)
 
+    No airdramon or metalgreymon, because they use trigger(50) aka beat the game
+
     don't mess with agumon's recruitment trigger! breaks stuff
 
     much more complicated... need to change a billion ifs.  May not be feasible after all.
@@ -298,7 +300,6 @@ extra restaurant (probably garbage): 1406AC0A, 1406ACEE, 1406BC6E, 1406BD52, 140
             _6      02246   Dino region quest stuff
             _254    02074   Rumor about Tyrannomon
 
-
         MUST CHANGE:    (must be new val)
 13FD8FF6    _214    11338   Tyrannomon intro
 13FD9120    _214    11636   Tyrannomon hangin out
@@ -356,14 +357,49 @@ extra restaurant (probably garbage): 1406AC0A, 1406ACEE, 1406BC6E, 1406BD52, 140
                     06194   Spwan recruitable Kabuterimon
 
         MUST CHANGE:    (must be new val)
-                    06436   Kabuterimon hangin out
-                    00064   Revised HP training sign
-                    00712   Revised MP training sign
-                    01316   Revised OFF training sign
-                    01948   Revised DEF training sign
-                    02594   Revised SPD training sign
-                    03172   Revised BRN training sign
+13FD7A70            06436   Kabuterimon hangin out
+1402DBAC            00064   Revised HP training sign
+1402DE34            00712   Revised MP training sign
+1402E090            01316   Revised OFF training sign
+1402E308            01948   Revised DEF training sign
+1402E6BE            02594   Revised SPD training sign
+1402E900            03172   Revised BRN training sign
                     06030   Jijimon
+
+
+    Birdrarmon ~35
+
+    Angemon ~21
+
+    Monzaemon ~24
+
+
+    Vademon triggers:
+        NO TOUCH:       (must be 228)
+                    01646   If you already have vademon or haven't heard the news
+                    00232   If you already have vademon or haven't heard the news
+                    00302   If you already have vademon or haven't heard the news
+                    07916   Rumor about Vademon
+
+        MUST CHANGE:    (must be new val)
+13FD904E            11426   20% chance Vademon shows up in top (new house)
+13FD91F0            11844   20% chance Vademon shows up in top (new house + palmon)
+140AEEEA            00078   Restaurant dialog
+                    07570   Jijimon
+
+    Greymon ~130
+
+    Gabumon triggers:
+        NO TOUCH:       (must be 217)
+                    06926   Spawn fightable Gabumon
+                    04528   Rumor about Gabumon
+
+        MUST CHANGE:    (must be new val)
+13FD8F0C            11104   Gabumon at treasure hunt
+140672CE            02210   Gabumon treasure hunt results
+14067588            02908   Gabumon treasure hunt results
+                    04752   Jijimon
+
 
 ----------------------------------------------------------------------------------------------------
 
