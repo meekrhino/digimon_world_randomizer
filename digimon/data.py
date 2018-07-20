@@ -572,7 +572,8 @@ recruitOffsets = (
                 0x14063DEE, 0x14063ED2, 0x1406AB32, 0x1406AC16, 0x1406ACFA, 0x1406BC7A, 0x1406BD5E, 0x1406BE42,
                 0x1406D078, 0x1406D15C, 0x1406D240, 0x1406D80E, 0x1406D8F2, 0x1406D9D6, 0x1406F156 ),
               223 ), #Frigimon
-            #( ( 0x140B57F4, ), 224 ), #Whamon
+            ( ( 0x140B57F4, 0x13FD86FC, 0x1405986C, 0x1405B1FE ),
+              224 ), #Whamon
             #( ( 0x140B46F0, ), 225 ), #Vegiemon
             #( ( 0x140B68BE, ), 226 ), #SkullGreymon
             #( ( 0x140B617C, ), 227 ), #MetalMamemon

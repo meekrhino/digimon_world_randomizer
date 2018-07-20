@@ -216,6 +216,14 @@ e.g.
               trigger).  So now you defeat Gabumon and he will not show up anymore, and now Elecmon
               shows up in town.
 
+    Birdrarmon ~35
+    Angemon ~21
+    Monzaemon ~24
+    Betamon ~24
+    Greymon ~130
+    Whamon 14
+
+
     Elecmon triggers:
         NO TOUCH:       (must be 218 = 0xDA)
             _71     04330   Spawn fightable elecmon
@@ -367,13 +375,6 @@ extra restaurant (probably garbage): 1406AC0A, 1406ACEE, 1406BC6E, 1406BD52, 140
                     06030   Jijimon
 
 
-    Birdrarmon ~35
-    Angemon ~21
-    Monzaemon ~24
-    Betamon ~24
-    Greymon ~130
-
-
     Vademon triggers:
         NO TOUCH:       (must be 228)
                     01646   If you already have vademon or haven't heard the news
@@ -460,9 +461,29 @@ extra restaurant (probably garbage): 1406AC0A, 1406ACEE, 1406BC6E, 1406BD52, 140
 13FD96E8            12812   Mojyamon hangin out
 13FE44AA            00310   Spawn secret shop
 1406D768            00032   Spawn secret shop
-                    02348   Mojyamon shop intro
-                    03186   Mojyamon shop intro
+1406FD28            02348   Mojyamon shop intro
+1407006E            03186   Mojyamon shop intro
                     05368   Jijimon
+
+
+    Whamon triggers:
+        NO TOUCH:       (must be 224)
+                    07452   Spawn interactable Whamon (after Ogremon 2)
+                    00154   Ogremon 3 quest
+                    00024   Ogremon 3 quest
+                    00148   Ogremon 3 quest
+                    01884   Yuramon rumors
+                    02084   Yuramon rumors
+                    02252   Yuramon rumors
+                    02802   Info about Yuramon rumors
+                    02768   Info about Yuramon rumors
+                    05136   Rumor about Whamon
+
+        MUST CHANGE:    (must be new val)
+13FD86FC            09344   Whamon hangin out
+1405986C            00704   Whamon's dock?
+1405B1FE            06338   Whamon service
+                    05192   Jijimon
 
 
 ----------------------------------------------------------------------------------------------------
