@@ -221,7 +221,31 @@ e.g.
     Monzaemon ~24
     Betamon ~24
     Greymon ~130
-    Whamon 14
+    Vegiemon 73
+    SkullGreymon 7
+    MetalMamemon 4
+    Patamon 26
+    Kunemon 14
+    Unimon 28
+    Ogremon 8
+    Shellmon 12
+    Centarumon 85
+    Bakemon 5
+    Drimogemon 9
+    Andromon 3
+    Giromon 4
+    Etemon 8
+    Biyomon 30
+    Palmon 72
+    Monochromon 28
+    Leomon 5
+    Coelamon 33
+    Kokatorimon 10
+    Nanimon 2
+    Piximon 4
+    Digitamamon 7
+    Penguinmon 11
+    Ninjamon 6
 
 
     Elecmon triggers:

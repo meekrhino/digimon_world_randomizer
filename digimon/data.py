@@ -191,7 +191,7 @@ evoItemPatchValue  = 0x00
 evoitemPatchFormat = '<B'
 
 woahPatchOffset = 0x14D76EF4
-woahPatchValue = 'Oh shit!'
+woahPatchValue = 'Oh shit!'.encode( 'ascii' )
 woahPatchFormat = '<10s'
 
 scriptOffsetInBinary = 0x13FD5809

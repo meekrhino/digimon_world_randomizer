@@ -87,8 +87,6 @@ def compile( inst, *args ):
     args -- Variable length argument list for instruction.
     """
 
-    print args
-
     if( inst == 'spawnChest' ):
         packed = struct.pack(
                             '<BBhhhhh',
