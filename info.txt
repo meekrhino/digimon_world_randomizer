@@ -223,22 +223,14 @@ e.g.
     Greymon         131
     Vegiemon        73
     SkullGreymon    7
-    MetalMamemon    4
     Patamon         26
     Kunemon         14
     Unimon          28
-    Ogremon         8
     Shellmon        12
     Centarumon      85
-    Bakemon         5
-    Drimogemon      9
-    Andromon        3
-    Giromon         4
-    Etemon          8
     Biyomon         30
     Palmon          72
     Monochromon     28
-    Leomon          5
     Coelamon        33
     
     Seadramon and Megadramon do literally nothing in town.
@@ -607,6 +599,89 @@ extra restaurant (probably garbage): 1406AC0A, 1406ACEE, 1406BC6E, 1406BD52, 140
         MUST CHANGE:    (must be new val)
 13FD8ED2            11046   Leomon hangin out (birdra room)
                     06740   Jijimon
+                    
+                    
+    Etemon triggers:
+        NO TOUCH:       (must be 248)
+                    01360   Recruitable Etemon
+                    01412   Etemon screen
+                    01438   Etemon screen 
+                    00272   Etemon's door
+                    00340   Etemon cutscene
+                    07514   Rumor about Etemon
+
+        MUST CHANGE:    (must be new val)
+13FD63CA            01550   Etemon hangin out
+                    07154   Jijimon
+
+
+    Giromon triggers:
+        NO TOUCH:       (must be 241)
+                    08764   Recruitable Giromon
+                    06180   Rumor about Giromon
+
+        MUST CHANGE:    (must be new val)
+1405E514            07656   Spawn jukebox
+                    06404   Jijimon
+
+
+    Andromon triggers:
+        NO TOUCH:       (must be 240)
+                    00024   Adromon recruitment
+
+        MUST CHANGE:    (must be new val)
+13FD8780            09476   Andromon chillin
+                    09092   Jijimon
+
+
+    Drimogemon triggers:
+        NO TOUCH:       (must be 238)
+                    02764   Drimogemon by gear savanna entrance
+                    00986   Tunnel open/closed
+                    00618   Tunnel open/closed
+                    00064   Drimogemon at entrance
+                    00086   Drimogemon in lava cave
+                    04528   Rumor about Drimogemon
+                    
+        MUST CHANGE:    (must be new val)
+14059854            00680   Show some objects
+1405B1E4            06312   Treasure cave
+                    04540   Jijimon
+
+
+    Bakemon triggers:
+        NO TOUCH:       (must be 237)
+                    02888   Spawn recruitable Bakemon
+                    01698   Rumor about Bakemon
+
+        MUST CHANGE:    (must be new val)
+13FD896C            09968   Bakemon intro
+13FD8C4A            10398   Bakemon chillin
+                    01250   Jijimon
+
+
+    Ogremon triggers:
+        NO TOUCH:       (must be 234)
+                    02478   Ogremon quest
+                    00998   Ogremon quest
+                    00482   Ogremon quest
+                    00630   Ogremon quest
+                    00520   Ogremon quest (cutscene in drill tunnel)
+
+        MUST CHANGE:    (must be new val)
+13FD8BD2            10278   Ogremon chillin
+13FF293A            00030   Ogremon dialog ("I fixed the sign")
+                    06566   Jijimon
+
+
+    MetalMamemon triggers:
+        NO TOUCH:       (must be 227)
+                    08354   MetalMamemon screen in Factory
+                    07688   Rumor about MetalMamemon
+        
+        MUST CHANGE:    (must be new val)
+13FD9982            13478   MetalMamemon hangin out in curling
+                    07328   Jijimon
                     
         
 ----------------------------------------------------------------------------------------------------

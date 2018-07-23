@@ -576,22 +576,29 @@ recruitOffsets = (
               224 ), #Whamon
             #( ( 0x140B46F0, ), 225 ), #Vegiemon
             #( ( 0x140B68BE, ), 226 ), #SkullGreymon
-            #( ( 0x140B617C, ), 227 ), #MetalMamemon
+            ( ( 0x140B617C, 0x13FD9982 ), 
+              227 ), #MetalMamemon
             ( ( 0x140B626E, 0x13FD904E, 0x13FD91F0, 0x140AEEEA ),
               228 ), #Vademon
             #( ( 0x140B507C, ), 231 ), #Patamon
             #( ( 0x140B432E, ), 232 ), #Kunemon
             #( ( 0x140B4FB8, ), 233 ), #Unimon
-            #( ( 0x140B5E82, ), 234 ), #Ogremon
+            ( ( 0x140B5E82, 0x13FD8BD2, 0x13FF293A ), 
+              234 ), #Ogremon
             #( ( 0x140B4C64, ), 235 ), #Shellmon
             #( ( 0x140B43DC, ), 236 ), #Centarumon
-            #( ( 0x140B462E, ), 237 ), #Bakemon
-            #( ( 0x140B5568, ), 238 ), #Drimogemon
+            ( ( 0x140B462E, 0x13FD896C, 0x13FD8C4A ), 
+              237 ), #Bakemon
+            ( ( 0x140B5568, 0x14059854, 0x1405B1E4 ), 
+              238 ), #Drimogemon
             ( ( 0x13FD87F6, ),
               239 ), #Sukamon -- no Jijimon 
-            #( ( 0x140B6990, ), 240 ), #Andromon
-            #( ( 0x140B5DE0, ), 241 ), #Giromon
-            #( ( 0x140B60CE, ), 242 ), #Etemon
+            ( ( 0x140B6990, 0x13FD8780 ), 
+              240 ), #Andromon
+            ( ( 0x140B5DE0, 0x1405E514 ), 
+              241 ), #Giromon
+            ( ( 0x140B60CE, 0x13FD63CA ), 
+              242 ), #Etemon
             #( ( 0x140B5132, ), 245 ), #Biyomon
             #( ( 0x140B4266, ), 246 ), #Palmon
             #( ( 0x140B4ED0, ), 247 ), #Monochromon
