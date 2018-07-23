@@ -191,13 +191,13 @@ allow that?  but also make centarumon's place weird af somehow?)
 
 ----------------------------------------------------------------------------------------------------
 Recruitment trigger research:
-    Recruitment triggers are: 203-258  minus 215, 216, 229, 230, 243, 244 (and a couple others)
+    Recruitment triggers are: 203-258  minus 215, 216, 229, 230, 243, 244
 
     No airdramon or metalgreymon, because they use trigger(50) aka beat the game
 
     don't mess with agumon's recruitment trigger! breaks stuff
 
-    much more complicated... need to change a billion ifs.  May not be feasible after all.
+    So, 50 recruits, minus agumon airdramon metalgreymon, means 47 need to be changed.
 
     format for big trigger ifs (which I need often here) is:
         1900 <S True or False> <S trigger> <opt S comparator S trigger list> 1800 <S jump address> 1900
@@ -216,21 +216,17 @@ e.g.
               trigger).  So now you defeat Gabumon and he will not show up anymore, and now Elecmon
               shows up in town.
 
-    Birdrarmon      35
+    Birdramon       35
     Angemon         23
     Monzaemon       23
-    Betamon         24
     Greymon         131
     Vegiemon        73
-    Patamon         26
     Kunemon         14
-    Unimon          28
     Shellmon        12
     Centarumon      85
-    Biyomon         30
     Palmon          72
-    Monochromon     28
-    Coelamon        33
+    ------------------
+                   468
 
 
     Elecmon triggers:
@@ -493,19 +489,19 @@ extra restaurant (probably garbage): 1406AC0A, 1406ACEE, 1406BC6E, 1406BD52, 140
 1405986C            00704   Whamon's dock?
 1405B1FE            06338   Whamon service
                     05192   Jijimon
-                    
+
     Ninjamon triggers:
         NO TOUCH:       (must be 258)
                     01550   Etemon at the bridge
                     01574   Ninjamon at the bridge
                     04974   Rumor about Ninjamon
-        
+
         MUST CHANGE:    (must be new val)
 13FD95CE            12530   Ninjamon hangin out
 13FE4494            00296   Something in town?
                     05006   Jijimon
-                    
-                    
+
+
     Penguinmon triggers:
         NO TOUCH:       (must be 257)
                     07402   Penguinmon in Freezeland
@@ -513,7 +509,7 @@ extra restaurant (probably garbage): 1406AC0A, 1406ACEE, 1406BC6E, 1406BD52, 140
                     00034   Pengiunmon conversation in freezeland (1st)
                     00886   Penguinmon conversation in freezeland (after 1st)
                     04334   Rumor about Penguinmon
-                    
+
         MUST CHANGE:    (must be new val)
 13FD999E            13506   Penguinmon hangin out (in file city curling arena)
 14063218            00060   Spawn curling arena
@@ -521,43 +517,43 @@ extra restaurant (probably garbage): 1406AC0A, 1406ACEE, 1406BC6E, 1406BD52, 140
 14095A7E            00134   Some objects in arena
 140632A4            00200   Warp to curling?
                     04154   Jijimon
-                    
-                    
+
+
     Digitamamon triggers:
         NO TOUCH:       (must be 257)
                     13188   Fightable Digitamamon in postgame
                     00018   Digitamamon cutscene
                     08882   Rumor about Digitamamon
-                    
+
         MUST CHANGE:    (must be new val)
 13FD906E            11458   Digitamamon hangin out
 13FD9210            11876   Digitamamon hangin out (with jukebox)
 140AEF36            00154   Restaurant dialog
                     08674   Jijimon
-                    
-                    
+
+
     Piximon triggers:
         NO TOUCH:       (must be 255)
                     01804   Recruitable Piximon
                     07322   Rumor about Piximon
-        
+
         MUST CHANGE:    (must be new val)
 13FD9396            12266   Piximon hangin out
                     06958   Jijimon
-                    
-                    
+
+
     Nanimon triggers:
         NO TOUCH:       (must be 255)
-        
+
         MUST CHANGE:    (must be new val)
 13FD8F5A            11182   Nanimon hangin out
                     07914   Jijimon
-                    
-                    
+
+
     Sukamon triggers:
         NO TOUCH:       (must be 239)
                     05768   Sukamon in trash mountain
-                    
+
         MUST CHANGE:    (must be new val)
 13FD87F6            09594   Sukamon hangin out
 
@@ -596,13 +592,13 @@ extra restaurant (probably garbage): 1406AC0A, 1406ACEE, 1406BC6E, 1406BD52, 140
         MUST CHANGE:    (must be new val)
 13FD8ED2            11046   Leomon hangin out (birdra room)
                     06740   Jijimon
-                    
-                    
+
+
     Etemon triggers:
         NO TOUCH:       (must be 248)
                     01360   Recruitable Etemon
                     01412   Etemon screen
-                    01438   Etemon screen 
+                    01438   Etemon screen
                     00272   Etemon's door
                     00340   Etemon cutscene
                     07514   Rumor about Etemon
@@ -639,7 +635,7 @@ extra restaurant (probably garbage): 1406AC0A, 1406ACEE, 1406BC6E, 1406BD52, 140
                     00064   Drimogemon at entrance
                     00086   Drimogemon in lava cave
                     04528   Rumor about Drimogemon
-                    
+
         MUST CHANGE:    (must be new val)
 14059854            00680   Show some objects
 1405B1E4            06312   Treasure cave
@@ -675,7 +671,7 @@ extra restaurant (probably garbage): 1406AC0A, 1406ACEE, 1406BC6E, 1406BD52, 140
         NO TOUCH:       (must be 227)
                     08354   MetalMamemon screen in Factory
                     07688   Rumor about MetalMamemon
-        
+
         MUST CHANGE:    (must be new val)
 13FD9982            13478   MetalMamemon hangin out in curling
                     07328   Jijimon
@@ -689,11 +685,232 @@ extra restaurant (probably garbage): 1406AC0A, 1406ACEE, 1406BC6E, 1406BD52, 140
                     01326   Myotismon quest stuff
                     01404   News about Myotismon
                     01884   News about Myotismon
-        
+
         MUST CHANGE:    (must be new val)
                     08882   Jijimon
-                    
-        
+
+
+    Betamon triggers:
+        NO TOUCH:       (must be 204)
+                    01978   Recruitable Betamon
+                    01544   Rumor about Betamon
+
+        MUST CHANGE:    (must be new val)
+13FD893A            09918   Spawn shop
+13FD8A4A            10190   Spawn shop
+13FE503A            02974   Spawn shop
+13FE581A            00590   Spawn shop
+1402BBE6            01338   Spawn shop
+14059A40            01172   Spawn shop
+1405C40A            00110   Spawn some objects?
+1405C6A2            00774   More shop stuff
+1405CA20            01668   Coelamon intro check
+1405CB42            01958   Coelamon + Betamon intro together
+1405CD5C            02192   Set shop items buyable
+1405E044            06416   Coelamon intro check
+1405E222            06902   Betamon intro
+1405E344            07192   Coelamon + Betamon intro together
+1405E420            07412   Set shop items buyable
+1405E9B0            00340   Spawn shop
+14063CE2            02518   Spawn shop
+1406AB0A            02494   Spawn shop
+1406BC52            02214   Spawn shop
+1406D050            02628   Spawn shop
+1406D7E6            00170   Spawn shop
+                    01062   Jijimon
+
+
+    Coelamon triggers:
+        NO TOUCH        (must be 249)
+                    00120   Coela Point
+                    00202   Coela Point
+                    00586   Coelamon cutscene
+                    01508   Coelamon cutscene 2
+                    01386   Rumor about Coelamon
+
+        MUST CHANGE:    (must be new val)
+13FD8FBA            11278   Coelamon hangin out
+13FE503E            02974   Spawn shop
+13FE581E            00590   Spawn shop
+1402BBEA            01338   Spawn shop
+14059A44            01172   Spawn shop
+1405C5FE            00610   Shop stuff...?  In file city
+1405C612            00630    "          "
+1405C626            00650    "          "
+1405C63A            00670    "          "
+1405C64E            00690    "          "
+1405C662            00710    "          "
+1405C676            00730    "          "
+1405C68A            00750    "          "
+1405CA28            01668   Coelamon intro check
+1405CB46            01958   Coelamon + Betamon intro together
+1405CD60            02192   Set shop items buyable
+1405E03C            06416   Coelamon intro check
+1405E22A            06902   Betamon intro
+1405E348            07192   Coelamon + Betamon intro together
+1405E424            07412   Set shop items buyable
+1405E47C            07504   Something to do with the shop
+1405E9B4            00340   Spawn shop
+14063CE6            02518   Spawn shop
+1406AB0E            02494   Spawn shop
+1406BC56            02214   Spawn shop
+1406D054            02628   Spawn shop
+1406D7EA            00170   Spawn shop
+                    00884   Jijimon
+
+
+    Monochromon triggers:
+        NO TOUCH        (must be 247)
+                    03716   Monochromon in his shop
+                    00016   Monochromon "cutscene" (he turns to look, I think)
+                    00034   Monochromon cutscene 2
+                    03572   Rumor about Monochromon
+
+        MUST CHANGE:    (must be new val)
+13FD8952            09930   Spawn shop
+13FD8A62            10202   Spawn shop
+13FD8FAE            11254   Spawn shop
+13FD9372            12230   In the item shop
+13FD95A8            12492   In the item shop
+13FE5022            02938   Spawn shop
+13FE5802            00554   Spawn shop
+1402BBCE            01302   Spawn shop
+140598E4            00812   Spawn shop
+14059A28            01136   Spawn shop
+1405C3F6            00078   Spawn shop
+1405C6BC            00788   Spawn shop
+1405C97E            01494   Spawn shop
+1405E998            00304   Spawn shop
+14063CCA            02482   Spawn shop
+1406AAF2            02458   Spawn shop
+1406BC3A            02178   Spawn shop
+1406D038            02592   Spawn shop
+1406D7CE            00134   Spawn shop
+1406DF30            02036   Monochromon intro (makes the shop)
+1406E3BE            02898   Monochromon intro (joins the shop)
+14070578            00064   Spawn shop
+1407267C            07604   Spawn shop
+                    03156   Jijimon
+
+
+    Unimon triggers:
+        NO TOUCH        (must be 233)
+                    13382   Unimon in Mt Panorama
+                    00170   Alt. Unimon screen (unused in the game)
+                    00122   Unimon screen in Mt Panorama Spore Area
+                    03736   Rumor about Unimon
+
+        MUST CHANGE:    (must be new val)
+13FD894E            09930   Spawn shop
+13FD8A5E            10202   Spawn shop
+13FD8FAA            11254   Spawn shop
+13FD9356            12202   In the item shop
+13FD9590            12468   In the item shop
+13FE501E            02938   Spawn shop
+13FE57FE            00554   Spawn shop
+1402BBCA            01302   Spawn shop
+140598E0            00812   Spawn shop
+14059A24            01136   Spawn shop
+1405C3F2            00078   Spawn shop
+1405C6B8            00788   Spawn shop
+1405C97A            01494   Spawn shop
+1405E994            00304   Spawn shop
+14063CC6            02482   Spawn shop
+1406AAEE            02458   Spawn shop
+1406BC36            02178   Spawn shop
+1406D034            02592   Spawn shop
+1406D7CA            00134   Spawn shop
+1406DDC2            01670   Unimon intro (makes the shop)
+1406E30A            02718   Unimon intro (joins the shop)
+14070574            00064   Spawn shop
+14072678            07604   Spawn shop
+                    03388   Jijimon
+
+
+    Patamon triggers:
+        NO TOUCH        (must be 231)
+                    04418   Spawn fightable Patamon
+                    03954   Rumor about Patamon
+
+        MUST CHANGE:    (must be new val)
+13FD8946            09930   Spawn shop
+13FD8A56            10202   Spawn shop
+13FD8FA2            11254   Spawn shop
+13FD931E            12146   In the item shop
+13FD9560            12420   In the item shop
+13FE5016            02938   Spawn shop
+13FE57F6            00554   Spawn shop
+1402BBC2            01302   Spawn shop
+140598D8            00812   Spawn shop
+14059A1C            01136   Spawn shop
+1405C3EA            00078   Spawn shop
+1405C6B0            00788   Spawn shop
+1405C972            01494   Spawn shop
+1405E98C            00304   Spawn shop
+14063CBE            02482   Spawn shop
+1406AAE6            02458   Spawn shop
+1406BC2E            02178   Spawn shop
+1406D02C            02592   Spawn shop
+1406D7C2            00134   Spawn shop
+1406DADE            00930   Patamon intro (makes the shop)
+1406E176            02314   Patamon intro (joins the shop)
+1407056C            00064   Spawn shop
+14072670            07604   Spawn shop
+                    03704   Jijimon
+
+
+    Biyomon triggers:
+        NO TOUCH        (must be 245)
+                    04496   Recruitable Biyomon
+                    01188   Biyomon catch
+                    01520   Biyomon catch
+                    01850   Biyomon catch
+                    02180   Biyomon catch
+                    03954   Rumor about Biyomon
+
+        MUST CHANGE:    (must be new val)
+13FD894A            09930   Spawn shop
+13FD8A5A            10202   Spawn shop
+13FD8FA6            11254   Spawn shop
+13FD933A            12174   In the item shop
+13FD9578            12444   In the item shop
+13FE501A            02938   Spawn shop
+13FE57FA            00554   Spawn shop
+1402BBC6            01302   Spawn shop
+140598DC            00812   Spawn shop
+14059A20            01136   Spawn shop
+1405C3EE            00078   Spawn shop
+1405C6B4            00788   Spawn shop
+1405C976            01494   Spawn shop
+1405E990            00304   Spawn shop
+14063CC2            02482   Spawn shop
+1406AAEA            02458   Spawn shop
+1406BC32            02178   Spawn shop
+1406D030            02592   Spawn shop
+1406D7C6            00134   Spawn shop
+1406DC52            01302   Biyomon intro (makes the shop)
+1406E240            02516   Biyomon intro (joins the shop)
+14070570            00064   Spawn shop
+14072674            07604   Spawn shop
+                    03766   Jijimon
+
+
+    Kunemon triggers:
+        NO TOUCH:       (must be 232)
+                    01214   Fightable Kunemon in Native Forest
+                    01232   Other stuff in Kunemon screen (after you beat him)
+                    01262   Other stuff in Kunemon screen (after you beat him)
+                    00076   Kunemon cutscene
+
+        MUST CHANGE:    (must be new val)
+                    10034   Kunemon hangin out
+                    10498   Kunemon intro
+                    00032   Remove wall at digimon bridge?
+                    00068   Other objects?
+                    00036   More objects
+                    00072   More objects
+
+
 ----------------------------------------------------------------------------------------------------
 
 ----------------------------------------------------------------------------------------------------
