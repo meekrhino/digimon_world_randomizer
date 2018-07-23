@@ -221,12 +221,11 @@ e.g.
     Monzaemon       23
     Greymon         131
     Vegiemon        73
-    Kunemon         14
     Shellmon        12
     Centarumon      85
     Palmon          72
     ------------------
-                   468
+                   454
 
 
     Elecmon triggers:
@@ -914,6 +913,23 @@ extra restaurant (probably garbage): 1406AC0A, 1406ACEE, 1406BC6E, 1406BD52, 140
 1405E4C6            07578   Warp between bridge and file city
                     00482   Jijimon
 
+
+    Shellmon triggers:
+        NO TOUCH:       (must be 235)
+                    03170   Shellmon in the Great Canyon (up)
+                    07160   Shellmon in the Great Canyon (down)
+                    00114   Shellmon recruitment quest
+                    00132   Shellmon recruitment quest
+                    03050   Rumor about Shellmon
+        
+        MUST CHANGE:    (must be new val)
+                    09994   Shellmon hangin out
+                    10254   Shellmon intro
+                    10314   Shellmon intro
+                    00250   Show objects
+                    00330   Show objects
+                    07544   Shellmon news stuff
+                    02536   Jijimon
 
 ----------------------------------------------------------------------------------------------------
 
