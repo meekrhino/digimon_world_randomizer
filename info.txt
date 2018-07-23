@@ -901,14 +901,18 @@ extra restaurant (probably garbage): 1406AC0A, 1406ACEE, 1406BC6E, 1406BD52, 140
                     01232   Other stuff in Kunemon screen (after you beat him)
                     01262   Other stuff in Kunemon screen (after you beat him)
                     00076   Kunemon cutscene
+                    00984   Rumor about Kunemon
 
         MUST CHANGE:    (must be new val)
-                    10034   Kunemon hangin out
-                    10498   Kunemon intro
-                    00032   Remove wall at digimon bridge?
-                    00068   Other objects?
-                    00036   More objects
-                    00072   More objects
+13FD89B2            10034   Kunemon hangin out
+13FD8CAE            10498   Kunemon intro
+13FE438C            00032   Remove wall at digimon bridge?
+13FE43B0            00068   Other objects?
+13FE55F0            00036   More objects
+13FE5614            00072   More objects
+1405C50E            00370   More objects
+1405E4C6            07578   Warp between bridge and file city
+                    00482   Jijimon
 
 
 ----------------------------------------------------------------------------------------------------
