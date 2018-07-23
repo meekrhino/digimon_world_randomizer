@@ -599,11 +599,16 @@ recruitOffsets = (
             #( ( 0x140B5D3C, ), 251 ), #Kuwagamon
             ( ( 0x140B58A4, 0x13FD95FC, 0x13FD96E8, 0x13FE44AA, 0x1406D768, 0x1406FD28, 0x1407006E ),
               252 ), #Mojyamon
-            #( ( 0x140B63C6, ), 253 ), #Nanimon
-            #( ( 0x140B600A, ), 255 ), #Piximon
-            #( ( 0x140B67EE, ), 256 ), #Digitamamon
-            #( ( 0x140B53E6, ), 257 ), #Penguinmon
-            #( ( 0x140B573A, ), 258 )  #Ninjamon
+            ( ( 0x140B63C6, 0x13FD8F5A ), 
+              253 ), #Nanimon
+            ( ( 0x140B600A, 0x13FD9396 ), 
+              255 ), #Piximon
+            ( ( 0x140B67EE, 0x13FD906E, 0x13FD9210, 0x140AEF36 ), 
+              256 ), #Digitamamon
+            ( ( 0x140B53E6, 0x13FD999E, 0x14063218, 0x14063250, 0x14095A7E, 0x140632A4, ), 
+              257 ), #Penguinmon
+            ( ( 0x140B573A, 0x13FD95CE, 0x13FE4494 ), 
+              258 )  #Ninjamon
             )
 
 tokoItemFormat = '<BxBB'

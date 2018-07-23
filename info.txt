@@ -216,11 +216,11 @@ e.g.
               trigger).  So now you defeat Gabumon and he will not show up anymore, and now Elecmon
               shows up in town.
 
-    Birdrarmon ~35
-    Angemon ~21
-    Monzaemon ~24
-    Betamon ~24
-    Greymon ~130
+    Birdrarmon 35
+    Angemon 23
+    Monzaemon 23
+    Betamon 24
+    Greymon 131
     Vegiemon 73
     SkullGreymon 7
     MetalMamemon 4
@@ -241,11 +241,6 @@ e.g.
     Leomon 5
     Coelamon 33
     Kokatorimon 10
-    Nanimon 2
-    Piximon 4
-    Digitamamon 7
-    Penguinmon 11
-    Ninjamon 6
 
 
     Elecmon triggers:
@@ -508,8 +503,66 @@ extra restaurant (probably garbage): 1406AC0A, 1406ACEE, 1406BC6E, 1406BD52, 140
 1405986C            00704   Whamon's dock?
 1405B1FE            06338   Whamon service
                     05192   Jijimon
-
-
+                    
+    Ninjamon triggers:
+        NO TOUCH:       (must be 258)
+                    01550   Etemon at the bridge
+                    01574   Ninjamon at the bridge
+                    04974   Rumor about Ninjamon
+        
+        MUST CHANGE:    (must be new val)
+13FD95CE            12530   Ninjamon hangin out
+13FE4494            00296   Something in town?
+                    05006   Jijimon
+                    
+                    
+    Penguinmon triggers:
+        NO TOUCH:       (must be 257)
+                    07402   Penguinmon in Freezeland
+                    00032   Penguinmon in Freezeland Curling Arena
+                    00034   Pengiunmon conversation in freezeland (1st)
+                    00886   Penguinmon conversation in freezeland (after 1st)
+                    04334   Rumor about Penguinmon
+                    
+        MUST CHANGE:    (must be new val)
+13FD999E            13506   Penguinmon hangin out (in file city curling arena)
+14063218            00060   Spawn curling arena
+14063250            00116   Some objects in arena
+14095A7E            00134   Some objects in arena
+140632A4            00200   Warp to curling?
+                    04154   Jijimon
+                    
+                    
+    Digitamamon triggers:
+        NO TOUCH:       (must be 257)
+                    13188   Fightable Digitamamon in postgame
+                    00018   Digitamamon cutscene
+                    08882   Rumor about Digitamamon
+                    
+        MUST CHANGE:    (must be new val)
+13FD906E            11458   Digitamamon hangin out
+13FD9210            11876   Digitamamon hangin out (with jukebox)
+140AEF36            00154   Restaurant dialog
+                    08674   Jijimon
+                    
+                    
+    Piximon triggers:
+        NO TOUCH:       (must be 255)
+                    01804   Recruitable Piximon
+                    07322   Rumor about Piximon
+        
+        MUST CHANGE:    (must be new val)
+13FD9396            12266   Piximon hangin out
+                    06958   Jijimon
+                    
+                    
+    Nanimon triggers:
+        NO TOUCH:       (must be 255)
+        
+        MUST CHANGE:    (must be new val)
+13FD8F5A            11182   Nanimon hangin out
+                    07914   Jijimon
+        
 ----------------------------------------------------------------------------------------------------
 
 ----------------------------------------------------------------------------------------------------
