@@ -542,6 +542,8 @@ recruitOffsets = (
                 0x14063EC6, 0x1406AB26, 0x140AD31A, 0x1406AC0A, 0x1406ACEE, 0x1406BC6E, 0x1406BD52, 0x1406BE36,
                 0x1406D06C, 0x1406D150, 0x1406D234, 0x1406D802, 0x1406D8E6, 0x1406D9CA, 0x1406F14A ),
               209 ), #Meramon
+            ( (),
+              210 ), #Seadramon -- does nothing in town and has no Jijimon message
             ( ( 0x140B5A62, 0x13FD95E0, 0x13FD96D0, 0x13FE44A6, 0x1406D760, 0x1406FC62, 0x1406FFC8 ),
               211 ), #Numemon
             ( ( 0x140B598E, 0x13FD9618, 0x13FD9700, 0x13FE44AE, 0x1406D764, 0x1406FDDC, 0x1407012E ),
@@ -575,7 +577,8 @@ recruitOffsets = (
             ( ( 0x140B57F4, 0x13FD86FC, 0x1405986C, 0x1405B1FE ),
               224 ), #Whamon
             #( ( 0x140B46F0, ), 225 ), #Vegiemon
-            #( ( 0x140B68BE, ), 226 ), #SkullGreymon
+            ( ( 0x140B68BE, ), 
+              226 ), #SkullGreymon  -- does nothing except tournament
             ( ( 0x140B617C, 0x13FD9982 ), 
               227 ), #MetalMamemon
             ( ( 0x140B626E, 0x13FD904E, 0x13FD91F0, 0x140AEEEA ),
@@ -587,7 +590,7 @@ recruitOffsets = (
               234 ), #Ogremon
             #( ( 0x140B4C64, ), 235 ), #Shellmon
             #( ( 0x140B43DC, ), 236 ), #Centarumon
-            ( ( 0x140B462E, 0x13FD896C, 0x13FD8C4A ), 
+            ( ( 0x140B462E, 0x13FD8970, 0x13FD8C4A ), 
               237 ), #Bakemon
             ( ( 0x140B5568, 0x14059854, 0x1405B1E4 ), 
               238 ), #Drimogemon
@@ -613,6 +616,8 @@ recruitOffsets = (
               252 ), #Mojyamon
             ( ( 0x140B63C6, 0x13FD8F5A ), 
               253 ), #Nanimon
+            ( (),
+              254 ), #Megadramon -- does nothing and has no Jijimon message
             ( ( 0x140B600A, 0x13FD9396 ), 
               255 ), #Piximon
             ( ( 0x140B67EE, 0x13FD906E, 0x13FD9210, 0x140AEF36 ), 

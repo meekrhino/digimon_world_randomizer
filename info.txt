@@ -222,7 +222,6 @@ e.g.
     Betamon         24
     Greymon         131
     Vegiemon        73
-    SkullGreymon    7
     Patamon         26
     Kunemon         14
     Unimon          28
@@ -234,6 +233,7 @@ e.g.
     Coelamon        33
     
     Seadramon and Megadramon do literally nothing in town.
+        maybe I should randomize them for the luls
 
 
     Elecmon triggers:
@@ -682,6 +682,19 @@ extra restaurant (probably garbage): 1406AC0A, 1406ACEE, 1406BC6E, 1406BD52, 140
         MUST CHANGE:    (must be new val)
 13FD9982            13478   MetalMamemon hangin out in curling
                     07328   Jijimon
+
+
+    SkullGreymon triggers:
+        NO TOUCH:       (must be 226)
+                    03828   SkullGreymon in the mansion
+                    02958   Myotismon message
+                    00428   News about Myotismon
+                    01326   Myotismon quest stuff
+                    01404   News about Myotismon
+                    01884   News about Myotismon
+        
+        MUST CHANGE:    (must be new val)
+                    08882   Jijimon
                     
         
 ----------------------------------------------------------------------------------------------------
