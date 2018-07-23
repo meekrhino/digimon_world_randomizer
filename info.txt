@@ -231,9 +231,6 @@ e.g.
     Palmon          72
     Monochromon     28
     Coelamon        33
-    
-    Seadramon and Megadramon do literally nothing in town.
-        maybe I should randomize them for the luls
 
 
     Elecmon triggers:
@@ -655,7 +652,7 @@ extra restaurant (probably garbage): 1406AC0A, 1406ACEE, 1406BC6E, 1406BD52, 140
                     01698   Rumor about Bakemon
 
         MUST CHANGE:    (must be new val)
-13FD896C            09968   Bakemon intro
+13FD8970            09968   Bakemon intro
 13FD8C4A            10398   Bakemon chillin
                     01250   Jijimon
 
