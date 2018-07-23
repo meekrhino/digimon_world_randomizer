@@ -587,16 +587,21 @@ recruitOffsets = (
             #( ( 0x140B43DC, ), 236 ), #Centarumon
             #( ( 0x140B462E, ), 237 ), #Bakemon
             #( ( 0x140B5568, ), 238 ), #Drimogemon
+            ( ( 0x13FD87F6, ),
+              239 ), #Sukamon -- no Jijimon 
             #( ( 0x140B6990, ), 240 ), #Andromon
             #( ( 0x140B5DE0, ), 241 ), #Giromon
             #( ( 0x140B60CE, ), 242 ), #Etemon
             #( ( 0x140B5132, ), 245 ), #Biyomon
             #( ( 0x140B4266, ), 246 ), #Palmon
             #( ( 0x140B4ED0, ), 247 ), #Monochromon
-            #( ( 0x140B5F30, ), 248 ), #Leomon
+            ( ( 0x140B5F30, 0x13FD8ED2 ), 
+              248 ), #Leomon
             #( ( 0x140B44C0, ), 249 ), #Coelamon
-            #( ( 0x140B4E06, ), 250 ), #Kokatorimon
-            #( ( 0x140B5D3C, ), 251 ), #Kuwagamon
+            ( ( 0x140B4E06, 0x13FD873A, 0x13FD87C6, 0x14059908, 0x1405994A, ), 
+              250 ), #Kokatorimon
+            ( ( 0x140B5D3C, 0x13FD7A82 ), 
+              251 ), #Kuwagamon
             ( ( 0x140B58A4, 0x13FD95FC, 0x13FD96E8, 0x13FE44AA, 0x1406D768, 0x1406FD28, 0x1407006E ),
               252 ), #Mojyamon
             ( ( 0x140B63C6, 0x13FD8F5A ), 

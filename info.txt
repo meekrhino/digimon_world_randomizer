@@ -216,31 +216,32 @@ e.g.
               trigger).  So now you defeat Gabumon and he will not show up anymore, and now Elecmon
               shows up in town.
 
-    Birdrarmon 35
-    Angemon 23
-    Monzaemon 23
-    Betamon 24
-    Greymon 131
-    Vegiemon 73
-    SkullGreymon 7
-    MetalMamemon 4
-    Patamon 26
-    Kunemon 14
-    Unimon 28
-    Ogremon 8
-    Shellmon 12
-    Centarumon 85
-    Bakemon 5
-    Drimogemon 9
-    Andromon 3
-    Giromon 4
-    Etemon 8
-    Biyomon 30
-    Palmon 72
-    Monochromon 28
-    Leomon 5
-    Coelamon 33
-    Kokatorimon 10
+    Birdrarmon      35
+    Angemon         23
+    Monzaemon       23
+    Betamon         24
+    Greymon         131
+    Vegiemon        73
+    SkullGreymon    7
+    MetalMamemon    4
+    Patamon         26
+    Kunemon         14
+    Unimon          28
+    Ogremon         8
+    Shellmon        12
+    Centarumon      85
+    Bakemon         5
+    Drimogemon      9
+    Andromon        3
+    Giromon         4
+    Etemon          8
+    Biyomon         30
+    Palmon          72
+    Monochromon     28
+    Leomon          5
+    Coelamon        33
+    
+    Seadramon and Megadramon do literally nothing in town.
 
 
     Elecmon triggers:
@@ -562,6 +563,51 @@ extra restaurant (probably garbage): 1406AC0A, 1406ACEE, 1406BC6E, 1406BD52, 140
         MUST CHANGE:    (must be new val)
 13FD8F5A            11182   Nanimon hangin out
                     07914   Jijimon
+                    
+                    
+    Sukamon triggers:
+        NO TOUCH:       (must be 239)
+                    05768   Sukamon in trash mountain
+                    
+        MUST CHANGE:    (must be new val)
+13FD87F6            09594   Sukamon hangin out
+
+
+    Kuwagamon triggers:
+        NO TOUCH:       (must be 251)
+                    01321   Kuwagamon in Beetle Land
+
+        MUST CHANGE:    (must be new val)
+13FD7A82            01375   Kuwagamon in Green Gym
+                    06240   Jijimon
+
+
+    Kokatorimon triggers:
+        NO TOUCH:       (must be 250)
+                    06704   Spawn fightable Kokatorimon
+                    02436   Something for Kokatorimon recruiting
+                    01908   Rumor about Kokatorimon
+                    02408   Rumor about Kokatorimon
+                    03410   Rumor about Kokatorimon
+
+        MUST CHANGE:    (must be new val)
+13FD873A            09402   Kokatorimon intro
+13FD87C6            09546   Kokatorimon hangin out
+14059908            00860   Spwan some objects
+1405994A            00926   More objects
+                    02954   Jijimon
+
+
+    Leomon triggers:
+        NO TOUCH:       (must be 248)
+                    04824   Leomon in his gym
+                    06486   Leomon in cave
+                    00106   Leomon the hero
+
+        MUST CHANGE:    (must be new val)
+13FD8ED2            11046   Leomon hangin out (birdra room)
+                    06740   Jijimon
+                    
         
 ----------------------------------------------------------------------------------------------------
 
