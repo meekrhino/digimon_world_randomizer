@@ -66,8 +66,8 @@ if( config[ 'techs' ].getboolean( 'Enabled' ) ):
 if( config[ 'starter' ].getboolean( 'Enabled' ) ):
     handler.randomizeStarters( useWeakestTech=config[ 'starter' ].getboolean( 'UseWeakestTech' ) )
 
-if( config[ 'recruitment' ].getboolean( 'Enabled' ) ):
-    handler.randomizeRecruitments()
+#if( config[ 'recruitment' ].getboolean( 'Enabled' ) ):
+#    handler.randomizeRecruitments()
 
 if( config[ 'chests' ].getboolean( 'Enabled' ) ):
     handler.randomizeChestItems( allowEvo=config[ 'chests' ].getboolean( 'AllowEvo' ) )

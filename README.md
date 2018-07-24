@@ -13,10 +13,29 @@ For most sections of the settings file, there is an "Enabled" field that must be
 After you have the settings you want, run digimon_randomize.py or digimon_randomize.exe.  The seed used (whether you set it manually or left it blank) will be printed out to the console.
 If you are doing a race, have your racing opponent(s) put that seed value in their settings.ini file (and make sure they have the same settings selected!)
 
+Steps to settings this up for the first time:
+    1. Download the latest release of digimon_randomizer.zip
+    2. Unzip to wherever
+    3. Open "settings.ini" and fill out the file paths for "Input" and "Output"
+        *Paths can be absolute or relative, and should point to the .bin file
+    4. Change the other settings to your liking
+    5. Run "digimon_randomize.exe"
+    6. Load the .bin file at the "Output" location into your emulator
 
+Recommended steps to setting up a race:
+    1. Follow 1-4 above
+    2. Set "LogLevel" to "race"
+    3. Set the seed to any number, or simply run the randomizer and copy the random seed produced
+    4. Once "Seed" in "settings.ini" is set to the value you want, send your "settings.ini" file to your race opponents
+    5. All race participants should update "Input"/"Output" in "settings.ini" to their own paths
+    6. All race participants should run "digimon_randomize.exe"
+    7. If everyone's settings matched, including the seed, an identical ROM will be produced for everyone.
 
 
 Version log:
+
+Public Beta 0.4.0
+    *Cleanup for first public release!
 
 Closed Beta 0.3.1
 @Bug fixes
