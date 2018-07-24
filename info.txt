@@ -921,16 +921,20 @@ extra restaurant (probably garbage): 1406AC0A, 1406ACEE, 1406BC6E, 1406BD52, 140
                     00114   Shellmon recruitment quest
                     00132   Shellmon recruitment quest
                     03050   Rumor about Shellmon
-        
+
         MUST CHANGE:    (must be new val)
-                    09994   Shellmon hangin out
-                    10254   Shellmon intro
-                    10314   Shellmon intro
-                    00250   Show objects
-                    00330   Show objects
-                    07544   Shellmon news stuff
+13FD898A            09994   Shellmon hangin out
+13FD8BBE            10254   Shellmon intro
+13FD8BF6            10314   Shellmon intro
+1405C496            00250   Show objects
+1405C4EA            00330   Show objects
+1405E4A4            07544   Shellmon news stuff
                     02536   Jijimon
 
+----------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
+Gabumon 0xA7EEA8C
 ----------------------------------------------------------------------------------------------------
 
 ----------------------------------------------------------------------------------------------------
@@ -952,7 +956,9 @@ Ideas for things to randomize:
   ✓Digimon drops/droprates from fights
     Mojyamon item trading items
     All special evos
+    Always change the starter (never random agumon to agumon)
   ✓Tech Data
+    Fix jukebox crash.  Need to truncate track names.
 ----------------------------------------------------------------------------------------------------
 
 ----------------------------------------------------------------------------------------------------
@@ -976,8 +982,10 @@ Known bugs:
 CURRENT:
 --Alternate version of dynamite and horizontal kick are not being randomized (partner digimon can
   actually learn these, contrary to what I thought before)
---Properity value can get messed up by randomizing recruitments and then saving the game (saving
+--Prosperity value can get messed up by randomizing recruitments and then saving the game (saving
   the game recalculates the PP from what you have, but is added when you recruit)
+--Some text coloring is broken by the [evolution]Enabled option
+--Self target techs can be assigned an affect (does nothing but still, looks weird)
 FIXED:
 --When dropable quest item patch has already been applied to the target rom, they will start to
   appear all over the place (chests in particular) and this is no bueno

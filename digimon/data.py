@@ -327,7 +327,8 @@ recruitOffsets = (
               233 ), #Unimon
             ( ( 0x140B5E82, 0x13FD8BD2, 0x13FF293A ),
               234 ), #Ogremon
-            #( ( 0x140B4C64, ), 235 ), #Shellmon
+            ( ( 0x140B4C64, 0x13FD898A, 0x13FD8BBE, 0x13FD8BF6, 0x1405C496, 0x1405C4EA, 0x1405E4A4 ),
+              235 ), #Shellmon
             #( ( 0x140B43DC, ), 236 ), #Centarumon
             ( ( 0x140B462E, 0x13FD8970, 0x13FD8C4A ),
               237 ), #Bakemon
