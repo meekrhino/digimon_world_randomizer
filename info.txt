@@ -938,6 +938,32 @@ Gabumon 0xA7EEA8C
 ----------------------------------------------------------------------------------------------------
 
 ----------------------------------------------------------------------------------------------------
+Special digivolution stuff:
+
+Digivolve to X digimon:
+setPStat 254 <X>
+callDigimonRoutine 10
+
+
+Monzaemon/toy town stuff:
+140466BF            00022   change the != 14 to new val
+14046693            00062   change the != 14 to new val
+14046841            00454   change the 14 to new val
+
+Giromon + MetalMamemon:
+14054503            00520   change the 41 to new val
+14054589            00654   change the 27 to new val
+
+Death digivolutions:
+140A2E11            02150   change 37 to new val (Bakemon)
+140A2E5D            02226   change 26 to new val (SkullGreymon)
+140A2EA9            02302   change 59 to new value (Phoenixmon)
+140A2EFB            02384   change 6 to new value (Devimon)
+
+
+----------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
 Ideas for things to randomize:
   ✓Starters and their starting tech
   ✓Items in chests
