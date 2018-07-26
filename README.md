@@ -34,12 +34,40 @@ Recommended steps to setting up a race:
 
 Version log:
 
+Public Beta 0.5.0
+@New Features
+    *randomize recruitments (recruit A, B joins your town)
+        --All recruitments except: Agumon, Airdramon, MetalGreymon, Palmon, Vegiemon,
+                                   Greymon, Birdramon, Centarumon, Angemon, Monzaemon
+        --This feature is largely untested and has lots of bugs, probably.  You may
+          want to leave it off for now.
+    *randomize the following special evolutions:
+        --Monzaemon (and match the Toy Town trigger to the new one)
+        --MetalMamemon
+        --Giromon
+        --Bakemon
+        --Devimon
+        --Phoenixmon
+        --SkullGreymon
+        --Triggers remain the same, just the resulting digimon is changed
+    *customizable high/low price cutoff for map items and enemy drops
+    *patch brain training to allow learning first tier move if you do not have it.  40% chance
+
+@Bug Fixes
+    *Moon Mirror and Electro Ring will no longer be randomized in (gamebreaking)
+    *Starter will never randomize to itself (Agumon will never become Agumon)
+    *Alternate Dynamite Kick and Horizontal Kick will be randomized as they should
+    *Self targeting moves like War Cry will never be assigned a status effect
+
+
 Public Beta 0.4.0
     *Cleanup for first public release!
 
+
 Closed Beta 0.3.1
-@Bug fixes
+@Bug Fixes
     *Quests items will no longer appear in chests when the randomizer is run twice on the same file
+
 
 Closed Beta 0.3.0
 @New Features
@@ -53,15 +81,18 @@ Closed Beta 0.3.0
     *patch evo items to give stats/lifetime
     *patch to make quest items dropable
 
+
 Closed Beta 0.2.0
 @New Features
     *randomize digimon data
         --random drop item option
         --random drop rate option
 
+
 Closed Beta 0.1.1
-@Bug fixes
+@Bug Fixes
     *exclude myotismon steak from randomizing (breaks that quest if not)
+
 
 Closed Beta 0.1.0
 @New Features

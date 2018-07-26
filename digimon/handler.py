@@ -1013,7 +1013,7 @@ class DigimonWorldHandler:
                                       self.logger )
 
 
-    def randomizeDigimonData( self, dropItem=False, dropRate=False ):
+    def randomizeDigimonData( self, dropItem=False, dropRate=False, price=1000 ):
         """
         Randomize digimon data.
 
@@ -1027,7 +1027,8 @@ class DigimonWorldHandler:
                 digi.item = self._getRandomItem( consumableOnly=True,
                                                              notQuest=True,
                                                              notEvo=True,
-                                                             matchValueOf=digi.item )
+                                                             matchValueOf=digi.item,
+                                                             matchValue=price )
 
             if( dropRate ):
                 rate = digi.drop_rate
@@ -1178,7 +1179,7 @@ class DigimonWorldHandler:
                                                          ' to ' + str( randCount ) + 'x \'' + self.itemData[ self.tokoItems[ key ][0] ].name + '\'' )
 
 
-    def randomizeMapSpawnItems( self, foodOnly=False ):
+    def randomizeMapSpawnItems( self, foodOnly=False, price=1000 ):
         """
         Randomize items that appear on maps.  Match value using price.
         If foodOnly is set, replace food items only with other food
@@ -1195,7 +1196,7 @@ class DigimonWorldHandler:
             #if foodOnly is set, swap food items only for other food items
             fo = foodOnly and self.itemData[ id ].isFood
 
-            randID = self._getRandomItem( foodOnly=fo, consumableOnly=True, notQuest=True, notEvo=True, matchValueOf=id )
+            randID = self._getRandomItem( foodOnly=fo, consumableOnly=True, notQuest=True, notEvo=True, matchValueOf=id, matchValue=price )
 
             pre = self.mapItems[ key ]
             self.mapItems[ key ] = self.itemData[ randID ].id
@@ -1429,7 +1430,7 @@ class DigimonWorldHandler:
         return "NONE"
 
 
-    def _getRandomItem( self, foodOnly=False, consumableOnly=False, notEvo=False, notQuest=False, matchValueOf=None ):
+    def _getRandomItem( self, foodOnly=False, consumableOnly=False, notEvo=False, notQuest=False, matchValueOf=None, matchValue=1000 ):
         """
         Get a random item that satisfies the conditions.
 
@@ -1466,7 +1467,7 @@ class DigimonWorldHandler:
 
             if( matchValueOf is not None ):
                 itemToMatch = self.itemData[ matchValueOf ]
-                if( ( item.price < 1000 ) != ( itemToMatch.price < 1000 ) ):
+                if( ( item.price < matchValue ) != ( itemToMatch.price < matchValue ) ):
                     valid = False
 
 

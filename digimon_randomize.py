@@ -53,8 +53,13 @@ else:
 print( 'Modifying data...\n' )
 
 if( config[ 'digimon' ].getboolean( 'Enabled' ) ):
-    handler.randomizeDigimonData( dropItem=config[ 'digimon' ].getboolean( 'DropItem' ),
-                                  dropRate=config[ 'digimon' ].getboolean( 'DropRate' ) )
+    pricecfg =  config[ 'digimon' ][ 'ValuableItemCutoff' ]
+    try:
+        handler.randomizeDigimonData( dropItem=config[ 'digimon' ].getboolean( 'DropItem' ),
+                                      dropRate=config[ 'digimon' ].getboolean( 'DropRate' ),
+                                      price=int( pricecfg ) )
+    except ValueError:
+        logger.fatalError( 'Item price cutoff must be an integer. ' + str( seedcfg ) + ' is not a valid value.' )
 
 if( config[ 'techs' ].getboolean( 'Enabled' ) ):
     handler.randomizeTechData( power=config[ 'techs' ].getboolean( 'Power' ),
@@ -79,7 +84,11 @@ if( config[ 'techgifts' ].getboolean( 'Enabled' ) ):
     handler.randomizeTechGifts()
 
 if( config[ 'mapItems' ].getboolean( 'Enabled' ) ):
-    handler.randomizeMapSpawnItems( foodOnly=config[ 'mapItems' ].getboolean( 'FoodOnly' ) )
+    pricecfg =  config[ 'mapItems' ][ 'ValuableItemCutoff' ]
+    try:
+        handler.randomizeMapSpawnItems( foodOnly=config[ 'mapItems' ].getboolean( 'FoodOnly' ), price=int( pricecfg ) )
+    except ValueError:
+        logger.fatalError( 'Item price cutoff must be an integer. ' + str( seedcfg ) + ' is not a valid value.' )
 
 if( config[ 'evolution' ].getboolean( 'Enabled' ) ):
     handler.randomizeEvolutions()
