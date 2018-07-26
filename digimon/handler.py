@@ -307,6 +307,7 @@ class Item:
 
     consumableItems = list( range( 0x00, 0x21 ) ) + list( range( 0x26, 0x73 ) ) + [ 0x79, 0x7A, 0x7D, 0x7E, 0x7F ]
     questItems = list( range( 0x73, 0x79 ) ) + list( range( 0x7B, 0x7D ) )
+    bannedItems = [ 0x53, 0x72 ]
 
     def __init__( self, handler, id, data ):
         """
@@ -336,6 +337,8 @@ class Item:
         self.isFood = self.itemSort[ self.sort ] == 'FOOD' or id == 0x79 or id == 0x7A
 
         self.isQuest = self.id in self.questItems
+
+        self.isBanned = self.id in self.bannedItems
 
 
     def __str__( self ):
@@ -1395,6 +1398,9 @@ class DigimonWorldHandler:
             randID = random.randint( 0, len( self.itemData ) - 1 )
             item = self.itemData[ randID ]
             valid = True
+
+            if( item.isBanned ):
+                valid = False
 
             if( foodOnly and not item.isFood ):
                 valid = False
