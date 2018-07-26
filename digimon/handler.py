@@ -1041,7 +1041,7 @@ class DigimonWorldHandler:
 
             if( effect ):
                 #50% chance of no effect or random effect
-                if( random.randint( 0, 1 ) > 0 ):
+                if( random.randint( 0, 1 ) > 0 and not power == 0 ):
                     tech.effect = random.randint( 1, 4 )
                 else:
                     tech.effect = 0
