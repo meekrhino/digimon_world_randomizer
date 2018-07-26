@@ -83,6 +83,8 @@ if( config[ 'mapItems' ].getboolean( 'Enabled' ) ):
 
 if( config[ 'evolution' ].getboolean( 'Enabled' ) ):
     handler.randomizeEvolutions()
+    if( config[ 'evolution' ].getboolean( 'SpecialEvos' ) ):
+        handler.randomizeSpecialEvolutions()
 
 if( config[ 'patches' ].getboolean( 'FixEvoItemStatGain' ) ):
     handler.applyPatch( 'fixEvoItems' )

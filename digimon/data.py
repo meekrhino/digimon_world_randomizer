@@ -382,6 +382,25 @@ recruitOffsets = (
               258 )  #Ninjamon
             )
 
+specEvoFormat = '<B'
+
+specEvoOffsets = (
+            ( ( 0x140466BF, 0x14046693, 0x14046841 ),
+              0x0E ), #Monzaemon/Toy Town
+            ( ( 0x14054503, ),
+              0x29 ), #Giromon
+            ( ( 0x14054589, ),
+              0x1B ), #MetalMamemon
+            ( ( 0x140A2E11, ),
+              0x25 ), #Bakemon
+            ( ( 0x140A2E5D, ),
+              0x1A ), #SkullGreymon
+            ( ( 0x140A2EA9, ),
+              0x3B ), #Phoenixmon
+            ( ( 0x140A2EFB, ),
+              0x06 )  #Devimon
+            )
+
 tokoItemFormat = '<BxBB'
 
 tokoItemOffsets = (

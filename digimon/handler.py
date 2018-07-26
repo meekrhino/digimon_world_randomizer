@@ -684,7 +684,7 @@ class DigimonWorldHandler:
                 for ofst in ofsts:
                     file.seek( ofst, 0 )
                     value = struct.unpack( data.recruitFormat,
-                                             file.read( struct.calcsize( data.recruitFormat ) ) )[0]
+                                           file.read( struct.calcsize( data.recruitFormat ) ) )[0]
                     if( value != trigger ):
                         self.logger.logError( 'Error: Looking for recruit trigger check, found incorrect value: ' + str( value ) + ' @ ' + format( ofst, '08x' ) )
                         err = True
@@ -695,6 +695,28 @@ class DigimonWorldHandler:
 
             if( not err ):
                 self.logger.log( 'All recruitment check values verified.' )
+
+
+            #------------------------------------------------------
+            # Read in special evolution data
+            #------------------------------------------------------
+
+            self.specEvos = {}
+
+            err = False
+            for ofsts, checkVal in data.specEvoOffsets:
+                for ofst in ofsts:
+                    file.seek( ofst, 0 )
+                    id = struct.unpack( data.specEvoFormat,
+                                        file.read( struct.calcsize( data.specEvoFormat ) ) )[0]
+                    if( id != checkVal ):
+                        self.logger.logError( 'Error: Looking for spec evo, found incorrect value: ' + str( id ) + ' @ ' + format( ofst, '08x' ) )
+                        err = True
+
+                self.specEvos[ ofsts ] = checkVal
+
+            if( not err ):
+                self.logger.log( 'All special evolutions verified.' )
 
 
             #------------------------------------------------------
@@ -926,6 +948,18 @@ class DigimonWorldHandler:
                     util.writeDataToFile( file,
                                           ofst,
                                           struct.pack( data.recruitFormat, trigger ),
+                                          self.logger )
+            #------------------------------------------------------
+            # Write out special evolution data
+            #------------------------------------------------------
+
+            #Set trigger in each recruitment check
+            for ofsts in self.specEvos:
+                val = self.specEvos[ ofsts ]
+                for ofst in ofsts:
+                    util.writeDataToFile( file,
+                                          ofst,
+                                          struct.pack( data.specEvoFormat, val ),
                                           self.logger )
 
             #------------------------------------------------------
@@ -1231,6 +1265,19 @@ class DigimonWorldHandler:
         self.logger.logChange( 'Changed digimon evolutions to the following: ' )
         for i in range( 1, data.lastPartnerDigimon + 1 ):
             self.logger.logChange( 'Changed evolutions for ' + self.digimonData[ i ].evoData() + '\n' )
+
+
+    def randomizeSpecialEvolutions( self ):
+        """
+        Randomize the target digimon for all special evolutions.
+        """
+
+        for ofsts in self.specEvos:
+            id = self.specEvos[ ofsts ]
+            newID = random.choice( self.getPlayableDigimonByLevel( self.digimonData[ id ].level ) ).id
+            self.specEvos[ ofsts ] = newID
+
+            self.logger.logChange( 'Changed special evolution for ' + self.getDigimonName( id ) + ' to ' + self.getDigimonName( newID ) )
 
 
     def randomizeRecruitments( self ):
