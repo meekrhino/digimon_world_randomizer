@@ -194,6 +194,10 @@ woahPatchOffset = 0x14D76EF4
 woahPatchValue = 'Oh shit!'.encode( 'ascii' )
 woahPatchFormat = '<10s'
 
+tierOneTechLearnOffset = 0x14C8E58C
+tierOneTechLearnValue = 0x28
+tierOneTechLearnFormat = '<B'
+
 scriptOffsetInBinary = 0x13FD5809
 
 chestItemFormat   = '<BB'

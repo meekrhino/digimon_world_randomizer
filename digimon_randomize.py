@@ -93,6 +93,10 @@ if( config[ 'patches' ].getboolean( 'AllowDropQuestItems' ) ):
 if( config[ 'patches' ].getboolean( 'Woah' ) ):
     handler.applyPatch( 'woah' )
 
+if( config[ 'patches' ].getboolean( 'FixBrainTrainTierOne' ) ):
+    handler.applyPatch( 'learnTierOne' )
+
+
 
 
 print( 'Writing to ' + outFile + '...\n' )

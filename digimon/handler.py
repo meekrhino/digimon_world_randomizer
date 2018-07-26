@@ -798,6 +798,8 @@ class DigimonWorldHandler:
                     self._applyPatchAllowDrop( file )
                 elif( patch == 'woah' ):
                     self._applyPatchWoah( file )
+                elif( patch == 'learnTierOne' ):
+                    self._applyPatchLearnTierOne( file )
 
 
             #------------------------------------------------------
@@ -1521,5 +1523,16 @@ class DigimonWorldHandler:
         util.writeDataToFile( file,
                               data.woahPatchOffset,
                               struct.pack( data.woahPatchFormat, data.woahPatchValue ),
+                              self.logger )
+
+
+    def _applyPatchLearnTierOne( self, file ):
+        """
+        Make tier one move learnable in brain training (40% chance).
+        """
+
+        util.writeDataToFile( file,
+                              data.tierOneTechLearnOffset,
+                              struct.pack( data.tierOneTechLearnFormat, data.tierOneTechLearnValue ),
                               self.logger )
 
