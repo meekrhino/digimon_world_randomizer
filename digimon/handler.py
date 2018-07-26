@@ -1073,9 +1073,14 @@ class DigimonWorldHandler:
         """
         Set starters to two random different rookie Digimon.
         """
+        prevFirst = self.starterID[ 0 ]
         firstDigi = data.rookies[ random.randint( 0, len( data.rookies ) - 1) ]
+        while firstDigi == prevFirst:
+            firstDigi = data.rookies[ random.randint( 0, len( data.rookies ) - 1 ) ]
+
+        prevSecond = self.starterID[ 1 ]
         secondDigi = firstDigi
-        while secondDigi == firstDigi:
+        while secondDigi == firstDigi or secondDigi == prevSecond:
             secondDigi = data.rookies[ random.randint( 0, len( data.rookies ) - 1 ) ]
 
         self.starterID[ 0 ] = firstDigi
