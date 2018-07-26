@@ -492,11 +492,11 @@ extra restaurant (probably garbage): 1406AC0A, 1406ACEE, 1406BC6E, 1406BD52, 140
         NO TOUCH:       (must be 258)
                     01550   Etemon at the bridge
                     01574   Ninjamon at the bridge
+                    00296   Ninjamon cutscene
                     04974   Rumor about Ninjamon
 
         MUST CHANGE:    (must be new val)
 13FD95CE            12530   Ninjamon hangin out
-13FE4494            00296   Something in town?
                     05006   Jijimon
 
 

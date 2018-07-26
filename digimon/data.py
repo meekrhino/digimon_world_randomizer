@@ -378,7 +378,7 @@ recruitOffsets = (
               256 ), #Digitamamon
             ( ( 0x140B53E6, 0x13FD999E, 0x14063218, 0x14063250, 0x14095A7E, 0x140632A4, ),
               257 ), #Penguinmon
-            ( ( 0x140B573A, 0x13FD95CE, 0x13FE4494 ),
+            ( ( 0x140B573A, 0x13FD95CE ),
               258 )  #Ninjamon
             )
 
