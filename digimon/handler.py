@@ -410,7 +410,7 @@ class Tech:
 
         self.isDamaging = self.power > 0
         self.isFinisher = self.id in self.finishers
-        self.isLearnable = ( not self.isFinisher ) and ( self.id not in self.altTechs ) and ( self.id not in self.bubbles )
+        self.isLearnable = ( not self.isFinisher ) and ( self.id not in self.bubbles )
 
 
     def __str__( self ):
@@ -1237,7 +1237,7 @@ class DigimonWorldHandler:
             ofstsA = self.recruitData[ triggerA ]
             ofstsB = self.recruitData[ triggerB ]
 
-            self.recruits[ triggerA ], self.recruits[ triggerB ] = ofstsB, ofstsA
+            self.recruitData[ triggerA ], self.recruitData[ triggerB ] = ofstsB, ofstsA
 
             self.logger.log( 'Swapped recruitment triggers ' + str( triggerA ) + ' and ' + str( triggerB ) )
 

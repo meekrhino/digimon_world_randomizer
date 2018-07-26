@@ -221,11 +221,10 @@ e.g.
     Monzaemon       23
     Greymon         131
     Vegiemon        73
-    Shellmon        12
     Centarumon      85
     Palmon          72
     ------------------
-                   454
+                   442
 
 
     Elecmon triggers:
