@@ -128,6 +128,25 @@ Unknown4 looks like flags to me, uses bits 5, 7, and 8 (0x10, 0x40, 0x90)
 ----------------------------------------------------------------------------------------------------
 
 ----------------------------------------------------------------------------------------------------
+tech learn block begins at 0x14D66A2C and ends at 0x14D66C0A (for learnable techs)
+
+total of 0x1DE (478) bytes
+
+each block is 0x03 (3) bytes
+
+exclusion section of 0x130 (304) bytes each
+    0x14D66A88 - 0x14D66BB8 (in Full potential between 2nd and 3rd)
+
+data block format:
+ 1 uint8        spec 1 chance
+ 1 uint8        spec 2 chance
+ 1 uint8        spec 3 chance
+----------
+ 3 total
+
+----------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
 Tech "tier" is determined by order of appearance in the brains training
 learning table.
 

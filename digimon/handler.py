@@ -400,6 +400,7 @@ class Tech:
 
         self.name     = 'None'
         self.tier     = 0xFF
+        self.learnChance = [ 0, 0, 0 ]
 
         self.power    = data[ 0 ]
         self.mp3      = data[ 1 ]
@@ -410,6 +411,7 @@ class Tech:
         self.accuracy = data[ 6 ]
         self.effChance= data[ 7 ]
         self.aiDist   = data[ 8 ]
+
 
         self.isDamaging = self.power > 0
         self.isFinisher = self.id in self.finishers
@@ -422,10 +424,13 @@ class Tech:
         for convenient logging.
         """
 
-        out = '{:>3d} {:<20s} (Tier: {:<2d})\n   {:>3d} {:>3d} {:>2d} {:>5s} {:>6s} {:>7s} {:>3d} {:>3d}% {:>2d}'.format(
+        out = '{:>3d} {:<20s} (Tier: {:<2d}) {:<2d}% {:<2d}% {:<2d}%\n   {:>3d} {:>3d} {:>2d} {:>5s} {:>6s} {:>7s} {:>3d} {:>3d}% {:>2d}'.format(
                         self.id,
                         self.name,
                         self.tier,
+                        self.learnChance[ 0 ],
+                        self.learnChance[ 1 ],
+                        self.learnChance[ 2 ],
                         self.power,
                         self.mp3 * 3,
                         self.itime,
@@ -457,6 +462,14 @@ class Tech:
         repr.append( self.aiDist )
 
         return tuple( repr )
+
+    def unpackedLearnFormat( self ):
+        """
+        Produce a tuple representation of the
+        learn chances for the object.
+        """
+
+        return tuple( self.learnChance )
 
 
     def setName( self, name ):
@@ -574,6 +587,27 @@ class DigimonWorldHandler:
             for data_tuple in data_unpacked:
                 for i, techID in enumerate( data_tuple ):
                     self.techData[ techID ].tier = i + 1
+
+
+            #------------------------------------------------------
+            # Read in tech learn chances (battle)
+            #------------------------------------------------------
+
+            #Read in tier list data block
+            data_read = util.readDataWithExclusions( file,
+                                                     data.techLearnBlockOffset,
+                                                     data.techLearnBlockSize,
+                                                     data.techLearnExclusionOffsets,
+                                                     data.techLearnExclusionSize )
+
+            #Parse data block
+            data_unpacked = util.unpackDataArray( data_read,
+                                                  data.techLearnFormat,
+                                                  data.techLearnBlockCount )
+
+            #Extract learn chance for all learnable techs
+            for techID, data_tuple in enumerate( data_unpacked ):
+                self.techData[ techID ].learnChance = list( data_tuple )
 
             for tech in self.techData:
                 self.logger.log( str( tech ) )
@@ -822,6 +856,8 @@ class DigimonWorldHandler:
                     self._applyPatchWoah( file )
                 elif( patch == 'learnTierOne' ):
                     self._applyPatchLearnTierOne( file )
+                elif( patch == 'upLearnChance' ):
+                    self._applyPatchLearnChance( file )
 
 
             #------------------------------------------------------
@@ -842,6 +878,29 @@ class DigimonWorldHandler:
                                           data.techDataBlockSize,
                                           data.techDataExclusionOffsets,
                                           data.techDataExclusionSize )
+
+
+            #------------------------------------------------------
+            # Write out tech learn chance data
+            #------------------------------------------------------
+
+            #Pack digimon data into buffer
+            data_unpacked = []
+            for tech in self.techData:
+                if( not tech.isLearnable ):
+                    continue
+
+                data_unpacked.append( tech.unpackedLearnFormat() )
+
+            data_packed = util.packDataArray( data_unpacked, data.techLearnFormat )
+
+            #Set all digimon data
+            util.writeDataWithExclusions( file,
+                                          data_packed,
+                                          data.techLearnBlockOffset,
+                                          data.techLearnBlockSize,
+                                          data.techLearnExclusionOffsets,
+                                          data.techLearnExclusionSize )
 
 
             #------------------------------------------------------
@@ -1099,14 +1158,17 @@ class DigimonWorldHandler:
         for tech in self.techData:
             if( not tech.isLearnable ):
                 continue
-            self.logger.logChange( '{:<2d} Set \'{:s}\' to {:d} power {:d} MP with {:d} accuracy\n   {:s} {:d}% of the time.'.format(
+            self.logger.logChange( '{:<2d} Set \'{:s}\' to {:d} power {:d} MP with {:d} accuracy\n   {:s} {:d}% of the time.  Learn chance {:d}%-{:d}%-{:d}%'.format(
                                                              tech.id,
                                                              tech.name,
                                                              tech.power,
                                                              tech.mp3 * 3,
                                                              tech.accuracy,
                                                              self.getEffectName( tech.effect ),
-                                                             tech.effChance ) )
+                                                             tech.effChance,
+                                                             tech.learnChance[ 0 ],
+                                                             tech.learnChance[ 1 ],
+                                                             tech.learnChance[ 2 ] ) )
 
 
     def randomizeStarters( self, useWeakestTech=True ):
@@ -1276,6 +1338,9 @@ class DigimonWorldHandler:
         for ofsts in self.specEvos:
             id = self.specEvos[ ofsts ]
             newID = random.choice( self.getPlayableDigimonByLevel( self.digimonData[ id ].level ) ).id
+            while( newID == id ):
+                newID = random.choice( self.getPlayableDigimonByLevel( self.digimonData[ id ].level ) ).id
+
             self.specEvos[ ofsts ] = newID
 
             self.logger.logChange( 'Changed special evolution for ' + self.getDigimonName( id ) + ' to ' + self.getDigimonName( newID ) )
@@ -1552,6 +1617,7 @@ class DigimonWorldHandler:
                               data.evoItemPatchOffset,
                               struct.pack( data.evoitemPatchFormat, data.evoItemPatchValue ),
                               self.logger )
+        self.logger.logChange( 'Patched evo items to increase stats and lifetime.' )
 
 
     def _applyPatchAllowDrop( self, file ):
@@ -1561,6 +1627,8 @@ class DigimonWorldHandler:
 
         for item in self.itemData:
             item.dropable = True
+
+        self.logger.logChange( 'Patched quest items to be dropable from the menu.' )
 
 
     def _applyPatchWoah( self, file ):
@@ -1572,6 +1640,7 @@ class DigimonWorldHandler:
                               data.woahPatchOffset,
                               struct.pack( data.woahPatchFormat, data.woahPatchValue ),
                               self.logger )
+        self.logger.logChange( 'Patched "Woah!" to be something else.' )
 
 
     def _applyPatchLearnTierOne( self, file ):
@@ -1583,4 +1652,15 @@ class DigimonWorldHandler:
                               data.tierOneTechLearnOffset,
                               struct.pack( data.tierOneTechLearnFormat, data.tierOneTechLearnValue ),
                               self.logger )
+        self.logger.logChange( 'Patched brain training to make tier 1 moves learnable with a 40% success rate.' )
 
+
+    def _applyPatchLearnChance( self, file ):
+        """
+        Increase chance of learning techs in battle.
+        """
+
+        for tech in self.techData:
+            for i, val in enumerate( tech.learnChance ):
+                tech.learnChance[ i ] = val * 2
+        self.logger.logChange( 'Patched battle learn chance to be twice as high.' )

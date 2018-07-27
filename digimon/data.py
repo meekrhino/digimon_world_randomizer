@@ -441,6 +441,17 @@ techDataExclusionOffsets = (
             )
 techDataExclusionSize    = 0x130
 
+techLearnFormat          = '<BBB'
+
+techLearnBlockOffset     = 0x14D66A2C
+techLearnBlockSize       = 0x1DE
+techLearnBlockCount      = 0x3A
+
+techLearnExclusionOffsets= (
+            0x14D66A88,
+            )
+techLearnExclusionSize   = 0x130
+
 techTierListFormat       = '<8B'
 
 techTierListBlockOffset  = 0x14C8E554
