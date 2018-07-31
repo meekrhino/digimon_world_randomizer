@@ -385,7 +385,7 @@ recruitOffsets = (
 specEvoFormat = '<B'
 
 specEvoOffsets = (
-            ( ( 0x140466BF, 0x14046693, 0x14046841 ),
+            ( ( 0x140466BF, 0x14046693, 0x14046841, 0x13FD8065, 0x140479ED ),
               0x0E ), #Monzaemon/Toy Town
             ( ( 0x14054503, ),
               0x29 ), #Giromon

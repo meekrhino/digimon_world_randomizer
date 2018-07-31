@@ -967,6 +967,8 @@ Monzaemon/toy town stuff:
 140466BF            00022   change the != 14 to new val
 14046693            00062   change the != 14 to new val
 14046841            00454   change the 14 to new val
+13FD8065            07956   change the != 14 to new val
+140479ED            02320   change the != 14 to new val
 
 Giromon + MetalMamemon:
 14054503            00520   change the 41 to new val
