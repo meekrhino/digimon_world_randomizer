@@ -1002,7 +1002,7 @@ Ideas for things to randomize:
   ✓Digimon drops/droprates from fights
     Mojyamon item trading items
     All special evos
-    Always change the starter (never random agumon to agumon)
+  ✓Always change the starter (never random agumon to agumon)
   ✓Tech Data
     Fix jukebox crash.  Need to truncate track names.
 ----------------------------------------------------------------------------------------------------
@@ -1021,6 +1021,14 @@ Replace AS Decoder with save game?
 ----------------------------------------------------------------------------------------------------
 Patch for evo items giving stats/lifespan:
     0x14CF5AFC change 01 -> 00
+----------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
+Giromon breaks on 42 and 52
+42          Trash Mountain Night Theme      25 characters
+works:      Tornament Progress Theme        23 characters
+            Secret Beach Cave Theme         22 characters
+52          Tornament Championship Theme    27 characters
 ----------------------------------------------------------------------------------------------------
 
 ----------------------------------------------------------------------------------------------------

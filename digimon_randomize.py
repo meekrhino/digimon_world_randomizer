@@ -91,7 +91,7 @@ if( config[ 'mapItems' ].getboolean( 'Enabled' ) ):
         logger.fatalError( 'Item price cutoff must be an integer. ' + str( seedcfg ) + ' is not a valid value.' )
 
 if( config[ 'evolution' ].getboolean( 'Enabled' ) ):
-    handler.randomizeEvolutions()
+    handler.randomizeEvolutions( obtainAll=config[ 'evolution' ].getboolean( 'ObtainAll' ) )
     if( config[ 'evolution' ].getboolean( 'SpecialEvos' ) ):
         handler.randomizeSpecialEvolutions()
 

@@ -284,7 +284,7 @@ class Digimon:
 
             #If we found an empty slot and the
             #digimon doesn't have this evo, add
-            #if to the list.
+            #it to the list.
             if( self.toEvo[ i ] == 0xFF ):
                 self.toEvo[ i ] = id
                 break
@@ -1280,7 +1280,7 @@ class DigimonWorldHandler:
             self.logger.logChange( 'Changed tech gift from ' + self.getTechName( pre ) + ' to ' + self.getTechName( self.techGifts[ key ] ) )
 
 
-    def randomizeEvolutions( self ):
+    def randomizeEvolutions( self, obtainAll=False ):
         """
         Randomize the lists of evolutions that each digimon
         is capable of.
@@ -1289,40 +1289,73 @@ class DigimonWorldHandler:
         for digi in self.digimonData:
             digi.clearEvos()
 
-        #Freshes each get one in-training target.
-        for digi in self.getPlayableDigimonByLevel( data.levelsByName[ 'FRESH' ] ):
-            valid = digi.validEvosTo()
-            randID = random.randint( 0, len( valid ) - 1 )
-            digi.addEvoTo( valid[ randID ].id )
+        #Freshes each get one in-training target, no repeats (with obtainAll)
+        freshes = self.getPlayableDigimonByLevel( data.levelsByName[ 'FRESH' ] )
+        validEvos = freshes[ 0 ].validEvosTo()
+        for digi in freshes:
+            randID = random.randint( 0, len( validEvos ) - 1 )
+            digi.addEvoTo( validEvos[ randID ].id )
+            if( obtainAll ):
+                del validEvos[ randID ]
 
-        #In-trainings each get two Rookie targets.
-        for digi in self.getPlayableDigimonByLevel( data.levelsByName[ 'IN-TRAINING' ] ):
+        #In-trainings each get two Rookie targets, no repeats (with obtainAll)
+        inTrainings = self.getPlayableDigimonByLevel( data.levelsByName[ 'IN-TRAINING' ] )
+        validEvos = inTrainings[ 0 ].validEvosTo()
+        for digi in inTrainings:
             digi.updateEvosFrom()
-            valid = digi.validEvosTo()
             while( digi.getEvoToCount() < 2 ):
-                randID = random.randint( 0, len( valid ) - 1 )
-                digi.addEvoTo( valid[ randID ].id )
+                randID = random.randint( 0, len( validEvos ) - 1 )
+                digi.addEvoTo( validEvos[ randID ].id )
+                if( obtainAll ):
+                    del validEvos[ randID ]
+
+        #Assign each champion to at least one rookie first if obtainAll is set
+        rookies = self.getPlayableDigimonByLevel( data.levelsByName[ 'ROOKIE' ] )
+
+        if( obtainAll ):
+            validEvos = rookies[ 0 ].validEvosTo()
+            while( len( validEvos ) > 0 ):
+                digi = random.choice( rookies )
+                count = digi.getEvoToCount()
+                while( count == digi.getEvoToCount() ):
+                    digi.addEvoTo( validEvos[ 0 ].id )
+                del validEvos[ 0 ]
 
         #Rookies get 4-6 Champion targets.
-        for digi in self.getPlayableDigimonByLevel( data.levelsByName[ 'ROOKIE' ] ):
+        validEvos = rookies[ 0 ].validEvosTo()
+        for digi in rookies:
             count = random.randint( 4, 6 )
             digi.updateEvosFrom()
-            valid = digi.validEvosTo()
             while( digi.getEvoToCount() < count ):
-                randID = random.randint( 0, len( valid ) - 1 )
-                digi.addEvoTo( valid[ randID ].id )
+                randID = random.randint( 0, len( validEvos ) - 1 )
+                digi.addEvoTo( validEvos[ randID ].id )
+
+
+        #Assign each ultimate to at least one champion first if obtainAll is set
+        champions = self.getPlayableDigimonByLevel( data.levelsByName[ 'CHAMPION' ] )
+
+        if( obtainAll ):
+            validEvos = champions[ 0 ].validEvosTo()
+            while( len( validEvos ) > 0 ):
+                digi = random.choice( champions )
+                count = digi.getEvoToCount()
+                while( count == digi.getEvoToCount() ):
+                    digi.addEvoTo( validEvos[ 0 ].id )
+                del validEvos[ 0 ]
 
         #Champions get 1-2 Ultimate targets.
-        for digi in self.getPlayableDigimonByLevel( data.levelsByName[ 'CHAMPION' ] ):
+        validEvos = rookies[ 0 ].validEvosTo()
+        for digi in champions:
             count = random.randint( 1, 2 )
             digi.updateEvosFrom()
-            valid = digi.validEvosTo()
+            validEvos = digi.validEvosTo()
             while( digi.getEvoToCount() < count ):
-                randID = random.randint( 0, len( valid ) - 1 )
-                digi.addEvoTo( valid[ randID ].id )
+                randID = random.randint( 0, len( validEvos ) - 1 )
+                digi.addEvoTo( validEvos[ randID ].id )
 
         #Ultimate just need to have their from evos updated.
-        for digi in self.getPlayableDigimonByLevel( data.levelsByName[ 'ULTIMATE' ] ):
+        ultimates = self.getPlayableDigimonByLevel( data.levelsByName[ 'ULTIMATE' ] )
+        for digi in ultimates:
             digi.updateEvosFrom()
 
         self.logger.logChange( 'Changed digimon evolutions to the following: ' )
