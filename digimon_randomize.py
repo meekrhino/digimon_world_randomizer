@@ -110,6 +110,9 @@ if( config[ 'patches' ].getboolean( 'FixBrainTrainTierOne' ) ):
 if( config[ 'patches' ].getboolean( 'IncreaseTechLearnChance' ) ):
     handler.applyPatch( 'upLearnChance' )
 
+if( config[ 'patches' ].getboolean( 'Gabu' ) ):
+    handler.applyPatch( 'gabumon' )
+
 
 print( 'Writing to ' + outFile + '...\n' )
 handler.write( outFile )

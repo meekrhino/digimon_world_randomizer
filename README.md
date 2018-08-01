@@ -34,6 +34,20 @@ Recommended steps to setting up a race:
 
 Version log:
 
+Public Beta 0.6.0
+@New Features
+    *ObtainAll option for random evolutions is finally supported.  Enabling this ensures that
+     all natural evolution digimon are still obtainable through natural evolution after the
+     evolutions are randomized.
+    *patch to increase battle learn chance for techs
+
+@Bug Fixes
+    *Toy Town can now properly be opened by the digimon the suit evolves to (when special
+     evolutions are randomized)
+    *Ninjamon will no longer continue to fight forever if random recruits is enabled.  Also
+     prevents the eternal battle with ghost Ninjamon.
+
+
 Public Beta 0.5.0
 @New Features
     *randomize recruitments (recruit A, B joins your town)

@@ -858,6 +858,8 @@ class DigimonWorldHandler:
                     self._applyPatchLearnTierOne( file )
                 elif( patch == 'upLearnChance' ):
                     self._applyPatchLearnChance( file )
+                elif( patch == 'gabumon' ):
+                    self._applyPatchGabumon( file )
 
 
             #------------------------------------------------------
@@ -1697,3 +1699,18 @@ class DigimonWorldHandler:
             for i, val in enumerate( tech.learnChance ):
                 tech.learnChance[ i ] = val * 2
         self.logger.logChange( 'Patched battle learn chance to be twice as high.' )
+
+
+    def _applyPatchGabumon( self, file ):
+        """
+        Increase Gabumon.
+        """
+
+        for ofst, val in data.gabuPatchWrites:
+            util.writeDataToFile( file,
+                                  ofst,
+                                  struct.pack( data.gabuPatchFormat, val ),
+                                  self.logger )
+
+        self.logger.logChange( 'Patched enemy Gabumon to be unreasonably strong.' )
+

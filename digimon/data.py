@@ -194,6 +194,21 @@ woahPatchOffset = 0x14D76EF4
 woahPatchValue = 'Oh shit!'.encode( 'ascii' )
 woahPatchFormat = '<10s'
 
+gabuPatchFormat = '<h'
+gabuPatchWrites = (
+            ( 0x0A7EEA8C, 0x7530 ), #CurrentHP 30,000
+            ( 0x0A7EEA8E, 0x7530 ), #CurrentMP 30,000
+            ( 0x0A7EEA90, 0x7530 ), #MaxHP 30,000
+            ( 0x0A7EEA92, 0x7530 ), #MaxMP 30,000
+            ( 0x0A7EEA94, 0x7D0  ), #Offense 2,000
+            ( 0x0A7EEA96, 0x7D0  ), #Defense 2,000
+            ( 0x0A7EEA98, 0x7D0  ), #Speed 2,000
+            ( 0x0A7EEA9A, 0x7D0  ), #Brains 2,000
+            ( 0x0A7EEA9C, 0x1    ), #Bits 1
+            )
+
+
+
 tierOneTechLearnOffset = 0x14C8E58C
 tierOneTechLearnValue = 0x28
 tierOneTechLearnFormat = '<B'
