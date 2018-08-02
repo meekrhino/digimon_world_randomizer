@@ -1049,25 +1049,22 @@ Patch for evo items giving stats/lifespan:
 
 ----------------------------------------------------------------------------------------------------
 Giromon breaks on 42 and 52
-42          Trash Mountain Night Theme      25 characters
-works:      Tornament Progress Theme        23 characters
-            Secret Beach Cave Theme         22 characters
-52          Tornament Championship Theme    27 characters
-----------------------------------------------------------------------------------------------------
+42          Trash Mountain Night Theme      26 characters
+works:      Tornament Progress Theme        24 characters
+            Secret Beach Cave Theme         23 characters
+52          Tornament Championship Theme    28 characters
 
-----------------------------------------------------------------------------------------------------
-Known bugs:
-CURRENT:
---Alternate version of dynamite and horizontal kick are not being randomized (partner digimon can
-  actually learn these, contrary to what I thought before)
---Prosperity value can get messed up by randomizing recruitments and then saving the game (saving
-  the game recalculates the PP from what you have, but is added when you recruit)
---Some text coloring is broken by the [evolution]Enabled option
---Self target techs can be assigned an affect (does nothing but still, looks weird)
-FIXED:
---When dropable quest item patch has already been applied to the target rom, they will start to
-  appear all over the place (chests in particular) and this is no bueno
---Myotismon quest steak gets randomized and the quest cannot be finished
+
+track name block begins at 0x14D717E8 and ends at 0x14D71F20
+
+total of 0x738 (1848) bytes
+
+blocks are variable length strings packed in 4-byte alignment
+
+exclusion sections of 0x130 (304) bytes each
+    0x14D71918 - 0x14D71A48 (inside Lava Cave Theme)
+
+this info is largely useless because the techs are pointered (not all in one block!)
 ----------------------------------------------------------------------------------------------------
 
 ----------------------------------------------------------------------------------------------------
