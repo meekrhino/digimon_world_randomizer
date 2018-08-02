@@ -63,6 +63,7 @@ if( config[ 'digimon' ].getboolean( 'Enabled' ) ):
 
 if( config[ 'techs' ].getboolean( 'Enabled' ) ):
     handler.randomizeTechData( power=config[ 'techs' ].getboolean( 'Power' ),
+                               mode=config[ 'techs' ][ 'mode' ],
                                cost=config[ 'techs' ].getboolean( 'Cost' ),
                                accuracy=config[ 'techs' ].getboolean( 'Accuracy' ),
                                effect=config[ 'techs' ].getboolean( 'Effect' ),
@@ -123,6 +124,8 @@ if( not logger.error ):
     print( 'Enter this seed in settings file to produce the same ROM again.' )
 else:
     print( 'Program ended with errors.  See log file for details.' )
+
+logger.logAlways( 'Seed was ' + str( handler.randomseed ) )
 
 logger.logAlways( 'End of log.' )
 

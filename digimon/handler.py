@@ -22,10 +22,7 @@ class Digimon:
     evolution data)
     """
 
-    #Everything up to MetalEtemon minus WereGarurumon (not implemented!)
-    #Panjyamon, Gigadramon, and Metaletemon need evo req updates to be
-    #added back in.
-    playableDigimon = list( range( 0x01, 0x3E ) )# + [ 0x3F, 0x40, 0x41 ]
+    playableDigimon = list( range( 0x01, 0x3E ) ) + [ 0x3F, 0x40, 0x41 ]
 
 
     def __init__( self, handler, id, data ):
@@ -259,7 +256,10 @@ class Digimon:
         exclusionList = []
         i = 0
         while( i < len( validEvos ) ):
-            if( validEvos[ i ].name in [ 'Kunemon', 'Devimon', 'Numemon', 'Sukamon', 'Nanimon', 'Vademon' ] ):
+            #Panjyamon, Gigadramon, and MetalEtemon need digivolution requirements in order to
+            #be added as valid natural evolutions.
+            if( validEvos[ i ].name in [ 'Kunemon', 'Devimon', 'Numemon', 'Sukamon', 'Nanimon',
+                                         'Vademon', 'Panjyamon', 'Gigadramon', 'MetalEtemon' ] ):
                 del validEvos[ i ]
             else:
                 i += 1
@@ -1112,7 +1112,7 @@ class DigimonWorldHandler:
                                                                                      digi.drop_rate ) )
 
 
-    def randomizeTechData( self, power=False, cost=False, accuracy=False, effect=False, effectChance=False ):
+    def randomizeTechData( self, mode='shuffle', power=False, cost=False, accuracy=False, effect=False, effectChance=False ):
         """
         Randomize tech data.
 
@@ -1155,6 +1155,28 @@ class DigimonWorldHandler:
                 else:
                     #otherwise, random chance up to 70%
                     tech.effChance = random.randint( 1, 70 )
+
+        if( mode != 'shuffle' ):
+            for tech in self.techData:
+                if( power ):
+                    percent = random.randint( 70, 130 )
+                    tech.power = min( ( tech.power * percent ) / 100, 999 )
+
+                if( cost and ( tech.power != 0 )  ):
+                    factor = random.randint( 5, 140 )
+                    tech.mp3 = min( ( factor * tech.power ) / 300, 255 )
+
+                if( accuracy ):
+                    val = random.randint( 0, 99 )
+                    if( val < 10 ):
+                        tech.accuracy = random.randint( 33, 60 )
+                    elif( val < 50 ):
+                        tech.accuracy = random.randint( 50, 80 )
+                    elif( val < 90 ):
+                        tech.accuracy = random.randint( 75, 100 )
+                    else:
+                        tech.accuracy = 100
+
 
         #This has to be at the end due to power/mp/accuracy swapping around
         for tech in self.techData:
@@ -1319,9 +1341,9 @@ class DigimonWorldHandler:
             while( len( validEvos ) > 0 ):
                 digi = random.choice( rookies )
                 count = digi.getEvoToCount()
-                while( count == digi.getEvoToCount() ):
-                    digi.addEvoTo( validEvos[ 0 ].id )
-                del validEvos[ 0 ]
+                digi.addEvoTo( validEvos[ 0 ].id )
+                if( count < digi.getEvoToCount() ):
+                    del validEvos[ 0 ]
 
         #Rookies get 4-6 Champion targets.
         validEvos = rookies[ 0 ].validEvosTo()
@@ -1341,9 +1363,9 @@ class DigimonWorldHandler:
             while( len( validEvos ) > 0 ):
                 digi = random.choice( champions )
                 count = digi.getEvoToCount()
-                while( count == digi.getEvoToCount() ):
-                    digi.addEvoTo( validEvos[ 0 ].id )
-                del validEvos[ 0 ]
+                digi.addEvoTo( validEvos[ 0 ].id )
+                if( count < digi.getEvoToCount() ):
+                    del validEvos[ 0 ]
 
         #Champions get 1-2 Ultimate targets.
         validEvos = rookies[ 0 ].validEvosTo()
