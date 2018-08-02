@@ -34,6 +34,19 @@ Recommended steps to setting up a race:
 
 Version log:
 
+Public Beta 0.6.1
+@New Features
+    *chaos mode for tech data -- instead of just shuffling the existing values, generates true
+                                 random values.  Power ranges from 30% below vanilla lowest to
+                                 30% above vanilla highest (cap 999).  MP cost ranges from 10%
+                                 to 140% of power value.  This means less complete garbage
+                                 moves while still having the occasional amazing move.
+
+@Bug Fixes
+    *Random special evolutions can now correctly include Panjyamon, MetalEtemon, and Gigadramon
+    *Seed is now printed out at the end of the log
+
+
 Public Beta 0.6.0
 @New Features
     *ObtainAll option for random evolutions is finally supported.  Enabling this ensures that

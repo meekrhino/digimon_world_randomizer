@@ -1116,6 +1116,8 @@ class DigimonWorldHandler:
         """
         Randomize tech data.
 
+        Keyword arguments:
+        mode -- shuffle = use vanilla vales, chaos = modify vanilla values
         power -- Randomize power?
         cost -- Randomize the mp cost?
         accuracy -- Randomize the accuracy?
@@ -1163,7 +1165,7 @@ class DigimonWorldHandler:
                     tech.power = min( ( tech.power * percent ) / 100, 999 )
 
                 if( cost and ( tech.power != 0 )  ):
-                    factor = random.randint( 5, 140 )
+                    factor = random.randint( 10, 140 )
                     tech.mp3 = min( ( factor * tech.power ) / 300, 255 )
 
                 if( accuracy ):
