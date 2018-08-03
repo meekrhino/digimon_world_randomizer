@@ -108,7 +108,7 @@ def unpackDataArray( buf, fmt, count ):
 
     if not count * fmt_sz == len( buf ):
         print( 'Error: trying to parse data array with size '
-             + 'not matching expected size.' )
+             + 'not matching expected size.' + str( len( buf ) ) + ' ' + str( count * fmt_sz ) )
         return []
 
     for i in range( count ):

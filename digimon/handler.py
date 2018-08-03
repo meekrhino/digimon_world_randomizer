@@ -64,6 +64,27 @@ class Digimon:
         for i in range( 6 ):
             self.toEvo.append( 0xFF )
 
+        self.evoStats = []
+        for i in range( 6 ):
+            self.evoStats.append( 0xFFFF )
+
+        self.evoStatReqs = []
+        for i in range( 6 ):
+            self.evoStatReqs.append( 0xFFFF )
+
+
+        self.evoBonusDigi    = 0xFFFF
+        self.evoCareMistakes = 0xFFFF
+        self.evoWeight       = 0xFFFF
+        self.evoDiscipline   = 0xFFFF
+        self.evoHappiness    = 0xFFFF
+        self.evoBattles      = -1
+        self.evoTechs        = 0xFFFF
+        self.evoFlags        = 0xFFFF
+
+        self.evoMaxBattles   = True
+        self.evoMaxCareMistakes = True
+
 
     def __str__( self ):
         """
@@ -134,6 +155,119 @@ class Digimon:
 
         for i in range( 6 ):
             out += self.handler.getDigimonName( self.toEvo[ i ] ) + ' '
+
+        return out
+
+
+    def setEvoStats( self, data ):
+        """
+        Separate out composite data into individual
+        components and attach to existing Digimon.
+
+        Keyword arguments:
+        data -- List of values (unpacked from data string).
+        """
+
+
+        if( data[ 6 ] != self.id ):
+            self.handler.logger.logError( 'Error: trying to attach evo stats for ' + str( data[ 6 ] ) + ' to ' + str( self.id ) )
+            return
+
+        for i in range( 6 ):
+            self.evoStats[ i ] = data[ i ]
+
+
+    def evoStatsToString( self ):
+        """
+        Produce a string representation of the Digimon's evo
+        stats for convenient logging.
+        """
+
+        out = self.name + '\nNow gains stats: '
+
+        for i in range( 6 ):
+            out += str( self.evoStats[ i ] ) + ' '
+
+        return out
+
+
+    def setEvoReqs( self, data ):
+        """
+        Separate out composite data into individual
+        components and attach to existing Digimon.
+
+        Keyword arguments:
+        data -- List of values (unpacked from data string).
+        """
+
+        maxBattlesFlag = 0x0001
+        maxCareMistakesFlag = 0x0010
+
+        self.evoBonusDigi = data[ 0 ]
+
+        for i in range( 6 ):
+            self.evoStatReqs[ i ] = data[ 1 + i ]
+
+        self.evoCareMistakes = data[ 7 ]
+        self.evoWeight       = data[ 8 ]
+        self.evoDiscipline   = data[ 9 ]
+        self.evoHappiness    = data[ 10 ]
+        self.evoBattles      = data[ 11 ]
+        self.evoTechs        = data[ 12 ]
+        self.evoFlags        = data[ 13 ]
+
+        self.evoMaxBattles   = ( self.evoFlags & maxBattlesFlag ) == maxBattlesFlag
+        self.evoMaxCareMistakes = ( self.evoFlags & maxCareMistakesFlag ) == maxCareMistakesFlag
+
+
+    def evoReqsToString( self ):
+        """
+        Produce a string representation of the Digimon's evo
+        requirements for convenient logging.
+        """
+
+        out = self.name + '\'s evo requirements are: \n'
+
+
+        out += 'Stats: {:s}{:s}{:s}{:s}{:s}{:s}'.format(
+                                'HP >= ' + str( self.evoStatReqs[ 0 ] )+ '   ' if self.evoStatReqs[ 0 ] != 0xFFFF else '',
+                                'MP >= ' + str( self.evoStatReqs[ 1 ] )+ '   ' if self.evoStatReqs[ 1 ] != 0xFFFF else '',
+                                'OFF >= ' + str( self.evoStatReqs[ 2 ] )+ '   ' if self.evoStatReqs[ 2 ] != 0xFFFF else '',
+                                'DEF >= ' + str( self.evoStatReqs[ 3 ] )+ '   ' if self.evoStatReqs[ 3 ] != 0xFFFF else '',
+                                'SPD >= ' + str( self.evoStatReqs[ 4 ] )+ '   ' if self.evoStatReqs[ 4 ] != 0xFFFF else '',
+                                'BRN >= ' + str( self.evoStatReqs[ 5 ] )+ '   ' if self.evoStatReqs[ 5 ] != 0xFFFF else ''
+                                )
+
+        out += '\n'
+
+        if( self.evoCareMistakes != 0xFFFF ):
+            if( self.evoMaxCareMistakes ):
+                out +='Had at most ' + str( self.evoCareMistakes ) + ' care mistake(s) at current level\n'
+            else:
+                out +='Had at least ' + str( self.evoCareMistakes ) + ' care mistake(s) at current level\n'
+
+        if( self.evoWeight != 0xFFFF ):
+            out += 'Weight is in range ' + str( self.evoWeight - 5 ) + '-' + str( self.evoWeight + 5 ) + '\n'
+
+        out += 'One of the following bonus requirements: \n'
+
+        if( self.evoBonusDigi != 0xFFFF ):
+            out += 'Current digimon is ' + self.handler.getDigimonName( self.evoBonusDigi ) + '\n'
+
+        if( self.evoDiscipline != 0xFFFF ):
+            out +='Discipline is at least ' + str( self.evoDiscipline ) + '\n'
+
+        if( self.evoHappiness != 0xFFFF ):
+            out +='Happiness is at least ' + str( self.evoHappiness ) + '\n'
+
+        if( self.evoBattles != -1 ):
+            if( self.evoMaxBattles ):
+                out +='Particpated in at most ' + str( self.evoBattles ) + ' battle(s) at current level\n'
+            else:
+                out +='Participated in at least ' + str( self.evoBattles ) + ' battle(s) at current level\n'
+
+        if( self.evoTechs != 0xFFFF ):
+            out +='Learned at least ' + str( self.evoTechs ) + ' techs\n'
 
         return out
 
@@ -680,6 +814,40 @@ class DigimonWorldHandler:
                 #Index from 1 because player (ID#0) does not have evo entries
                 self.digimonData[ 1 + i ].setEvoData( data_tuple )
                 self.logger.log( self.digimonData[ 1 + i ].evoData() + '\n' )
+
+            #Read in evo stats data block
+            data_read = util.readDataWithExclusions( file,
+                                                     data.evoStatsBlockOffset,
+                                                     data.evoStatsBlockSize,
+                                                     data.evoStatsExclusionOffsets,
+                                                     data.evoStatsExclusionSize )
+
+            #Parse data block
+            data_unpacked = util.unpackDataArray( data_read,
+                                                  data.evoStatsFormat,
+                                                  data.evoStatsBlockCount )
+
+            #Store data in digimon objects
+            for i, data_tuple in enumerate( data_unpacked ):
+                self.digimonData[ i ].setEvoStats( data_tuple )
+                self.logger.log( self.digimonData[ i ].evoStatsToString() + '\n' )
+
+            #Read in evo requirements data block
+            data_read = util.readDataWithExclusions( file,
+                                                     data.evoReqsBlockOffset,
+                                                     data.evoReqsBlockSize,
+                                                     data.evoReqsExclusionOffsets,
+                                                     data.evoReqsExclusionSize )
+
+            #Parse data block
+            data_unpacked = util.unpackDataArray( data_read,
+                                                  data.evoReqsFormat,
+                                                  data.evoReqsBlockCount )
+
+            #Store data in digimon objects
+            for i, data_tuple in enumerate( data_unpacked ):
+                self.digimonData[ i ].setEvoReqs( data_tuple )
+                self.logger.log( self.digimonData[ i ].evoReqsToString() + '\n' )
 
 
             #------------------------------------------------------

@@ -100,6 +100,47 @@ data block format:
 ----------------------------------------------------------------------------------------------------
 
 ----------------------------------------------------------------------------------------------------
+evo stat gain block begins at 0x14D6CA68 and ends at 0x14D6CE04
+
+total of 0x39C (924) bytes
+
+each block is 0xE (14) bytes
+
+exclusion sections of 0x130 (304) bytes each
+        None
+
+data block format:
+12  uint16[6]   stat
+ 2  uint16      id
+----------
+14  total
+----------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
+evo requirement block begins at 0x14D6C254 and ends at 0x14D6CABC
+
+total of 0x868 (2152) bytes
+
+each block is 0x1C (28) bytes
+
+exclusion sections of 0x130 (304) bytes each
+        0x14D6C668 - 14D6C797 (inside Bakemon)
+
+data block format:
+ 2  uint16      bonusDigi
+12  uint16[6]   stat
+ 2  uint16      careMistakes
+ 2  uint16      weight
+ 2  uint16      discipline
+ 2  uint16      happiness
+ 2  uint16      battles
+ 2  uint16      techs
+ 2  uint16      flags
+----------
+28  total
+----------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
 tech data table block begins at 0x14D66DF8 and ends at 0x14D676A8
 
 total of 0x8B0 (2224) bytes

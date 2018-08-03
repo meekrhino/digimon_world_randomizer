@@ -125,7 +125,7 @@ if( not logger.error ):
 else:
     print( 'Program ended with errors.  See log file for details.' )
 
-logger.logAlways( 'Seed was ' + str( handler.randomseed ) )
+logger.logAlways( 'Seed was ' + str( handler.randomseed ) + '.' )
 
 logger.logAlways( 'End of log.' )
 

@@ -498,22 +498,43 @@ evoToFromBlockOffset     = 0x14D6CE04       #start of evo to/from block
 evoToFromBlockSize       = 0x3FB            #total number of bytes
 evoToFromBlockCount      = 0x41
 
-evoToFromExclusionOffsets = (
+evoToFromExclusionOffsets= (
             0x14D6CF98, #in to Bakemon 3-4
             )
-evoToFromExclusionSize = 0x130
+evoToFromExclusionSize   = 0x130
 
-itemDataFormat    = '<20sIHHb?2x'
+evoStatsFormat           = '<6HH'
 
-itemDataBlockOffset     = 0x14D676C4       #start of item data block
-itemDataBlockSize       = 0x1260           #total number of bytes
-itemDataBlockCount      = 0x80             #number of item blocks
+evoStatsBlockOffset      = 0x14D6CA68       #start of evo stats block
+evoStatsBlockSize        = 0x39C            #total number of bytes
+evoStatsBlockCount       = 0x42
+
+evoStatsExclusionOffsets = (
+            )
+evoStatsExclusionSize    = 0x130
+
+evoReqsFormat            = '<11Hh2H'
+
+evoReqsBlockOffset       = 0x14D6C254       #start of evo to/from block
+evoReqsBlockSize         = 0x868            #total number of bytes
+evoReqsBlockCount        = 0x42
+
+evoReqsExclusionOffsets  = (
+            0x14D6C668, #in Bakemon
+            )
+evoReqsExclusionSize     = 0x130
+
+itemDataFormat           = '<20sIHHb?2x'
+
+itemDataBlockOffset      = 0x14D676C4       #start of item data block
+itemDataBlockSize        = 0x1260           #total number of bytes
+itemDataBlockCount       = 0x80             #number of item blocks
 
 itemDataExclusionOffsets = (
             0x14D67CE8, #in Red Berry
             0x14D68618, #in Coral charm
             )
-itemDataExclusionSize = 0x130
+itemDataExclusionSize    = 0x130
 
 starterSetDigimonOffset  = ( 0x14D271C0, 0x14D271B8 )   #set digimon id
 starterChkDigimonOffset  = ( 0x14CD1D24, 0x14CD1D44 )   #check digimon id to set tech
