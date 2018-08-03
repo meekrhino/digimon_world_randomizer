@@ -230,8 +230,8 @@ class Digimon:
 
 
         out += 'Stats: {:s}{:s}{:s}{:s}{:s}{:s}'.format(
-                                'HP >= ' + str( self.evoStatReqs[ 0 ] )+ '   ' if self.evoStatReqs[ 0 ] != 0xFFFF else '',
-                                'MP >= ' + str( self.evoStatReqs[ 1 ] )+ '   ' if self.evoStatReqs[ 1 ] != 0xFFFF else '',
+                                'HP >= ' + str( self.evoStatReqs[ 0 ] * 10 )+ '   ' if self.evoStatReqs[ 0 ] != 0xFFFF else '',
+                                'MP >= ' + str( self.evoStatReqs[ 1 ] * 10 )+ '   ' if self.evoStatReqs[ 1 ] != 0xFFFF else '',
                                 'OFF >= ' + str( self.evoStatReqs[ 2 ] )+ '   ' if self.evoStatReqs[ 2 ] != 0xFFFF else '',
                                 'DEF >= ' + str( self.evoStatReqs[ 3 ] )+ '   ' if self.evoStatReqs[ 3 ] != 0xFFFF else '',
                                 'SPD >= ' + str( self.evoStatReqs[ 4 ] )+ '   ' if self.evoStatReqs[ 4 ] != 0xFFFF else '',
