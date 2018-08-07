@@ -315,6 +315,32 @@ class Digimon:
         return tuple( repr )
 
 
+    def unpackedEvoReqFormat( self ):
+        """
+        Produce a tuple representation of the evo
+        requirement data for the object.
+        """
+
+        repr = []
+        repr.append( self.evoBonusDigi )
+
+        for i in range( 6 ):
+            repr.append( self.evoStatReqs[ i ] )
+
+        repr.append( self.evoCareMistakes )
+        repr.append( self.evoWeight )
+        repr.append( self.evoDiscipline )
+        repr.append( self.evoHappiness )
+        repr.append( self.evoBattles )
+        repr.append( self.evoTechs )
+
+        flags = ( 1 if self.evoMaxBattles else 0 ) + ( 16 if self.evoMaxCareMistakes else 0 )
+
+        repr.append( flags )
+
+        return tuple( repr )
+
+
     def getEvoToCount( self ):
         """
         Get current number of digimon this digimon
@@ -355,6 +381,28 @@ class Digimon:
             self.toEvo[ i ] = 0xFF
 
 
+    def clearEvoReqs( self ):
+        """
+        Clear all of this digimon's evo requirements.
+        """
+
+        for i in range( 6 ):
+            self.evoStatReqs[ i ] = 0xFFFF
+
+
+        self.evoBonusDigi    = 0xFFFF
+        self.evoCareMistakes = 0xFFFF
+        self.evoWeight       = 0xFFFF
+        self.evoDiscipline   = 0xFFFF
+        self.evoHappiness    = 0xFFFF
+        self.evoBattles      = -1
+        self.evoTechs        = 0xFFFF
+        self.evoFlags        = 0xFFFF
+
+        self.evoMaxBattles   = True
+        self.evoMaxCareMistakes = True
+
+
     def updateEvosFrom( self ):
         """
         Update this digimon's list of digimon that
@@ -390,13 +438,13 @@ class Digimon:
         exclusionList = []
         i = 0
         while( i < len( validEvos ) ):
-            #Panjyamon, Gigadramon, and MetalEtemon need digivolution requirements in order to
-            #be added as valid natural evolutions.
+            #Panjyamon, Gigadramon, and MetalEtemon don't have digivolution requirements.
             if( validEvos[ i ].name in [ 'Kunemon', 'Devimon', 'Numemon', 'Sukamon', 'Nanimon',
                                          'Vademon', 'Panjyamon', 'Gigadramon', 'MetalEtemon' ] ):
                 del validEvos[ i ]
             else:
                 i += 1
+
 
         return validEvos
 
@@ -661,6 +709,7 @@ class DigimonWorldHandler:
         seed -- Randomizer seed.
         """
 
+        self.randomizedRequirements = False
         self.logger = logger
 
         self.patches = []
@@ -1097,9 +1146,9 @@ class DigimonWorldHandler:
             # Write out digimon evo data
             #------------------------------------------------------
 
-            #Pack digimon data into buffer
+            #Pack digimon evo data into buffer
             data_unpacked = []
-            partners = range( 1, data.lastPartnerDigimon + 1 )
+            partners = range( 1, data.lastPartnerDigimon - 2 )
             for i, digi in enumerate( self.digimonData ):
                 if i in partners:
                     data_unpacked.append( digi.unpackedEvoFormat() )
@@ -1107,13 +1156,34 @@ class DigimonWorldHandler:
             data_packed = util.packDataArray( data_unpacked, data.evoToFromFormat )
 
 
-            #Set all digimon data
+            #Set all digimon evo data
             util.writeDataWithExclusions( file,
                                           data_packed,
                                           data.evoToFromBlockOffset,
                                           data.evoToFromBlockSize,
                                           data.evoToFromExclusionOffsets,
                                           data.evoToFromExclusionSize )
+
+            #Pack digimon evo requirement data into buffer
+            data_unpacked = []
+            partners = range( 0, data.lastPartnerDigimon - 2 )
+            for i, digi in enumerate( self.digimonData ):
+                if i in partners:
+                    data_unpacked.append( digi.unpackedEvoReqFormat() )
+
+            data_packed = util.packDataArray( data_unpacked, data.evoReqsFormat )
+
+
+            #Set all digimon evo requirement data
+            util.writeDataWithExclusions( file,
+                                          data_packed,
+                                          data.evoReqsBlockOffset,
+                                          data.evoReqsBlockSize,
+                                          data.evoReqsExclusionOffsets,
+                                          data.evoReqsExclusionSize )
+
+
+
 
 
             #------------------------------------------------------
@@ -1526,7 +1596,7 @@ class DigimonWorldHandler:
 
 
         #Assign each ultimate to at least one champion first if obtainAll is set
-        champions = self.getPlayableDigimonByLevel( data.levelsByName[ 'CHAMPION' ] )
+        champions = self.getPlayableDigimonByLevel( data.levelsByName[ 'CHAMPION' ], excludeSpecials=True )
 
         if( obtainAll ):
             validEvos = champions[ 0 ].validEvosTo()
@@ -1548,13 +1618,129 @@ class DigimonWorldHandler:
                 digi.addEvoTo( validEvos[ randID ].id )
 
         #Ultimate just need to have their from evos updated.
-        ultimates = self.getPlayableDigimonByLevel( data.levelsByName[ 'ULTIMATE' ] )
+        ultimates = self.getPlayableDigimonByLevel( data.levelsByName[ 'ULTIMATE' ], excludeSpecials=True )
         for digi in ultimates:
             digi.updateEvosFrom()
 
         self.logger.logChange( 'Changed digimon evolutions to the following: ' )
         for i in range( 1, data.lastPartnerDigimon + 1 ):
             self.logger.logChange( 'Changed evolutions for ' + self.digimonData[ i ].evoData() + '\n' )
+
+
+    def randomizeEvolutionRequirements( self ):
+        """
+        Randomize the requirements for evolving to each digimon.
+        """
+
+        self.randomizedRequirements = True
+
+        for digi in self.digimonData:
+            if( digi.id > data.lastPartnerDigimon - 3 ):
+                continue
+
+            if( digi.level == data.levelsByName[ 'FRESH' ] ):
+                digi.clearEvoReqs()
+                continue
+
+            elif( digi.level == data.levelsByName[ 'IN-TRAINING' ] ):
+                digi.clearEvoReqs()
+                continue
+
+            elif( digi.level == data.levelsByName[ 'ROOKIE' ] ):
+                if( digi.name == 'Kunemon' ):
+                    digi.clearEvoReqs()
+                    continue
+
+                digi.clearEvoReqs()
+                digi.evoBonusDigi = digi.fromEvo[ 2 ]
+                digi.evoStatReqs = self._getRandomStatRequirements( digi.level )
+                digi.evoCareMistakes = 0
+                digi.evoMaxCareMistakes = False
+                digi.evoWeight = 15
+                digi.evoTechs = 0
+                digi.evoBattles = -2
+                digi.evoMaxBattles = False
+
+            elif( digi.level == data.levelsByName[ 'CHAMPION' ] ):
+                if( digi.name in [ 'Devimon', 'Numemon', 'Sukamon', 'Nanimon', ] ):
+                    digi.clearEvoReqs()
+                    continue
+
+                digi.clearEvoReqs()
+                digi.evoStatReqs = self._getRandomStatRequirements( digi.level )
+
+                digi.evoMaxCareMistakes = random.choice( [ True, False ] )
+                if( digi.evoMaxCareMistakes ):
+                    digi.evoCareMistakes = random.randint( 0, 6 )
+                else:
+                    digi.evoCareMistakes = random.randint( 2, 6 )
+
+                digi.evoWeight = random.randint( 1, 10 ) * 5
+
+                digi.evoTechs = random.randint( 10, 35 )
+                numBonusReqs = 1
+
+                if( random.randint( 0, 99 ) < 10 ):
+                    digi.evoDiscipline = random.randint( 50, 95 )
+                    numBonusReqs += 1
+
+                if( random.randint( 0, 99 ) < 10 ):
+                    digi.evoDiscipline = random.randint( 45, 85 )
+                    numBonusReqs += 1
+
+                if( random.randint( 0, 99 ) < 30 ):
+                    digi.evoMaxBattles = random.choice( [ True, False ] )
+                    if( digi.evoMaxBattles ):
+                        digi.evoBattles = random.randint( 2, 15 )
+                    else:
+                        digi.evoBattles = random.randint( 2, 15 )
+                    numBonusReqs += 1
+
+                if( random.randint( 0, 99 ) < 10 or numBonusReqs < 2 ):
+                    digi.evoBonusDigi = digi.fromEvo[ 2 ]
+                    numBonusReqs += 1
+
+            elif( digi.level == data.levelsByName[ 'ULTIMATE' ] ):
+                if( digi.name in [ 'Vademon', 'WereGarurumon' ] ):
+                    digi.clearEvoReqs()
+                    continue
+
+                digi.clearEvoReqs()
+                digi.evoStatReqs = self._getRandomStatRequirements( digi.level )
+
+                digi.evoMaxCareMistakes = random.choice( [ True, False ] )
+                if( digi.evoMaxCareMistakes ):
+                    digi.evoCareMistakes = random.randint( 0, 15 )
+                else:
+                    digi.evoCareMistakes = random.randint( 5, 15 )
+
+                digi.evoWeight = random.randint( 1, 14 ) * 5
+
+                digi.evoTechs = random.randint( 21, 50 )
+                numBonusReqs = 1
+
+                if( random.randint( 0, 99 ) < 10 ):
+                    digi.evoDiscipline = random.randint( 90, 100 )
+                    numBonusReqs += 1
+
+                if( random.randint( 0, 99 ) < 10 ):
+                    digi.evoDiscipline = random.randint( 90, 100 )
+                    numBonusReqs += 1
+
+                if( random.randint( 0, 99 ) < 30 ):
+                    digi.evoMaxBattles = random.choice( [ True, False ] )
+                    if( digi.evoMaxBattles ):
+                        digi.evoBattles = random.randint( 0, 15 )
+                    else:
+                        digi.evoBattles = random.randint( 5, 20 ) * 5
+                    numBonusReqs += 1
+
+                if( random.randint( 0, 99 ) < 10 or numBonusReqs < 2 ):
+                    digi.evoBonusDigi = digi.fromEvo[ 2 ]
+                    numBonusReqs += 1
+
+        for i in range( 1, data.lastPartnerDigimon + 1 ):
+            self.logger.logChange( 'Changed requirements for ' + self.digimonData[ i ].evoReqsToString() + '\n' )
 
 
     def randomizeSpecialEvolutions( self ):
@@ -1604,7 +1790,7 @@ class DigimonWorldHandler:
         self.patches.append( patch )
 
 
-    def getPlayableDigimonByLevel( self, level ):
+    def getPlayableDigimonByLevel( self, level, excludeSpecials=False ):
         """
         Get a list of digimon with a specified level.
 
@@ -1616,6 +1802,8 @@ class DigimonWorldHandler:
 
         for digi in self.digimonData:
             if( digi.level == level and digi.id in digi.playableDigimon ):
+                if( excludeSpecials and digi.name in [ 'Panjyamon', 'Gigadramon', 'MetalEtemon' ] ):
+                    continue
                 out.append( digi )
 
         return out
@@ -1833,6 +2021,64 @@ class DigimonWorldHandler:
                 self.logger.logChange( 'Starter tech set to ' + self.getTechName( self.starterTech[ i ] )
                                      + ' (' + self.digimonData[ self.starterID[ i ] ].name
                                      + '\'s slot ' + str( self.starterTechSlot[ i ] ) + ')' )
+
+
+    def _getRandomStatRequirements( self, level ):
+        """
+        Get random stat requirements to evolve to a digimon of
+        the given level.
+
+        Keyword arguments:
+        level -- Digimon level for which to get stat requirements.
+        """
+
+
+        stats = []
+        statRequirements = [ 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF ]
+        statsToChooseFrom = [ 0, 1, 2, 3, 4, 5 ]
+
+        if( level == data.levelsByName[ 'ROOKIE' ] ):
+            numStats = 3
+
+            for i in range( 0, numStats ):
+                val = random.choice( statsToChooseFrom )
+                statsToChooseFrom.remove( val )
+                stats.append( val )
+
+            for stat in stats:
+                statRequirements[ stat ] = 1
+
+            return statRequirements
+
+        elif( level == data.levelsByName[ 'CHAMPION' ] ):
+            numStats = random.randint( 1, 4 )
+
+            for i in range( 0, numStats ):
+                val = random.choice( statsToChooseFrom )
+                statsToChooseFrom.remove( val )
+                stats.append( val )
+
+            for stat in stats:
+                statRequirements[ stat ] = 100
+
+        elif( level == data.levelsByName[ 'ULTIMATE' ] ):
+            numStats = random.randint( 4, 6 )
+
+            for i in range( 0, numStats ):
+                val = random.choice( statsToChooseFrom )
+                statsToChooseFrom.remove( val )
+                stats.append( val )
+
+            #30% chance for the stats to be "hard"
+            hard = random.randint( 0, 99 ) > 70
+
+            for stat in stats:
+                if( hard ):
+                    statRequirements[ stat ] = random.randint( 3, 7 ) * 100
+                else:
+                    statRequirements[ stat ] = random.randint( 2, 5 ) * 100
+
+        return statRequirements
 
 
     def _applyPatchFixEvoItems( self, file ):

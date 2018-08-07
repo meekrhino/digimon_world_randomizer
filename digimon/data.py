@@ -495,8 +495,8 @@ digimonDataExclusionSize = 0x130
 evoToFromFormat          = '<11B'
 
 evoToFromBlockOffset     = 0x14D6CE04       #start of evo to/from block
-evoToFromBlockSize       = 0x3FB            #total number of bytes
-evoToFromBlockCount      = 0x41
+evoToFromBlockSize       = 0x3DA            #total number of bytes
+evoToFromBlockCount      = 0x3E
 
 evoToFromExclusionOffsets= (
             0x14D6CF98, #in to Bakemon 3-4
@@ -516,8 +516,8 @@ evoStatsExclusionSize    = 0x130
 evoReqsFormat            = '<11Hh2H'
 
 evoReqsBlockOffset       = 0x14D6C254       #start of evo to/from block
-evoReqsBlockSize         = 0x868            #total number of bytes
-evoReqsBlockCount        = 0x42
+evoReqsBlockSize         = 0x814            #total number of bytes
+evoReqsBlockCount        = 0x3F
 
 evoReqsExclusionOffsets  = (
             0x14D6C668, #in Bakemon
