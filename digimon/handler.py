@@ -1031,14 +1031,14 @@ class DigimonWorldHandler:
 
             self.techGifts = {}
 
-            for ofst in data.learnMoveOffsets:
+            for i, ofst in enumerate( data.learnMoveOffsets ):
                 file.seek( ofst, 0 )
                 cmd, tech = struct.unpack( data.learnMoveFormat,
                                            file.read( struct.calcsize( data.learnMoveFormat ) ) )
                 if( cmd != scrutil.learnMove ):
                     self.logger.logError( 'Error: Looking for tech learning gift, found incorrect command: ' + str( cmd ) + ' @ ' + format( ofst, '08x' ) )
                 else:
-                    self.techGifts[ ofst ] = tech
+                    self.techGifts[ ( ofst, data.checkMoveOffsets[ i ] ) ] = tech
 
             for tech in itervalues( self.techGifts ):
                 self.logger.log( 'Tech gift: ' + str( count ) + 'x \'' + self.getTechName( tech ) + '\'' )
@@ -1296,19 +1296,18 @@ class DigimonWorldHandler:
                                       self.logger )
 
             #------------------------------------------------------
-            # Write out Tokomon item data
+            # Write out tech gift data
             #------------------------------------------------------
 
             #Set check and learn tech for tech gifts
-            for ofst, tech in iteritems( self.techGifts ):
+            for ( learnOfst, checkOfst ), tech in iteritems( self.techGifts ):
                 util.writeDataToFile( file,
-                                      ofst,
+                                      learnOfst,
                                       struct.pack( data.learnMoveFormat, scrutil.learnMove, tech ),
                                       self.logger )
 
-            for i, ofst in enumerate( data.checkMoveOffsets ):
                 util.writeDataToFile( file,
-                                      ofst,
+                                      checkOfst,
                                       struct.pack( data.checkMoveFormat, tech ),
                                       self.logger )
 
