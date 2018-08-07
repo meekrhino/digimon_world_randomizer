@@ -269,6 +269,7 @@ class Digimon:
         if( self.evoTechs != 0xFFFF ):
             out +='Learned at least ' + str( self.evoTechs ) + ' techs\n'
 
+
         return out
 
 
@@ -1355,7 +1356,7 @@ class DigimonWorldHandler:
         Randomize tech data.
 
         Keyword arguments:
-        mode -- shuffle = use vanilla vales, chaos = modify vanilla values
+        mode -- shuffle = use vanilla vales, random = modify vanilla values
         power -- Randomize power?
         cost -- Randomize the mp cost?
         accuracy -- Randomize the accuracy?
