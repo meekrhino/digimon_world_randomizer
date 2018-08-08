@@ -1044,6 +1044,17 @@ class DigimonWorldHandler:
                 self.logger.log( 'Tech gift: ' + str( count ) + 'x \'' + self.getTechName( tech ) + '\'' )
 
 
+            #------------------------------------------------------
+            # Read in jukebox track names
+            #------------------------------------------------------
+            #Read in tier list data block
+            self.trackNames = util.readDataWithExclusions( file,
+                                                           data.trackNameBlockOffset,
+                                                           data.trackNameBlockSize,
+                                                           data.trackNameExclusionOffsets,
+                                                           data.trackNameExclusionSize )
+
+
     def write( self, filename ):
         """
         Write all ROM data back to binary file.
@@ -1078,6 +1089,8 @@ class DigimonWorldHandler:
                     self._applyPatchLearnChance( file )
                 elif( patch == 'gabumon' ):
                     self._applyPatchGabumon( file )
+                elif( patch == 'giromon' ):
+                    self._applyPatchGiromon( file )
 
 
             #------------------------------------------------------
@@ -1310,6 +1323,18 @@ class DigimonWorldHandler:
                                       checkOfst,
                                       struct.pack( data.checkMoveFormat, tech ),
                                       self.logger )
+
+            #------------------------------------------------------
+            # Write out jukebox track names
+            #------------------------------------------------------
+
+            #Set jukebox track names
+            util.writeDataWithExclusions( file,
+                                          self.trackNames,
+                                          data.trackNameBlockOffset,
+                                          data.trackNameBlockSize,
+                                          data.trackNameExclusionOffsets,
+                                          data.trackNameExclusionSize )
 
 
     def randomizeDigimonData( self, dropItem=False, dropRate=False, price=1000 ):
@@ -2151,4 +2176,22 @@ class DigimonWorldHandler:
                                   self.logger )
 
         self.logger.logChange( 'Patched enemy Gabumon to be unreasonably strong.' )
+
+
+    def _applyPatchGiromon( self, file ):
+        """
+        Fix Giromon/jukebox crash glitch.
+        """
+
+        trackLen = 0
+        for i in range( 0, len( self.trackNames ) ):
+            print( self.trackNames[ i ] )
+            if( self.trackNames[ i ] == '\0' ):
+                trackLen = 0
+            else:
+                trackLen += 1
+                if( trackLen > 24 ):
+                    self.trackNames = self.trackNames[ :i ] + '\0' + self.trackNames[ i+1: ]
+
+        self.logger.logChange( 'Patched out Giromon/jukebox glitch.' )
 

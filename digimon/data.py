@@ -536,6 +536,14 @@ itemDataExclusionOffsets = (
             )
 itemDataExclusionSize    = 0x130
 
+trackNameBlockOffset     = 0x14D717E8       #start of item data block
+trackNameBlockSize       = 0x738            #total number of bytes
+
+trackNameExclusionOffsets= (
+            0x14D71918, #in Lava Cave Theme
+            )
+trackNameExclusionSize   = 0x130
+
 starterSetDigimonOffset  = ( 0x14D271C0, 0x14D271B8 )   #set digimon id
 starterChkDigimonOffset  = ( 0x14CD1D24, 0x14CD1D44 )   #check digimon id to set tech
 starterLearnTechOffset   = ( 0x14CD1D40, 0x14CD1D60 )   #tech to learn

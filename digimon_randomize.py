@@ -110,6 +110,9 @@ if( config[ 'patches' ].getboolean( 'Woah' ) ):
 if( config[ 'patches' ].getboolean( 'FixBrainTrainTierOne' ) ):
     handler.applyPatch( 'learnTierOne' )
 
+if( config[ 'patches' ].getboolean( 'FixGiromonJukeboxGlitch' ) ):
+    handler.applyPatch( 'giromon' )
+
 if( config[ 'patches' ].getboolean( 'IncreaseTechLearnChance' ) ):
     handler.applyPatch( 'upLearnChance' )
 
