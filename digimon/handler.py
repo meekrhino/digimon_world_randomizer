@@ -436,12 +436,16 @@ class Digimon:
         #Find all digimon that are playable and one level above
         validEvos = self.handler.getPlayableDigimonByLevel( self.level + 1 )
 
+        alwaysInvalid = [ 'Kunemon', 'Numemon', 'Sukamon', 'Nanimon', 'Vademon',
+                          'Panjyamon', 'Gigadramon', 'MetalEtemon' ]
+        if( not self.handler.randomizedRequirements ):
+            alwaysInvalid.append( 'Devimon' )
+
         exclusionList = []
         i = 0
         while( i < len( validEvos ) ):
             #Panjyamon, Gigadramon, and MetalEtemon don't have digivolution requirements.
-            if( validEvos[ i ].name in [ 'Kunemon', 'Devimon', 'Numemon', 'Sukamon', 'Nanimon',
-                                         'Vademon', 'Panjyamon', 'Gigadramon', 'MetalEtemon' ] ):
+            if( validEvos[ i ].name in alwaysInvalid ):
                 del validEvos[ i ]
             else:
                 i += 1
@@ -1737,7 +1741,7 @@ class DigimonWorldHandler:
                 digi.evoMaxBattles = False
 
             elif( digi.level == data.levelsByName[ 'CHAMPION' ] ):
-                if( digi.name in [ 'Devimon', 'Numemon', 'Sukamon', 'Nanimon', ] ):
+                if( digi.name in [ 'Numemon', 'Sukamon', 'Nanimon', ] ):
                     digi.clearEvoReqs()
                     continue
 
