@@ -24,8 +24,8 @@ class Logger:
         self.filename = filename
         if( self.filename is not None ):
             with open( self.filename, 'w' ) as file:
-                file.write( 'Digimon World Randomization Log\n\n' )
-                file.write( 'Logging mode is set to \'' + verbose + '\'\n\n' )
+                self.logAlways( self.getHeader( 'Digimon World Randomization Log' ) )
+                self.logAlways( 'Logging mode is set to \'' + verbose + '\'' )
 
         self.verbose = verbose
 
@@ -97,3 +97,18 @@ class Logger:
                 file.write( str + '\n' )
         else:
             print( str )
+
+
+    def getHeader( self, str ):
+        """
+        Return a log header for the specified section name.
+
+        Keyword arguments:
+        str -- Section name
+        """
+
+        out = '\n============================================================\n'
+        out += '   ' + str + '\n'
+        out += '============================================================\n'
+
+        return out

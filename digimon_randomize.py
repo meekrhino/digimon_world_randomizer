@@ -130,8 +130,10 @@ if( not logger.error ):
 else:
     print( 'Program ended with errors.  See log file for details.' )
 
+logger.logAlways( logger.getHeader( 'Seed' ) )
+
 logger.logAlways( 'Seed was ' + str( handler.randomseed ) + '.' )
 
-logger.logAlways( 'End of log.' )
+logger.logAlways( logger.getHeader( 'End of log' ) )
 
 input( 'Press Enter to finish...' )

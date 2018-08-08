@@ -732,6 +732,8 @@ class DigimonWorldHandler:
             # Read in tech data
             #------------------------------------------------------
 
+            self.logger.log( self.logger.getHeader( 'Read Tech Data' ) )
+
             #Read in full item data block
             data_read = util.readDataWithExclusions( file,
                                                      data.techDataBlockOffset,
@@ -801,6 +803,8 @@ class DigimonWorldHandler:
             # Read in item data
             #------------------------------------------------------
 
+            self.logger.log( self.logger.getHeader( 'Read Item Data' ) )
+
             #Read in full item data block
             data_read = util.readDataWithExclusions( file,
                                                      data.itemDataBlockOffset,
@@ -823,6 +827,8 @@ class DigimonWorldHandler:
             #------------------------------------------------------
             # Read in digimon data
             #------------------------------------------------------
+
+            self.logger.log( self.logger.getHeader( 'Read Digimon Data' ) )
 
             #Read in full digimon stats data block
             data_read = util.readDataWithExclusions( file,
@@ -847,6 +853,8 @@ class DigimonWorldHandler:
             # Read in evo data
             #------------------------------------------------------
 
+            self.logger.log( self.logger.getHeader( 'Read Evolution Data' ) )
+
             #Read in evo to/from data block
             data_read = util.readDataWithExclusions( file,
                                                      data.evoToFromBlockOffset,
@@ -865,6 +873,9 @@ class DigimonWorldHandler:
                 self.digimonData[ 1 + i ].setEvoData( data_tuple )
                 self.logger.log( self.digimonData[ 1 + i ].evoData() + '\n' )
 
+
+            self.logger.log( self.logger.getHeader( 'Read Evolution Stat Gain Data' ) )
+
             #Read in evo stats data block
             data_read = util.readDataWithExclusions( file,
                                                      data.evoStatsBlockOffset,
@@ -881,6 +892,8 @@ class DigimonWorldHandler:
             for i, data_tuple in enumerate( data_unpacked ):
                 self.digimonData[ i ].setEvoStats( data_tuple )
                 self.logger.log( self.digimonData[ i ].evoStatsToString() + '\n' )
+
+            self.logger.log( self.logger.getHeader( 'Read Evolution Requirements Data' ) )
 
             #Read in evo requirements data block
             data_read = util.readDataWithExclusions( file,
@@ -903,6 +916,9 @@ class DigimonWorldHandler:
             #------------------------------------------------------
             # Read in starter data
             #------------------------------------------------------
+
+            self.logger.log( self.logger.getHeader( 'Read Starter Data' ) )
+
             self.starterID = []
             self.starterTech = []
             self.starterTechSlot = []
@@ -928,10 +944,12 @@ class DigimonWorldHandler:
             # Read in recruitment data
             #------------------------------------------------------
 
+            self.logger.log( self.logger.getHeader( 'Read Recruitment Data' ) )
+
             self.recruitData = {}
 
             err = False
-            for ( ofsts, trigger ) in data.recruitOffsets:
+            for ( ofsts, trigger, digi ) in data.recruitOffsets:
                 verifiedOfsts = []
                 for ofst in ofsts:
                     file.seek( ofst, 0 )
@@ -943,7 +961,7 @@ class DigimonWorldHandler:
                     else:
                         verifiedOfsts.append( ofst )
 
-                self.recruitData[ trigger ] = tuple( verifiedOfsts )
+                self.recruitData[ trigger ] = ( tuple( verifiedOfsts ), digi )
 
             if( not err ):
                 self.logger.log( 'All recruitment check values verified.' )
@@ -952,6 +970,8 @@ class DigimonWorldHandler:
             #------------------------------------------------------
             # Read in special evolution data
             #------------------------------------------------------
+
+            self.logger.log( self.logger.getHeader( 'Read Special Evolution Data' ) )
 
             self.specEvos = {}
 
@@ -975,6 +995,8 @@ class DigimonWorldHandler:
             # Read in chest item data
             #------------------------------------------------------
 
+            self.logger.log( self.logger.getHeader( 'Read Chest Item Data' ) )
+
             self.chestItems = {}
 
             for ofst in data.chestItemOffsets:
@@ -993,6 +1015,8 @@ class DigimonWorldHandler:
             # Read in map item spawn data
             #------------------------------------------------------
 
+            self.logger.log( self.logger.getHeader( 'Read Map Item Data' ) )
+
             self.mapItems = {}
 
             for ofst in data.mapItemOffsets:
@@ -1009,6 +1033,8 @@ class DigimonWorldHandler:
             #------------------------------------------------------
             # Read in Tokomon item data
             #------------------------------------------------------
+
+            self.logger.log( self.logger.getHeader( 'Read Tokomon Item Data' ) )
 
             self.tokoItems = {}
 
@@ -1028,6 +1054,8 @@ class DigimonWorldHandler:
             #------------------------------------------------------
             # Read in tech gift data
             #------------------------------------------------------
+
+            self.logger.log( self.logger.getHeader( 'Read Tech Gift Data' ) )
 
             self.techGifts = {}
 
@@ -1076,6 +1104,9 @@ class DigimonWorldHandler:
             #------------------------------------------------------
             # Apply patches
             #------------------------------------------------------
+
+            self.logger.logChange( self.logger.getHeader( 'Apply Patches' ) )
+
             for patch in self.patches:
                 if( patch == 'fixEvoItems' ):
                     self._applyPatchFixEvoItems( file )
@@ -1257,7 +1288,7 @@ class DigimonWorldHandler:
 
             #Set trigger in each recruitment check
             for trigger in self.recruitData:
-                for ofst in self.recruitData[ trigger ]:
+                for ofst in self.recruitData[ trigger ][ 0 ]:
                     util.writeDataToFile( file,
                                           ofst,
                                           struct.pack( data.recruitFormat, trigger ),
@@ -1346,6 +1377,8 @@ class DigimonWorldHandler:
         dropRate -- Randomize item drop chance?
         """
 
+        self.logger.logChange( self.logger.getHeader( 'Randomize Digimon Data' ) )
+
         for digi in self.digimonData:
             if( dropItem ):
                 digi.item = self._getRandomItem( consumableOnly=True,
@@ -1387,6 +1420,8 @@ class DigimonWorldHandler:
         effect -- Randomize the effect?
         effectChance -- Randomize the chance of the effect happening?
         """
+
+        self.logger.logChange( self.logger.getHeader( 'Randomize Tech Data' ) )
 
         for tech in self.techData:
             if( not tech.isLearnable ):
@@ -1464,6 +1499,9 @@ class DigimonWorldHandler:
         """
         Set starters to two random different rookie Digimon.
         """
+
+        self.logger.logChange( self.logger.getHeader( 'Randomize Starters' ) )
+
         prevFirst = self.starterID[ 0 ]
         firstDigi = data.rookies[ random.randint( 0, len( data.rookies ) - 1) ]
         while firstDigi == prevFirst:
@@ -1492,6 +1530,8 @@ class DigimonWorldHandler:
                     the pool of items to choose from.
         """
 
+        self.logger.logChange( self.logger.getHeader( 'Randomize Chest Items' ) )
+
         #for each chest, choose a random allowed item from data
         for key in list( self.chestItems ):
             randID = self._getRandomItem( notQuest=True, notEvo=( not allowEvo ) )
@@ -1509,6 +1549,8 @@ class DigimonWorldHandler:
         allowEvo -- Include or exclude evolution items from
                     the pool of items to choose from.
         """
+
+        self.logger.logChange( self.logger.getHeader( 'Randomize Tokomon Items' ) )
 
         #for each tokomon item, choose a random allowed item
         #and a random quantity
@@ -1540,6 +1582,8 @@ class DigimonWorldHandler:
         foodOnly -- Only replace food items with other food items
         """
 
+        self.logger.logChange( self.logger.getHeader( 'Randomize Map Items' ) )
+
         #for each map spawn, choose a random allowed item from data
         for key in list( self.mapItems ):
             id = self.mapItems[ key ]
@@ -1560,6 +1604,8 @@ class DigimonWorldHandler:
         in Beetle Land.
         """
 
+        self.logger.logChange( self.logger.getHeader( 'Randomize Tech Gifts' ) )
+
         #for each tech gift, choose a random usable tech
         for key in list( self.techGifts ):
             randID = self._getRandomTech( learnableOnly=True )
@@ -1574,6 +1620,8 @@ class DigimonWorldHandler:
         Randomize the lists of evolutions that each digimon
         is capable of.
         """
+
+        self.logger.logChange( self.logger.getHeader( 'Randomize Evolutions' ) )
 
         for digi in self.digimonData:
             digi.clearEvos()
@@ -1656,6 +1704,8 @@ class DigimonWorldHandler:
         """
         Randomize the requirements for evolving to each digimon.
         """
+
+        self.logger.logChange( self.logger.getHeader( 'Randomize Evolution Requirements' ) )
 
         self.randomizedRequirements = True
 
@@ -1773,6 +1823,8 @@ class DigimonWorldHandler:
         Randomize the target digimon for all special evolutions.
         """
 
+        self.logger.logChange( self.logger.getHeader( 'Randomize Special Evolutions' ) )
+
         for ofsts in self.specEvos:
             id = self.specEvos[ ofsts ]
             newID = random.choice( self.getPlayableDigimonByLevel( self.digimonData[ id ].level ) ).id
@@ -1791,6 +1843,8 @@ class DigimonWorldHandler:
         Frigimon)
         """
 
+        self.logger.logChange( self.logger.getHeader( 'Randomize Recruitments' ) )
+
         #randomly shuffle all recruits
         for triggerA in self.recruitData:
             triggerB = random.choice( list( self.recruitData ) )
@@ -1800,7 +1854,9 @@ class DigimonWorldHandler:
 
             self.recruitData[ triggerA ], self.recruitData[ triggerB ] = ofstsB, ofstsA
 
-            self.logger.log( 'Swapped recruitment triggers ' + str( triggerA ) + ' and ' + str( triggerB ) )
+        for trigger in self.recruitData:
+            self.logger.logChange( self.getDigimonName( self.recruitData[ trigger ][ 1 ] ) +
+                                   ' now recruits ' + self.getDigimonName( trigger - 200 ) )
 
 
     def applyPatch( self, patch ):
@@ -2185,7 +2241,6 @@ class DigimonWorldHandler:
 
         trackLen = 0
         for i in range( 0, len( self.trackNames ) ):
-            print( self.trackNames[ i ] )
             if( self.trackNames[ i ] == '\0' ):
                 trackLen = 0
             else:

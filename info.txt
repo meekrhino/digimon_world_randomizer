@@ -613,7 +613,8 @@ extra restaurant (probably garbage): 1406AC0A, 1406ACEE, 1406BC6E, 1406BD52, 140
                     05768   Sukamon in trash mountain
 
         MUST CHANGE:    (must be new val)
-13FD87F6            09594   Sukamon hangin out
+13FD87F6  140B9976  09594   Sukamon hangin out
+
 
 
     Kuwagamon triggers:
