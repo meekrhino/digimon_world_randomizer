@@ -718,10 +718,10 @@ extra restaurant (probably garbage): 1406AC0A, 1406ACEE, 1406BC6E, 1406BD52, 140
                     00482   Ogremon quest
                     00630   Ogremon quest
                     00520   Ogremon quest (cutscene in drill tunnel)
+13FF293A            00030   Drimogemon dialog ("I fixed the sign")
 
         MUST CHANGE:    (must be new val)
 13FD8BD2            10278   Ogremon chillin
-13FF293A            00030   Ogremon dialog ("I fixed the sign")
                     06566   Jijimon
 
 

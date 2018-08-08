@@ -344,7 +344,7 @@ recruitOffsets = (
                 0x1402BBCA, 0x140598E0, 0x14059A24, 0x1405C3F2, 0x1405C6B8, 0x1405C97A, 0x1405E994, 0x14063CC6,
                 0x1406AAEE, 0x1406BC36, 0x1406D034, 0x1406D7CA, 0x1406DDC2, 0x1406E30A, 0x14070574, 0x14072678 ),
               233 ), #Unimon
-            ( ( 0x140B5E82, 0x13FD8BD2, 0x13FF293A ),
+            ( ( 0x140B5E82, 0x13FD8BD2 ),
               234 ), #Ogremon
             ( ( 0x140B4C64, 0x13FD898A, 0x13FD8BBE, 0x13FD8BF6, 0x1405C496, 0x1405C4EA, 0x1405E4A4 ),
               235 ), #Shellmon
