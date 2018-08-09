@@ -1286,6 +1286,12 @@ class DigimonWorldHandler:
                                       struct.pack( data.animIDFormat, util.techSlotAnimID( self.starterTechSlot[ i ] ) ),
                                       self.logger )
 
+            util.writeDataToFile( file,
+                                  data.starterStatChkDigimonOffset,
+                                  struct.pack( data.digimonIDFormat, self.starterID[ 0 ] ),
+                                  self.logger )
+
+
             #------------------------------------------------------
             # Write out recruitment data
             #------------------------------------------------------

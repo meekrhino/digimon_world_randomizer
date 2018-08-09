@@ -548,4 +548,5 @@ starterSetDigimonOffset  = ( 0x14D271C0, 0x14D271B8 )   #set digimon id
 starterChkDigimonOffset  = ( 0x14CD1D24, 0x14CD1D44 )   #check digimon id to set tech
 starterLearnTechOffset   = ( 0x14CD1D40, 0x14CD1D60 )   #tech to learn
 starterEquipAnimOffset   = ( 0x14CD1D30, 0x14CD1D50 )   #animation to equip
+starterStatChkDigimonOffset = 0x1407E2C5
 

@@ -34,6 +34,18 @@ Recommended steps to setting up a race:
 
 Version log:
 
+Public Beta 0.7.1
+@New Features
+    *Patch to fix the Giromon/jukebox glitch
+    *Improve random recruitment logging (log now tells what each recruit should give you)
+
+@Bug Fixes
+    *Getting Ogremon early in random recruits will no longer break the Drimogemon fight
+    *Seadramon will now properly be able to teach 3 random techs (when enabled)
+    *Devimon is now an option for natural evolution when random requirements is enabled
+    *Properly use 2nd starter starting stats when 2nd starter is assigned
+
+
 Public Beta 0.7.0
 @New Features
     *random mode for tech data -- instead of just shuffling the existing values, generates true
