@@ -1865,8 +1865,8 @@ class DigimonWorldHandler:
             self.recruitData[ triggerA ], self.recruitData[ triggerB ] = ofstsB, ofstsA
 
         for trigger in self.recruitData:
-            self.logger.logChange( self.getDigimonName( self.recruitData[ trigger ][ 1 ] ) +
-                                   ' now recruits ' + self.getDigimonName( trigger - 200 ) )
+            self.logger.logChange( self.getDigimonName( trigger - 200 ) +
+                                   ' now recruits ' + self.getDigimonName( self.recruitData[ trigger ][ 1 ] ) )
 
 
     def applyPatch( self, patch ):
