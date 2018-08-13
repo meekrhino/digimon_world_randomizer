@@ -58,17 +58,51 @@ def findAll( script, bin, inst, valueList=None ):
     return ofst
 
 
-def findSequenceInFile( filename, seq ):
+def findAllDuplicatesForRecruitOffsets( filename ):
+    """
+    Find all offsets for duplicate recruitment data.
+    """
+
+    for ( triggers, val, id ) in data.recruitOffsets:
+        #print( 'investigating triggers for digimon: ' + str( id ) )
+        list = []
+        for ofst in triggers:
+            found = findAllDuplicatesOfDataAtOffset( filename, ofst, 20 )
+            list += found
+            #print( 'found ' + str( len( found ) ) + ' copies' )
+
+        print( str( len( list ) ) + ': ( ' + ",".join("0x{:08X} ".format( o ) for o in list ) + ')' )
+
+
+def findAllDuplicatesOfDataAtOffset( filename, ofst, sz ):
+    """
+    Find all occurences of the data that occurs at a given offset
+    in the given file.  Match sz bytes.
+    """
+
+    with open( filename, 'r+b' ) as file:
+        file.seek( ofst, 0 )
+        seq = file.read( sz )
+
+    found = findSequenceInFile( filename, seq )
+
+    return found
+
+
+def findSequenceInFile( filename, seq, ofst=None ):
     """
     Find the first occurence of the binary sequence in the file.
     """
 
-    print( 'Finding seq: ' + str( seq ) )
+    #print( 'Finding seq: ' + str( seq ) )
 
     with open( filename, 'r+b' ) as file:
         mm = mmap.mmap( file.fileno(), 0 )
         found = []
-        res = data.scriptOffsetInBinary
+        if( ofst == None ):
+            res = data.scriptOffsetInBinary
+        else:
+            res = ofst
         while( res != -1 and res < mm.size() ):
             res =  mm.find( seq, res + len( seq ) )
             if( res != -1 ):
