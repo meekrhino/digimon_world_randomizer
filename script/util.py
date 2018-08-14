@@ -58,6 +58,22 @@ def findAll( script, bin, inst, valueList=None ):
     return ofst
 
 
+def findAllDuplicatesForMapItemOffsets( filename ):
+    """
+    Find all offsets for duplicate recruitment data.
+    """
+
+    all = []
+    for ofst in data.mapItemOffsets:
+        #print( 'investigating triggers for digimon: ' + str( id ) )
+
+        found = findAllDuplicatesOfDataAtOffset( filename, ofst, 20 )
+        all = list( set( found ) | set( all ) )
+        #print( 'found ' + str( len( found ) ) + ' copies' )
+
+    print( str( len( all ) ) + ': (' + ",".join(" 0x{:08X}".format( o ) for o in all ) + ' )' )
+
+
 def findAllDuplicatesForRecruitOffsets( filename ):
     """
     Find all offsets for duplicate recruitment data.

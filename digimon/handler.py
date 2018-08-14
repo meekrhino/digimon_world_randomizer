@@ -980,7 +980,7 @@ class DigimonWorldHandler:
             self.specEvos = {}
 
             err = False
-            for ofsts, checkVal in data.specEvoOffsets:
+            for ofsts, checkVal, fromVal in data.specEvoOffsets:
                 for ofst in ofsts:
                     file.seek( ofst, 0 )
                     id = struct.unpack( data.specEvoFormat,
@@ -989,7 +989,7 @@ class DigimonWorldHandler:
                         self.logger.logError( 'Error: Looking for spec evo, found incorrect value: ' + str( id ) + ' @ ' + format( ofst, '08x' ) )
                         err = True
 
-                self.specEvos[ ofsts ] = checkVal
+                self.specEvos[ ofsts ] = ( checkVal, fromVal )
 
             if( not err ):
                 self.logger.log( 'All special evolutions verified.' )
@@ -1309,7 +1309,7 @@ class DigimonWorldHandler:
 
             #Set trigger in each recruitment check
             for ofsts in self.specEvos:
-                val = self.specEvos[ ofsts ]
+                val = self.specEvos[ ofsts ][ 0 ]
                 for ofst in ofsts:
                     util.writeDataToFile( file,
                                           ofst,
@@ -1858,12 +1858,13 @@ class DigimonWorldHandler:
         self.logger.logChange( self.logger.getHeader( 'Randomize Special Evolutions' ) )
 
         for ofsts in self.specEvos:
-            id = self.specEvos[ ofsts ]
+            id = self.specEvos[ ofsts ][ 0 ]
+            fromID = self.specEvos[ ofsts ][ 1 ]
             newID = random.choice( self.getPlayableDigimonByLevel( self.digimonData[ id ].level ) ).id
-            while( newID == id ):
+            while( newID == id or newID == fromID ):
                 newID = random.choice( self.getPlayableDigimonByLevel( self.digimonData[ id ].level ) ).id
 
-            self.specEvos[ ofsts ] = newID
+            self.specEvos[ ofsts ] = ( newID, fromID )
 
             self.logger.logChange( 'Changed special evolution for ' + self.getDigimonName( id ) + ' to ' + self.getDigimonName( newID ) )
 
