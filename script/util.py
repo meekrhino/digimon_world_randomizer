@@ -65,13 +65,13 @@ def findAllDuplicatesForRecruitOffsets( filename ):
 
     for ( triggers, val, id ) in data.recruitOffsets:
         #print( 'investigating triggers for digimon: ' + str( id ) )
-        list = []
+        all = []
         for ofst in triggers:
             found = findAllDuplicatesOfDataAtOffset( filename, ofst, 20 )
-            list += found
+            all = list( set( found ) | set( all ) )
             #print( 'found ' + str( len( found ) ) + ' copies' )
 
-        print( str( len( list ) ) + ': ( ' + ",".join("0x{:08X} ".format( o ) for o in list ) + ')' )
+        print( str( len( all ) ) + ': (' + ",".join(" 0x{:08X}".format( o ) for o in all ) + ' )' )
 
 
 def findAllDuplicatesOfDataAtOffset( filename, ofst, sz ):
