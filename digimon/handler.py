@@ -1887,6 +1887,9 @@ class DigimonWorldHandler:
 
             self.recruitData[ triggerA ], self.recruitData[ triggerB ] = ofstsB, ofstsA
 
+        if( not self._validateRecruitments() ):
+            self.randomizeRecruitments()
+
         for trigger in self.recruitData:
             self.logger.logChange( self.getDigimonName( trigger - 200 ) +
                                    ' now recruits ' + self.getDigimonName( self.recruitData[ trigger ][ 1 ] ) )
@@ -2194,6 +2197,24 @@ class DigimonWorldHandler:
 
         return statRequirements
 
+
+    def _validateRecruitments( self ):
+        """
+        Check whether the current recruitment randomization is valid
+        (beatable).
+        """
+
+        factorialTownDigis = [ 'Numemon', 'MetalMamemon', 'Andromon', 'Giromon' ]
+
+        for trigger in self.recruitData:
+            recruited = self.getDigimonName( trigger - 200 )
+            showedUp = self.getDigimonName( self.recruitData[ trigger ][ 1 ] )
+
+            if( showedUp == 'Whamon' ):
+                if( recruited in factorialTownDigis and not recruited == 'Nanimon' ):
+                    return False
+
+        return True
 
     def _applyPatchFixEvoItems( self, file ):
         """
