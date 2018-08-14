@@ -316,6 +316,22 @@ class Digimon:
         return tuple( repr )
 
 
+    def unpackedEvoStatsFormat( self ):
+        """
+        Produce a tuple representation of the evo
+        stat gain data for the object.
+        """
+
+        repr = []
+
+        for i in range( 6 ):
+            repr.append( self.evoStats[ i ] )
+
+        repr.append( self.id )
+
+        return tuple( repr )
+
+
     def unpackedEvoReqFormat( self ):
         """
         Produce a tuple representation of the evo
@@ -1213,6 +1229,26 @@ class DigimonWorldHandler:
                                           data.evoToFromExclusionOffsets,
                                           data.evoToFromExclusionSize )
 
+
+            #Pack digimon evo stat gain data into buffer
+            data_unpacked = []
+            partners = range( 0, data.lastPartnerDigimon + 1 )
+            for i, digi in enumerate( self.digimonData ):
+                if i in partners:
+                    data_unpacked.append( digi.unpackedEvoStatsFormat() )
+
+            data_packed = util.packDataArray( data_unpacked, data.evoStatsFormat )
+
+
+            #Set all digimon evo stat gain data
+            util.writeDataWithExclusions( file,
+                                          data_packed,
+                                          data.evoStatsBlockOffset,
+                                          data.evoStatsBlockSize,
+                                          data.evoStatsExclusionOffsets,
+                                          data.evoStatsExclusionSize )
+
+
             #Pack digimon evo requirement data into buffer
             data_unpacked = []
             partners = range( 0, data.lastPartnerDigimon - 2 )
@@ -1841,6 +1877,7 @@ class DigimonWorldHandler:
                 continue
 
             devimon = digi
+            break
 
         devimon.evoStats[ 0 ] = 1500
         devimon.evoStats[ 1 ] = 2000
@@ -1848,6 +1885,8 @@ class DigimonWorldHandler:
         devimon.evoStats[ 3 ] = 100
         devimon.evoStats[ 4 ] = 150
         devimon.evoStats[ 5 ] = 200
+
+        self.logger.logChange( 'Set Devimon stat gains to: 1500  2000  250  100  150  200' )
 
 
     def randomizeSpecialEvolutions( self ):

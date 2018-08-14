@@ -94,10 +94,10 @@ if( config[ 'mapItems' ].getboolean( 'Enabled' ) ):
 if( config[ 'evolution' ].getboolean( 'Enabled' ) ):
     if( config[ 'evolution' ].getboolean( 'Requirements' ) ):
         handler.randomizeEvolutionRequirements()
-        handler.updateEvolutionStats()
     handler.randomizeEvolutions( obtainAll=config[ 'evolution' ].getboolean( 'ObtainAll' ) )
     if( config[ 'evolution' ].getboolean( 'SpecialEvos' ) ):
         handler.randomizeSpecialEvolutions()
+        handler.updateEvolutionStats()
 
 if( config[ 'patches' ].getboolean( 'FixEvoItemStatGain' ) ):
     handler.applyPatch( 'fixEvoItems' )
