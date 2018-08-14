@@ -1828,6 +1828,28 @@ class DigimonWorldHandler:
             self.logger.logChange( 'Changed requirements for ' + self.digimonData[ i ].evoReqsToString() + '\n' )
 
 
+    def updateEvolutionStats( self ):
+        """
+        Updates evolution requirements for evolving to certain
+        digimon.
+        """
+
+        devimon = None
+
+        for digi in self.digimonData:
+            if( digi.name != 'Devimon' ):
+                continue
+
+            devimon = digi
+
+        devimon.evoStats[ 0 ] = 1500
+        devimon.evoStats[ 1 ] = 2000
+        devimon.evoStats[ 2 ] = 250
+        devimon.evoStats[ 3 ] = 100
+        devimon.evoStats[ 4 ] = 150
+        devimon.evoStats[ 5 ] = 200
+
+
     def randomizeSpecialEvolutions( self ):
         """
         Randomize the target digimon for all special evolutions.
