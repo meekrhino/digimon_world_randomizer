@@ -969,7 +969,7 @@ class DigimonWorldHandler:
             self.recruitData = {}
 
             err = False
-            for ( ofsts, trigger, digi ) in data.recruitOffsets:
+            for ( ofsts, names, trigger, digi ) in data.recruitOffsets:
                 verifiedOfsts = []
                 for ofst in ofsts:
                     file.seek( ofst, 0 )
@@ -981,7 +981,16 @@ class DigimonWorldHandler:
                     else:
                         verifiedOfsts.append( ofst )
 
-                self.recruitData[ trigger ] = ( tuple( verifiedOfsts ), digi )
+                for nameOfst in names:
+                    file.seek( nameOfst, 0 )
+                    name = scrutil.encode( self.getDigimonName( digi ) )
+                    nameInFile = file.read( len( name ) )
+
+                    if( name != nameInFile ):
+                        self.logger.logError( 'Error: Looking for recruit name, found incorrect value: ' + nameInFile + ' @ ' + format( nameOfst, '08x' ) )
+                        err = True
+
+                self.recruitData[ trigger ] = ( tuple( verifiedOfsts ), digi, names )
 
             if( not err ):
                 self.logger.log( 'All recruitment check values verified.' )
@@ -1339,6 +1348,20 @@ class DigimonWorldHandler:
                                           ofst,
                                           struct.pack( data.recruitFormat, trigger ),
                                           self.logger )
+
+                currentName = self.getDigimonName( trigger - 200 )
+                nameToWrite = self.getDigimonName( self.recruitData[ trigger ][ 1 ] )[ :len( currentName ) ]
+
+                for nameOfst in self.recruitData[ trigger ][ 2 ]:
+                    util.writeDataToFile( file,
+                                          nameOfst,
+                                          scrutil.encode( nameToWrite ),
+                                          self.logger )
+
+
+                self.logger.logChange( self.getDigimonName( trigger - 200 ) +
+                                   ' now recruits ' + self.getDigimonName( self.recruitData[ trigger ][ 1 ] ) )
+
             #------------------------------------------------------
             # Write out special evolution data
             #------------------------------------------------------

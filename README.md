@@ -34,6 +34,17 @@ Recommended steps to setting up a race:
 
 Version log:
 
+Public Beta 0.7.2
+@Bug Fixes
+    *Randomly recruited digimon will now consistently appear in town (and the "actual"
+     recruits will not show up)
+    *All map item spawns now randomized (a handful were missed initially)
+    *Whamon recruit can no longer be swapped to a Factorial Town digimon
+    *Devimon will gain stats when randomly assigned to a natural evolution (requires
+     random evolutions and random special evolutions)
+    *Logging for random recruitment no longer inverted
+
+
 Public Beta 0.7.1
 @New Features
     *Patch to fix the Giromon/jukebox glitch

@@ -127,6 +127,89 @@ def findSequenceInFile( filename, seq, ofst=None ):
     return found
 
 
+def encode( str ):
+    """
+    Encode string in script text format.  Currently only
+    supports all-alpha strings.
+
+    Keyword arguments:
+    str -- String to encode
+    """
+
+    packed = b''
+
+    for c in str:
+        if( c in 'abcdefghijklmnopqrstuvwxyz' ):
+            packed += struct.pack(
+                                '<BB',
+                                0x82,
+                                0x81 + ord( c ) - ord( 'a' )
+                                )
+        elif( c in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' ):
+            packed += struct.pack(
+                                '<BB',
+                                0x82,
+                                0x60 + ord( c ) - ord( 'A' )
+                                )
+        elif( c in ' ' ):
+            packed += struct.pack(
+                                '<BB',
+                                0x81,
+                                0x40
+                                )
+        else:
+            print( 'Error: trying to encode unsupported character' )
+
+    #out =  "".join("{:02x}".format(ord(c)) for c in packed)
+    #print('Copied:'  + '\'' + out  + '\'' + ' to the cipboard')
+    #pyperclip.copy(out)
+
+    return packed
+"""
+0x4F82 -> "0"
+0x5082 -> "1"
+0x5182 -> "2"
+0x5282 -> "3"
+0x5382 -> "4"
+0x5482 -> "5"
+0x5582 -> "6"
+0x5682 -> "7"
+0x5782 -> "8"
+0x5882 -> "9"
+"""
+
+
+def decode( str ):
+    """
+    Decode string in script text format.  Currently only
+    supports all-alpha strings.
+
+    Keyword arguments:
+    str -- String to decode
+    """
+
+    packed = b''
+
+    out = ''
+
+    for c in str[1::2]:
+        if( ord( c ) >= 0x40 ):
+            c = chr( ord( c ) - 0x40 )
+            if( ord( c ) >= 0x20 ):
+                c = chr( ord( c ) - 0x20 )
+                if( ord( c ) >= 0x21 ):
+                    c = chr( ord( c ) - 0x21 )
+                    out += 'abcdefghijklmnopqrstuvwxyz'[ ord( c ) ]
+                else:
+                    out += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[ ord( c ) ]
+            else:
+                out += ' '
+        else:
+            print( 'Error: trying to encode unsupported character' )
+
+    return out
+
+
 def compile( inst, *args ):
     """
     Convert specified script instruction and args
