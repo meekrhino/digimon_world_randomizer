@@ -193,15 +193,17 @@ def decode( str ):
     out = ''
 
     for c in str[1::2]:
-        if( ord( c ) >= 0x40 ):
-            c = chr( ord( c ) - 0x40 )
-            if( ord( c ) >= 0x20 ):
-                c = chr( ord( c ) - 0x20 )
-                if( ord( c ) >= 0x21 ):
-                    c = chr( ord( c ) - 0x21 )
-                    out += 'abcdefghijklmnopqrstuvwxyz'[ ord( c ) ]
+        if( type( c ) != int ):
+            c = ord( c )
+        if( c >= 0x40 ):
+            c = c - 0x40
+            if( c >= 0x20 ):
+                c = c - 0x20
+                if( c >= 0x21 ):
+                    c = c - 0x21
+                    out += 'abcdefghijklmnopqrstuvwxyz'[ c ]
                 else:
-                    out += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[ ord( c ) ]
+                    out += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[ c ]
             else:
                 out += ' '
         else:

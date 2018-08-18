@@ -987,7 +987,9 @@ class DigimonWorldHandler:
                     nameInFile = file.read( len( name ) )
 
                     if( name != nameInFile ):
-                        self.logger.logError( 'Error: Looking for recruit name, found incorrect value: ' + nameInFile + ' @ ' + format( nameOfst, '08x' ) )
+                        self.logger.logError( 'Error: Looking for recruit' + self.getDigimonName( digi ) +
+                                              ', found incorrect value: ' + scrutil.decode( nameInFile ) + 
+                                              ' @ ' + format( nameOfst, '08x' ) )
                         err = True
 
                 self.recruitData[ trigger ] = ( tuple( verifiedOfsts ), digi, names )
@@ -1529,11 +1531,11 @@ class DigimonWorldHandler:
             for tech in self.techData:
                 if( power ):
                     percent = random.randint( 70, 130 )
-                    tech.power = min( ( tech.power * percent ) / 100, 999 )
+                    tech.power = int( min( ( tech.power * percent ) / 100, 999 ) )
 
                 if( cost and ( tech.power != 0 )  ):
                     factor = random.randint( 10, 140 )
-                    tech.mp3 = min( ( factor * tech.power ) / 300, 255 )
+                    tech.mp3 = int( min( ( factor * tech.power ) / 300, 255 ) )
 
                 if( accuracy ):
                     val = random.randint( 0, 99 )
@@ -2357,12 +2359,12 @@ class DigimonWorldHandler:
 
         trackLen = 0
         for i in range( 0, len( self.trackNames ) ):
-            if( self.trackNames[ i ] == '\0' ):
+            if( self.trackNames[ i ] == b'\0' ):
                 trackLen = 0
             else:
                 trackLen += 1
                 if( trackLen > 24 ):
-                    self.trackNames = self.trackNames[ :i ] + '\0' + self.trackNames[ i+1: ]
+                    self.trackNames = self.trackNames[ :i ] + b'\0' + self.trackNames[ i+1: ]
 
         self.logger.logChange( 'Patched out Giromon/jukebox glitch.' )
 
