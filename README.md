@@ -34,6 +34,11 @@ Recommended steps to setting up a race:
 
 Version log:
 
+Public Beta 0.8.0
+@New Features
+    *When random recruitment is enabled, change the "Xmon joins the city!" message
+     to reflect the random recruitment.
+
 Public Beta 0.7.2
 @Bug Fixes
     *Randomly recruited digimon will now consistently appear in town (and the "actual"
