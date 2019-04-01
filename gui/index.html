@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="main.css" >
+    <title>Digimon World Randomizer</title>
+  </head>
+  <body>
+    <div id="digimondata" class="category">
+        <h1 class="category">Digimon Data</h1>
+        <label><input type="checkbox" id="digiEnabled" value="Enabled" onClick= "clickEnableDigi()"> 
+            <span><div class="tooltip">
+                Enabled
+                <span class="tooltiptext">Enable digimon data modification options.</span>
+            </div></span>
+        </label> <br>
+        <label><input type="checkbox" disabled id="digiDropItem" value="ItemDropped"> 
+            <span><div class="tooltip">
+                Item Dropped
+                <span class="tooltiptext">Randomize the item dropped by a digimon when it is 
+                                          defeated.  Uses the "valuable item threshold" to 
+                                          exchange vanilla dropped items for similar-value 
+                                          random items.</span>
+            </div></span>
+        </label> <br>
+        <label><input type="checkbox" disabled id="digiDropRate" value="DropRate"> 
+            <span><div class="tooltip">
+                Drop Rate
+                <span class="tooltiptext">Randomize the chance that an enemy will drop an item.
+                                          Tends to prefer small changes from vanilla values, but
+                                          will sometimes become much more frequent.  100% drop
+                                          rates will remain 100%.</span>
+            </div></span>
+        </label> <br>
+        <label><input type="checkbox" disabled id="digiEnableThresh" value="EnableThresh"> 
+            <span><div class="tooltip">
+                Modify Valuable Item Threshold
+                <span class="tooltiptext">Enable manual modification of the "valuable item
+                                          threshold" parameter.</span>
+            </div></span>
+        </label> <br>
+    </div>
+    
+    <script>function clickEnableDigi() {
+                document.getElementById('digiDropItem').disabled = !this.checked;
+            }
+    </script>
+  </body>
+
+  <script>
+    // You can also require other files to run in this process
+    require('./dist/renderer.js')
+  </script>
+</html>

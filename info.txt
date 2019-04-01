@@ -1,4 +1,4 @@
-----------------------------------------------------------------------------------------------------
+﻿----------------------------------------------------------------------------------------------------
 
 ----------------------------------------------------------------------------------------------------
 starting digimon offsets (agumon + gabumon)
@@ -1166,3 +1166,8 @@ this info is largely useless because the techs are pointered (not all in one blo
 To build distributable:
     1. run build.bat
     2. share digimon_randomize.zip
+
+To run GUI:
+    1. open terminal in gui/
+    2. npm install
+    3. npm start
