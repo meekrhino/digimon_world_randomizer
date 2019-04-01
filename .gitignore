@@ -7,5 +7,7 @@
 
 build/
 dist/
+gui/node_modules/
+gui/dist/
 
 out.txt

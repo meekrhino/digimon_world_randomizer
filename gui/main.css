@@ -1,0 +1,101 @@
+@import url("http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css");
+
+body {
+    background-color: rgb(240, 240, 240);
+}
+
+div.category {
+    border-style: solid;
+    border-width: 1px;
+    border-color: lightgray;
+    margin: 10px;
+    padding: 10px;
+    background-color: inherit
+}
+#digimondata {
+    min-width: 250px;
+    width: 30%;
+}
+
+h1.category {
+    font-size: 16px;
+    margin-top: -20px;
+    margin-left: 0px;
+    width: max-content;
+    background-color: inherit;
+}
+
+/* checkbox styling */
+input[type="checkbox"] { 
+    position: absolute; 
+    opacity: 0; 
+    z-index: -1; 
+}
+
+input[type="checkbox"]+span { 
+    font-size: 16px; 
+    color: black; 
+}
+input[type="checkbox"]+span:before { 
+    font: 16pt FontAwesome; 
+    content: '\00f096';
+    display: inline-block; 
+    width: 14pt; 
+    padding: 2px 0 0 3px; 
+    margin-right: 0.5em; 
+}
+input[type="checkbox"]:checked+span:before { 
+    content: '\00f046';
+}
+
+input[type="checkbox"]:focus+span:before { 
+    outline: 1px dotted #aaa; 
+
+    }
+input[type="checkbox"]:disabled+span {
+    color: #999; 
+}
+
+input[type="checkbox"]:not(:disabled)+span:hover:before { 
+    text-shadow: 0 1px 2px #77F;
+}
+
+/*tooltip styling */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: max-content;
+    max-width: 400px;
+    background-color: rgb( 250, 250, 210 );
+    font-size: 12px;
+    border-color: black;
+    border-style: solid;
+    border-width: 1px;
+    padding: 2px 2px;
+    position: absolute;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.tooltip .tooltiptext::after {
+  content: " ";
+  position: absolute;
+  bottom: 100%;  /* At the top of the tooltip */
+  left: 15px;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent black transparent;
+}
+
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
