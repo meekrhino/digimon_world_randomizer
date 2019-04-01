@@ -2180,7 +2180,7 @@ class DigimonWorldHandler:
                 lowestTier = 0xFF
                 lowestTierID = 0
                 for slot, techID in enumerate( self.digimonData[ self.starterID[ i ] ].tech ) :
-                    if( self.getTechName( techID ) != 'None' ):
+                    if( self.getTechName( techID ) != 'None' and self.getTechName( techID ) != 'Counter' ):
                         tier = self.techData[ techID ].tier
                         if( self.techData[ techID ].isDamaging and not self.techData[ techID ].isFinisher and tier < lowestTier ):
                             lowestTier = tier
@@ -2194,9 +2194,10 @@ class DigimonWorldHandler:
             else:
                 randID = random.randint( 0, 15 )
                 techID = self.digimonData[ self.starterID[ i ] ].tech[ randID ]
-                while( self.getTechName( techID ) == 'None' or not self.techData[ techID ].isDamaging or self.techData[ techID ].isFinisher ):
+                while( self.getTechName( techID ) == 'None' or self.getTechName( techID ) == 'Counter' or not self.techData[ techID ].isDamaging or self.techData[ techID ].isFinisher ):
                     randID = random.randint( 0, 15 )
                     techID = self.digimonData[ self.starterID[ i ] ].tech[ randID ]
+                    self.logger.log( self.getTechName( techID ) )
                 self.starterTech[ i ] = techID
                 self.starterTechSlot[ i ] = randID + 1
                 self.logger.logChange( 'Starter tech set to ' + self.getTechName( self.starterTech[ i ] )
