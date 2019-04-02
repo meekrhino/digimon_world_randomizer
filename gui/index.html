@@ -7,6 +7,8 @@
     <title>Digimon World Randomizer</title>
   </head>
   <body>
+    <div id="MainContainer" >
+    </div>
     <div id="digimondata" class="category">
         <h1 class="category">Digimon Data</h1>
         <label><input type="checkbox" id="digiEnabled" value="Enabled" onClick= "clickEnableDigi()"> 
@@ -41,11 +43,7 @@
             </div></span>
         </label> <br>
     </div>
-    
-    <script>function clickEnableDigi() {
-                document.getElementById('digiDropItem').disabled = !this.checked;
-            }
-    </script>
+   
   </body>
 
   <script>
