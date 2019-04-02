@@ -4,13 +4,16 @@ body {
     background-color: rgb(240, 240, 240);
 }
 
+div {
+    background-color: inherit
+}
+
 div.category {
     border-style: solid;
     border-width: 1px;
     border-color: lightgray;
     margin: 10px;
     padding: 10px;
-    background-color: inherit
 }
 #digimondata {
     min-width: 250px;
@@ -77,8 +80,15 @@ input[type="checkbox"]:not(:disabled)+span:hover:before {
     border-style: solid;
     border-width: 1px;
     padding: 2px 2px;
+
+    /* position the tooltip */
     position: absolute;
     z-index: 1;
+    top: 100%;
+    left: 20%;
+    margin-top: 5px;
+
+    /* animation transition (fade-in) */
     opacity: 0;
     transition: opacity 0.3s;
 }

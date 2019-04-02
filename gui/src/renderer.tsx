@@ -7,5 +7,10 @@ import * as ReactDOM from 'react-dom';
 
 import MainContainer from "./MainContainer";
 
+namespace global {
+	declare namespace JSX {
+		interface ElementAttributesProperty extends Object { }
+	}
+}
 //Render the main container into the html
 ReactDOM.render( <MainContainer/>, document.getElementById( 'MainContainer' ) )
