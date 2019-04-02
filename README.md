@@ -33,6 +33,20 @@ See race instructions below for creating identical race ROMs.
 
 ### Version log:
 
+##### Public Beta 0.8.1
+###### New Features
+    - Configurable option to change spawn rate of Mamemon, Piximon, MetalMamemon, and Otamamon to a specific value.
+
+###### Bug Fixes
+    - Recruitment messages should now properly match random recruit.
+
+
+##### Public Beta 0.8.0
+###### New Features
+    - When random recruitment is enabled, change the "Xmon joins the city!" message to reflect 
+      the random recruitment.
+
+
 ##### Public Beta 0.7.2
 ###### Bug Fixes
     - Randomly recruited digimon will now consistently appear in town (and the "actual" recruits will not show up)
