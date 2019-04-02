@@ -10,7 +10,7 @@ import digimon.data as data, digimon.util as util
 import script.util as scrutil
 from log.logger import Logger
 
-import random, struct, sys
+import random, struct, sys, math
 from shutil import copyfile
 from future.utils import iteritems, itervalues
 
@@ -1138,7 +1138,7 @@ class DigimonWorldHandler:
 
             self.logger.logChange( self.logger.getHeader( 'Apply Patches' ) )
 
-            for patch in self.patches:
+            for ( patch, val ) in self.patches:
                 if( patch == 'fixEvoItems' ):
                     self._applyPatchFixEvoItems( file )
                 elif( patch == 'allowDrop' ):
@@ -1153,6 +1153,8 @@ class DigimonWorldHandler:
                     self._applyPatchGabumon( file )
                 elif( patch == 'giromon' ):
                     self._applyPatchGiromon( file )
+                elif( patch == 'spawn' ):
+                    self._applyPatchSpawn( file, val )
 
 
             #------------------------------------------------------
@@ -1959,7 +1961,7 @@ class DigimonWorldHandler:
                                    ' now recruits ' + self.getDigimonName( self.recruitData[ trigger ][ 1 ] ) )
 
 
-    def applyPatch( self, patch ):
+    def applyPatch( self, patch, val=0 ):
         """
         Set specified patch to be applied to the ROM.
 
@@ -1968,7 +1970,7 @@ class DigimonWorldHandler:
                  'fixEvoItems'  Make evo items give stats + lifetime
         """
 
-        self.patches.append( patch )
+        self.patches.append( tuple( [ patch, val ] ) )
 
 
     def getPlayableDigimonByLevel( self, level, excludeSpecials=False ):
@@ -2368,4 +2370,43 @@ class DigimonWorldHandler:
                     self.trackNames = self.trackNames[ :i ] + b'\0' + self.trackNames[ i+1: ]
 
         self.logger.logChange( 'Patched out Giromon/jukebox glitch.' )
-
+        
+    def _applyPatchSpawn( self, file, val ):
+        """
+        Set spawn rate for Mamemon, etc. to specified percentage.
+        """
+        
+        #Mamemon, Piximon, and MMamemon use a 0-99 random
+        val = min( 100, max( 1, val ) )
+        largePercent = val - 1
+        
+        #Otamamon uses a 0-2 random
+        smallPercent = math.floor( val / 33 )
+        
+        for ofst in data.spawnRateMamemonOffset:
+            util.writeDataToFile( file,
+                                  ofst,
+                                  struct.pack( data.spawnRateFormat, largePercent ),
+                                  self.logger )
+        
+        
+        for ofst in data.spawnRatePiximonOffset:
+            util.writeDataToFile( file,
+                                  ofst,
+                                  struct.pack( data.spawnRateFormat, largePercent ),
+                                  self.logger )
+                                  
+        
+        for ofst in data.spawnRateMMamemonOffset:
+            util.writeDataToFile( file,
+                                  ofst,
+                                  struct.pack( data.spawnRateFormat, largePercent ),
+                                  self.logger )
+                                  
+        
+        for ofst in data.spawnRateOtamamonOffset:
+            util.writeDataToFile( file,
+                                  ofst,
+                                  struct.pack( data.spawnRateFormat, smallPercent ),
+                                  self.logger )
+                                  

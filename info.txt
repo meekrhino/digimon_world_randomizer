@@ -1163,6 +1163,27 @@ this info is largely useless because the techs are pointered (not all in one blo
 ----------------------------------------------------------------------------------------------------
 
 ----------------------------------------------------------------------------------------------------
+Set chance of mamemon, piximon, otamamon and metalmamemon appearing to a specific value
+
+Mamemon  (99, >2)
+002210 if pstat(100) > 2 OR trigger(213) == true then 2236
+    0x13FD678F -> 02
+    
+Piximon  (99, >2)
+001822 if pstat(100) > 2 then 1840
+    0x13FD64DB -> 02
+    
+MetalMamemon   (99, >2)
+008354 if pstat(110) > 2 OR trigger(227) == true then 8378
+    0x13FD831F -> 02
+    
+Otamamon   (2, >0)
+007674 if pstat(110) > 0 OR trigger(309) == true then 7698
+    0x13FD7F47 -> 00
+
+----------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
 To build distributable:
     1. run build.bat
     2. share digimon_randomize.zip

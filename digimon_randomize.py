@@ -119,6 +119,9 @@ if( config[ 'patches' ].getboolean( 'IncreaseTechLearnChance' ) ):
 
 if( config[ 'patches' ].getboolean( 'Gabu' ) ):
     handler.applyPatch( 'gabumon' )
+    
+if( config[ 'patches' ][ 'SetSpawnRate' ] != '' ):
+    handler.applyPatch( 'spawn', int( config[ 'patches' ][ 'SetSpawnRate' ] ) )
 
 
 print( 'Writing to ' + outFile + '...\n' )

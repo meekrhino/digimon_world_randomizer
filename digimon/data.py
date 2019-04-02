@@ -634,6 +634,13 @@ trackNameExclusionOffsets= (
             )
 trackNameExclusionSize   = 0x130
 
+spawnRateFormat          = '<B'
+spawnRateMamemonOffset   = ( 0x13FD678F, 0x140B790F )
+spawnRatePiximonOffset   = ( 0x13FD64DB, 0x13FDD389, 0x13FE0121, 0x140B765B )
+spawnRateMMamemonOffset  = ( 0x13FD831F, 0x140B949F )
+spawnRateOtamamonOffset  = ( 0x13FD7F47, 0x140B90C7 )
+
+
 starterSetDigimonOffset  = ( 0x14D271C0, 0x14D271B8 )   #set digimon id
 starterChkDigimonOffset  = ( 0x14CD1D24, 0x14CD1D44 )   #check digimon id to set tech
 starterLearnTechOffset   = ( 0x14CD1D40, 0x14CD1D60 )   #tech to learn

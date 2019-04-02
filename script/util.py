@@ -102,6 +102,10 @@ def findAllDuplicatesOfDataAtOffset( filename, ofst, sz ):
 
     found = findSequenceInFile( filename, seq )
 
+    out = '(' + ",".join( "0x{:08X}".format( o ) for o in found ) + ')'
+    print( out )
+    #pyperclip.copy(out)
+    
     return found
 
 
