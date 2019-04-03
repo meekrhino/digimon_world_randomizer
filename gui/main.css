@@ -11,6 +11,7 @@ body {
 /* Create three equal columns that floats next to each other */
 .column {
     float: left;
+    min-width: 230px;
     width: 33.33%;
     padding: 10px;
   }
@@ -29,7 +30,7 @@ div {
 hr {
     width: 100%;
     border-top: 1px solid lightgrey;
-    margin: 20px 10px
+    margin: 0px 10px
 }
 
 div.category {
@@ -49,6 +50,22 @@ div.category {
 }
 
 #starter {
+    min-width: 200px;
+}
+
+#digimonevos {
+    min-width: 200px;
+}
+
+#chests {
+    min-width: 200px;
+}
+
+#tokomon {
+    min-width: 200px;
+}
+
+#spawns {
     min-width: 200px;
 }
 

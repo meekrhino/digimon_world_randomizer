@@ -34,7 +34,7 @@ export default class SectionContainer extends Component<Props, State> {
                             <span className="tooltiptext">{this.props.tooltip}</span>
                         </div></span>
                     </label> <br/>
-                    {this.props.elements? this.props.elements.map( ( elem, index ) => 
+                    {this.props.elements.map( ( elem, index ) => 
                         < ElementContainer
                             key={index}
                             id={elem.id}
@@ -45,7 +45,7 @@ export default class SectionContainer extends Component<Props, State> {
                             enabled={this.state.enabled}
                             label={elem.label}
                             tooltip={elem.tooltip}
-                        /> ) : <div></div> }
+                        /> )}
                 </div> )
     }
 }
