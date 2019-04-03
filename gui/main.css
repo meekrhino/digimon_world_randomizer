@@ -1,23 +1,59 @@
 @import url("http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css");
 
+*{
+    box-sizing: border-box;
+}
+
 body {
     background-color: rgb(240, 240, 240);
+}
+
+/* Create three equal columns that floats next to each other */
+.column {
+    float: left;
+    width: 33.33%;
+    padding: 10px;
+  }
+  
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
 }
 
 div {
     background-color: inherit
 }
 
+hr {
+    width: 100%;
+    border-top: 1px solid lightgrey;
+    margin: 20px 10px
+}
+
 div.category {
     border-style: solid;
     border-width: 1px;
     border-color: lightgray;
-    margin: 10px;
+    margin: 20px 10px 10px 10px;
     padding: 10px;
 }
+
 #digimondata {
-    min-width: 250px;
-    width: 30%;
+    min-width: 200px;
+}
+
+#techdata {
+    min-width: 200px;
+}
+
+#starter {
+    min-width: 200px;
+}
+
+#recruit {
+    min-width: 200px;
 }
 
 h1.category {
@@ -103,9 +139,53 @@ input[type="checkbox"]:not(:disabled)+span:hover:before {
   border-color: transparent transparent black transparent;
 }
 
-
 /* Show the tooltip text when you mouse over the tooltip container */
 .tooltip:hover .tooltiptext {
     visibility: visible;
     opacity: 1;
+}
+
+/* slider styling */
+.slidecontainer {
+    width: 100%;
+}
+
+/* The slider itself */
+input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 8px;
+    border-radius: 5px;
+    background: rgb( 170, 170, 170 );
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+input[type="range"]:disabled {
+    background: rgb( 210, 210, 210 );
+}
+  
+/* Mouse-over effects */
+input[type="range"]:not(:disabled)+:hover {
+    opacity: 1; /* Fully shown on mouse-over */
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgb( 100, 100, 100 );
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgb( 100, 100, 100 );
+  cursor: pointer;
 }

@@ -12,10 +12,10 @@ export interface SectionElement {
     id          : string
     inputType   : InputVariation
     defaultVal  : any
-    label       : string
+    label?      : string
     tooltip     : string
-    sliderMin?  : number
-    sliderMax?  : number
+    sliderMin?  : string
+    sliderMax?  : string
     multiSelect?: string[]
 }
 
@@ -24,10 +24,10 @@ interface Props {
     inputType   : InputVariation
     defaultVal  : any
     enabled     : boolean
-    label       : string
+    label?      : string
     tooltip     : string
-    sliderMin?  : number
-    sliderMax?  : number
+    sliderMin?  : string
+    sliderMax?  : string
     multiSelect?: string[]
 }
 
@@ -40,11 +40,11 @@ export default class ElementContainer extends Component<Props, object> {
     render() {
         switch( this.props.inputType ) {
             case InputVariation.Checkbox:
-                return ( <div className="category">
+                return ( <div>
                             <label><input type="checkbox" 
                                           disabled={!this.props.enabled} 
                                           defaultChecked={this.props.defaultVal as boolean}
-                                           id={this.props.id} /> 
+                                          id={this.props.id} /> 
                                 <span><div className="tooltip">
                                     {this.props.label}
                                     <span className="tooltiptext">{this.props.tooltip}</span>
@@ -52,10 +52,19 @@ export default class ElementContainer extends Component<Props, object> {
                             </label> <br/>
                         </div> )
 
-            case InputVariation.Multiselect:
-                break
             case InputVariation.Slider:
-                break
+                return ( <div className="slidecontainer tooltip" >
+                            <input type="range"
+                                   disabled={!this.props.enabled}
+                                   defaultValue={this.props.defaultVal as string}
+                                   min={this.props.sliderMin}
+                                   max={this.props.sliderMax}
+                                   id={this.props.id} />
+                                <span className="tooltiptext">{this.props.tooltip}</span><br/>
+                        </div> )
+
+            case InputVariation.Multiselect:
+                    return( <div></div>)
         }
     }   
 }

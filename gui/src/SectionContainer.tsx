@@ -10,6 +10,7 @@ type State = Readonly<typeof initialState>
 interface Props { 
     id              : string
     title           : string
+    tooltip         : string
     elements?       : SectionElement[]
 }
 
@@ -30,18 +31,21 @@ export default class SectionContainer extends Component<Props, State> {
                     <label><input type="checkbox" id="enable" value="Enabled" onClick = { this.handleToggle } /> 
                         <span><div className="tooltip">
                             Enabled
-                            <span className="tooltiptext">Enable digimon data modification options.</span>
+                            <span className="tooltiptext">{this.props.tooltip}</span>
                         </div></span>
                     </label> <br/>
-                    {this.props.elements.map((elem, index) => 
+                    {this.props.elements? this.props.elements.map( ( elem, index ) => 
                         < ElementContainer
+                            key={index}
                             id={elem.id}
                             inputType={elem.inputType}
                             defaultVal={elem.defaultVal}
+                            sliderMin={elem.sliderMin}
+                            sliderMax={elem.sliderMax}
                             enabled={this.state.enabled}
                             label={elem.label}
                             tooltip={elem.tooltip}
-                        /> ) }
+                        /> ) : <div></div> }
                 </div> )
     }
 }
