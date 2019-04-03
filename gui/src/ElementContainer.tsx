@@ -5,7 +5,8 @@ import * as path from "path";
 export enum InputVariation {
     Checkbox,
     Slider,
-    Multiselect
+    Multiselect,
+    Value
 }
 
 export interface SectionElement {
@@ -16,7 +17,7 @@ export interface SectionElement {
     tooltip     : string
     sliderMin?  : string
     sliderMax?  : string
-    multiSelect?: string[]
+    multiSelect?: Array<string>
 }
 
 interface Props { 
@@ -28,7 +29,7 @@ interface Props {
     tooltip     : string
     sliderMin?  : string
     sliderMax?  : string
-    multiSelect?: string[]
+    multiSelect?: Array<string>
 }
 
 
@@ -64,7 +65,39 @@ export default class ElementContainer extends Component<Props, object> {
                         </div> )
 
             case InputVariation.Multiselect:
-                    return( <div></div>)
+                return( <div className="tooltip" >
+                            {this.props.multiSelect
+                          && this.props.multiSelect!.map( ( opt, index ) =>
+                                <div>
+                                    <input type="radio"
+                                        key={index}
+                                        disabled={!this.props.enabled}
+                                        name={this.props.id + "Name"}
+                                        value={opt}
+                                        checked={index? false : true}
+                                        id={this.props.id + opt} />
+                                    <label htmlFor={this.props.id + opt}>{opt}</label>
+                                    <span className="tooltiptext">{this.props.tooltip}</span><br/>
+                                </div>
+                            )}
+                        </div> )
+
+            case InputVariation.Value:
+                return ( <div>
+                            <label><input type="number" 
+                                          disabled={!this.props.enabled} 
+                                          defaultValue={this.props.defaultVal as string}
+                                          min={this.props.sliderMin}
+                                          max={this.props.sliderMax}
+                                          id={this.props.id} /> 
+                                <span className="inputNum"><div className="tooltip">
+                                    {this.props.label}
+                                    <span className="tooltiptext">{this.props.tooltip}</span>
+                                </div></span>
+                            </label> <br/>
+                        </div> )
+
+                
         }
     }   
 }

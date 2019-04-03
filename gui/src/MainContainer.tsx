@@ -115,6 +115,7 @@ export default class MainContainer extends Component<object, object> {
                                         inputType: InputVariation.Multiselect,
                                         defaultVal: false,
                                         label: "Randomization Mode",
+                                        multiSelect: new Array( "Shuffle", "Random" ),
                                         tooltip: `Mode of randomization for technique data.  In general, 
                                                     "shuffle" keeps the vanilla values by shuffles them around.
                                                     Meanwhile, "random" generates all-new random values.  Hover
@@ -123,27 +124,27 @@ export default class MainContainer extends Component<object, object> {
                                         inputType: InputVariation.Checkbox,
                                         defaultVal: false,
                                         label: "Power",
-                                        tooltip: `Randomize the power of each tech.  When mode is "shuffle", 
+                                        tooltip: `Randomize the power of each tech.  When mode is "Shuffle", 
                                                     the power of all techs will be shuffled amongst themselves.  
-                                                    When mode is "random", techs will be assigned a random power
+                                                    When mode is "RRandom", techs will be assigned a random power
                                                     ranging from 30% below the weakest vanilla tech and 999,
                                                     the max possible value.` },
                                         { id: "techCost",
                                         inputType: InputVariation.Checkbox,
                                         defaultVal: false,
                                         label: "MP Cost",
-                                        tooltip: `Randomize the MP cost of each tech.  When mode is "shuffle",
+                                        tooltip: `Randomize the MP cost of each tech.  When mode is "Shuffle",
                                                     the mp cost of all techs will be shuffled amongst themselves.
-                                                    When mode is "random", techs will be assigned a random cost
+                                                    When mode is "Random", techs will be assigned a random cost
                                                     calculated from the power of the tech, ranging from 10% to 140% 
                                                     of the power.` },
                                         { id: "techAccuracy",
                                         inputType: InputVariation.Checkbox,
                                         defaultVal: false,
                                         label: "Accuracy",
-                                        tooltip: `Randomize the accuracy of each tech.  When mode is "shuffle",
+                                        tooltip: `Randomize the accuracy of each tech.  When mode is "Shuffle",
                                                     the accuracy of all techs will be shuffled amongst themselves.
-                                                    When mode is "random", techs will be assigned a random accuracy
+                                                    When mode is "Random", techs will be assigned a random accuracy
                                                     ranging from 33 to 100. The vast majority will fall between 
                                                     50 and 100, with just over 10% being 100% and just under 10%
                                                     being under 50.` },
@@ -227,7 +228,7 @@ export default class MainContainer extends Component<object, object> {
                                                     and low value items.  Maximum and minimum vlues for this
                                                     field will behave the same as disabling this option.
                                                     Default value is 1000 -- this value seems to work most
-                                                    effectively for preserve the rare/common split.` }
+                                                    effectively for preserving the rare/common split.` }
                                     ]}
                         />
                     </div>
@@ -241,7 +242,7 @@ export default class MainContainer extends Component<object, object> {
                                     show up in town (thus opening the dock to Factorial Town) when Bakemon is
                                     recruited.  WARNING: this is an UNSTABLE feature, and with poor luck can
                                     currently create a seed that cannot be completed for 100PP!!  The
-                                    following recruits are not randomized, but will be support later:  Palmon,
+                                    following recruits are not randomized, but will be supported later:  Palmon,
                                     Vegiemon, Greymon, Birdramon, Centarumon, Angemon, and Monzaemon.  The 
                                     following cannot be randomize:  Agumon, Airdramon, and MetalGreymon.`}
                             elements={[ ]}
@@ -298,12 +299,6 @@ export default class MainContainer extends Component<object, object> {
                                         tooltip: `Double the chance to learn techs after battle.  This makes some techs
                                                   learnable very quickly.  This setting is helpful for a race environment,
                                                   making it less likely to be long-term stuck with a terrible technique.` },
-                                        { id: "setSpawnRate",
-                                        inputType: InputVariation.Checkbox,
-                                        defaultVal: false,
-                                        label: "Max Spawn Rate",
-                                        tooltip: `Enable this to set the chance for Mamemon, MetalMamemon, Piximon, and
-                                                  Otamamon appearing on their respective maps to 100%.` },
                                         { id: "woah",
                                         inputType: InputVariation.Checkbox,
                                         defaultVal: false,
@@ -315,7 +310,16 @@ export default class MainContainer extends Component<object, object> {
                                         defaultVal: false,
                                         label: "Gabumon Mode",
                                         tooltip: `This makes Gabumon as powerfully as he was truly meant to be.  Not
-                                                  for the faint-hearted.  Good luck.` }
+                                                  for the faint-hearted.  Good luck.` },
+                                        { id: "setSpawnRate",
+                                        inputType: InputVariation.Value,
+                                        defaultVal: "",
+                                        sliderMin: "1",
+                                        sliderMax: "100",
+                                        label: "Recruit Spawn Rate",
+                                        tooltip: `Enable this to set the chance for Mamemon, MetalMamemon, Piximon, and
+                                                  Otamamon appearing on their respective maps to the specified %.  Leave
+                                                  empty to make no changes to vanilla behavior.` }
                                     ]}
                         />
                     </div>

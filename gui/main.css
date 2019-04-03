@@ -11,7 +11,7 @@ body {
 /* Create three equal columns that floats next to each other */
 .column {
     float: left;
-    min-width: 230px;
+    min-width: 242px;
     width: 33.33%;
     padding: 10px;
   }
@@ -42,35 +42,35 @@ div.category {
 }
 
 #digimondata {
-    min-width: 200px;
+    min-width: 212px;
 }
 
 #techdata {
-    min-width: 200px;
+    min-width: 212px;
 }
 
 #starter {
-    min-width: 200px;
+    min-width: 212px;
 }
 
 #digimonevos {
-    min-width: 200px;
+    min-width: 212px;
 }
 
 #chests {
-    min-width: 200px;
+    min-width: 212px;
 }
 
 #tokomon {
-    min-width: 200px;
+    min-width: 212px;
 }
 
 #spawns {
-    min-width: 200px;
+    min-width: 212px;
 }
 
 #recruit {
-    min-width: 200px;
+    min-width: 212px;
 }
 
 h1.category {
@@ -92,6 +92,7 @@ input[type="checkbox"]+span {
     font-size: 16px; 
     color: black; 
 }
+
 input[type="checkbox"]+span:before { 
     font: 16pt FontAwesome; 
     content: '\00f096';
@@ -100,6 +101,7 @@ input[type="checkbox"]+span:before {
     padding: 2px 0 0 3px; 
     margin-right: 0.5em; 
 }
+
 input[type="checkbox"]:checked+span:before { 
     content: '\00f046';
 }
@@ -107,7 +109,8 @@ input[type="checkbox"]:checked+span:before {
 input[type="checkbox"]:focus+span:before { 
     outline: 1px dotted #aaa; 
 
-    }
+}
+
 input[type="checkbox"]:disabled+span {
     color: #999; 
 }
@@ -118,6 +121,7 @@ input[type="checkbox"]:not(:disabled)+span:hover:before {
 
 /*tooltip styling */
 .tooltip {
+    font: 13pt FontAwesome; 
     position: relative;
     display: inline-block;
 }
@@ -205,4 +209,33 @@ input[type="range"]::-moz-range-thumb {
   border-radius: 50%;
   background: rgb( 100, 100, 100 );
   cursor: pointer;
+}
+
+input[type="number"] {
+    margin: 4px 0px;
+    width: 28px;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"]:disabled {
+    color: rgb( 210, 210, 210 );
+}
+
+input[type="number"]+span { 
+    margin-left: 6px;
+    font-size: 16px; 
+    color: black; 
+}
+
+input[type="number"]:disabled+span {
+    color: #999; 
+}
+
+span.inputNum {
+    margin-top: 40px;
 }
