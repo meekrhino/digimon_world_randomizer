@@ -1473,7 +1473,7 @@ class DigimonWorldHandler:
 
                 #don't change the 100% drops away from being 100%
                 if( rate == 0 ):
-                    rate = random.choice( defaultRates )
+                    newRate = random.choice( defaultRates )
                     digi.drop_rate = newRate
                 elif( rate != 100 ):
                     i = defaultRates.index( rate ) + 2
