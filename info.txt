@@ -154,6 +154,8 @@ exclusion sections of 0x130 (304) bytes each
     0x14D673B8 - 0x14D674E8
 
 data block format:
+ 2 uint16	unknown
+ 2 uint16	ai target distance
  2 uint16       power
  1 uint8        mp/3
  1 uint8        itime
@@ -162,9 +164,8 @@ data block format:
  1 uint8        effect
  1 uint8        accuracy
  1 uint8        effChance
- 5 pad[5]
- 1 uint8        aiDist
- 1 pad[1]
+ 1 uint8	unknown flag
+ 2 uint8	padding
 ----------
 16 total
 

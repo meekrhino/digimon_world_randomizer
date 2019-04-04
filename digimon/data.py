@@ -535,9 +535,9 @@ checkMoveOffsets = (
             0x13FE222A      #seadra3
             )
 
-techDataFormat           = '<H7B5xBx'
+techDataFormat           = '<3H8Bxx'
 
-techDataBlockOffset      = 0x14D66DF8
+techDataBlockOffset      = 0x14D66DF4
 techDataBlockSize        = 0x8C0
 techDataBlockCount       = 0x79
 

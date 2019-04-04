@@ -605,15 +605,17 @@ class Tech:
         self.tier     = 0xFF
         self.learnChance = [ 0, 0, 0 ]
 
-        self.power    = data[ 0 ]
-        self.mp3      = data[ 1 ]
-        self.itime    = data[ 2 ]
-        self.range    = data[ 3 ]
-        self.spec     = data[ 4 ]
-        self.effect   = data[ 5 ]
-        self.accuracy = data[ 6 ]
-        self.effChance= data[ 7 ]
-        self.aiDist   = data[ 8 ]
+        self.unkn1    = data[ 0 ]
+        self.aiDist   = data[ 1 ]
+        self.power    = data[ 2 ]
+        self.mp3      = data[ 3 ]
+        self.itime    = data[ 4 ]
+        self.range    = data[ 5 ]
+        self.spec     = data[ 6 ]
+        self.effect   = data[ 7 ]
+        self.accuracy = data[ 8 ]
+        self.effChance= data[ 9 ]
+        self.unkn2    = data[ 10 ]
 
 
         self.isDamaging = self.power > 0
@@ -654,6 +656,8 @@ class Tech:
         """
         repr = []
 
+        repr.append( self.unkn1 )
+        repr.append( self.aiDist )
         repr.append( self.power )
         repr.append( self.mp3 )
         repr.append( self.itime )
@@ -662,7 +666,7 @@ class Tech:
         repr.append( self.effect )
         repr.append( self.accuracy )
         repr.append( self.effChance )
-        repr.append( self.aiDist )
+        repr.append( self.unkn2 )
 
         return tuple( repr )
 
