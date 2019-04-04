@@ -1,13 +1,141 @@
 import * as React from 'react'
 import {Component } from 'react'
+import * as child_process from 'child_process';
 import * as path from "path";
 
 import SectionContainer from "./SectionContainer"
 import ElementContainer, { InputVariation } from './ElementContainer';
 
+interface Settings {
+    input           : string
+    output          : string
+    log             : string
+    seed            : string
+    digimon         : string
+    digiDropItem    : string
+    digiDropRate    : string
+    digiMatchValue  : string
+    techs           : string
+    techMode        : string
+}
+
+
 export default class MainContainer extends Component<object, object> {
+
+    private settingsPath = "settings.ini"
+    // interface Props {
+    //     rootDirectory   : string
+    //     pathToGambitFile: string
+    //     pythonFiles     : string[]
+    //     addScript       : Function
+    //     updateScript    : Function
+    //     removeScript    : Function
+    //     buildFlags      : string[]
+    //     checkedBldFlags : boolean[]
+    //     checkFlag       : Function
+    //     updateFlag      : Function
+    //     removeFlag      : Function
+    // }
+    
+    // interface State {
+    //     output          : JSX.Element[]
+    //     processCount    : number
+    //     newFlagName     : string
+    //     managingFlags   : boolean
+    // }
+    
+    // export default class BuildContainer extends React.Component<Props, State> {
+    //     container = null;
+    //     scrollDown = false;
+    //     constructor(props) {
+    //         super(props);
+    //         this.state = {
+    //             output: [],
+    //             processCount: 0,
+    //             newFlagName: '',
+    //             managingFlags: false
+    //         }
+    //     }
+    //     /**
+    //      * State Changes
+    //      */
+    //     addToOutput(text: string, className: string) {
+    //         let output = this.state.output;
+    //         let newDiv = <div key={output.length} className={className}>
+    //                         {text}
+    //                      </div>
+    
+    //         output.push(newDiv);
+    //         this.setState({ output: output })
+    //         this.scrollDown = true;
+    //     }
+    // executeFile(index: number) {
+    //     if (!this.props.pathToGambitFile.length) {
+    //         alert('Please import a gambit file!')
+    //         return
+    //     } else if (!this.props.pythonFiles[index].length) {
+    //         alert('Please define a script to execute!')
+    //         return
+    //     }
+
+    //     const fullPath = Path.join(this.props.rootDirectory, this.props.pythonFiles[index])
+    //     const args = ['-u', fullPath, '-g', this.props.pathToGambitFile]
+    //     const env = Object.assign({}, process.env)
+    //     const options = {
+    //         detached: true,
+    //         cwd: this.props.rootDirectory,
+    //         env
+    //     }
+    //     let spawn = child_process.spawn;
+    //     let proc = spawn('python', args, options);
+    //     proc.stdout.on('data', (chunk) => {
+    //         let textChunk = chunk.toString();
+    //         this.addToOutput(textChunk, 'standard');
+    //     })
+    //     proc.stderr.on('data', (chunk) => {
+    //         let textChunk = chunk.toString();
+    //         this.addToOutput(textChunk, 'error');
+    //     })
+    //     this.increaseProcessCount();
+    //     proc.on('exit', this.decreaseProcessCount.bind(this))
+    // }
+
+    private runRandomize() {
+        let child = require( 'child_process' ).execFile;
+        let executablePath = "digimon_randomize.exe";
+        let parameters = [ this.settingsPath ];
+        console.log( "ASLDFKJ:SLKFDJ:LSKDJLF:KJSD" );
+    
+        child( executablePath, parameters, function( err: any, data: any ) {
+            if( err ){
+                console.error( err );
+                return;
+            }
+     
+            console.log( data.toString() );
+        });
+        //do stuff
+    }
+
     render() {
         return ( <div className="row">
+                    <div id="fileOptions">
+                        <div className="topColumn">
+                        <b>Select ROM: </b><input type="file" name="inputFile" accept=".bin"/><br/><br/>
+                        <b>Logging Level: </b><input type="radio" name="log" value="full" id="logFull"/>
+                                          <label htmlFor="log">Full</label>
+                                      <input type="radio" name="log" value="casual" id="logCasual"/>
+                                          <label htmlFor="log">Casual</label>
+                                      <input type="radio" name="log" value="race" id="logRace"/>
+                                          <label htmlFor="log">Race</label>
+                        </div>
+                        <div className="topColumn">
+                            <b>Output File Name: </b><input type="text" name="outputFile" defaultValue="Digimon World Rando.bin"/><br/><br/>
+                            <b>Seed: </b><input type="number" name="seed" placeholder="Random" id="seed"/>
+                            <button id="randomize" onClick={this.runRandomize.bind(this)}>Randomize</button>
+                        </div>
+                    </div>
+
                     <hr/>
                     {/* leftmost column */}
                     <div className="column">
@@ -64,50 +192,6 @@ export default class MainContainer extends Component<object, object> {
                                     ]}
                         />
                         < SectionContainer 
-                            id="digimonevos" 
-                            title="Digivolutions" 
-                            tooltip={`Enable digivolution tree randomization.  Randomizes which digimon each
-                                     digimon can randomize into.  Each fresh will get 1 target, each in-training
-                                     will get 2 targets, each rookie gets 4-6 targets, and each champion
-                                     gets 1-2 targets.  Unless "Obtain All" is set, not all playable digimon
-                                     are guaranteed to be obtainable through natural digivolution.`}
-                            elements={[ { id: "requirements",
-                                          inputType: InputVariation.Checkbox,
-                                          defaultVal: false,
-                                          label: "Requirements",
-                                          tooltip: `Randomize the requiremnts to digivolve to each digimon.
-                                                    requirements will generally look fairly similar to vanilla
-                                                    values, but totally random.  All digimon will have a stat
-                                                    requirement, a care mistake required (min or max), a 
-                                                    weight requirement (within 5 of), and a techs learned requirement.
-                                                    Digimon may randomly have other bonus requirements, including
-                                                    max/min battles fought, discipline, and happiness.` },
-                                        { id: "specialEvos",
-                                          inputType: InputVariation.Checkbox,
-                                          defaultVal: false,
-                                          label: "Special Digivolutions",
-                                          tooltip: `Randomize the result of some special evolutions.  Specifically,
-                                                    this currently includes death digivolutions (such as Bakemon and
-                                                    Devimon), MetalMamemon's "upgrade" digivolutions, and the Toy Town
-                                                    Monzemon suit.  To preserve completion, Toy Town will be accessible
-                                                    by whatever the suit digivolves Numemon into, rather than by
-                                                    Monzaemon.` },
-                                        { id: "obtainAll",
-                                        inputType: InputVariation.Checkbox,
-                                        defaultVal: true,
-                                        label: "Obtain All",
-                                        tooltip: `When this option is enabled, randomized evolutions are guaranteed
-                                                  to be organized in such a way that all natural evolution digimon
-                                                  can still be obtained naturally through evolution.  That means
-                                                  each in-training, rookie, champion, and ultimate level digimon
-                                                  will have at least one digimon in the previous level that can
-                                                  naturally digivolve to it.` }
-                                    ]}
-                        />
-                    </div>
-                    {/* center column */}
-                    <div className="column">
-                        < SectionContainer 
                             id="techdata" 
                             title="Technique Data" 
                             tooltip="Enable technique data randomization."
@@ -119,7 +203,7 @@ export default class MainContainer extends Component<object, object> {
                                         tooltip: `Mode of randomization for technique data.  In general, 
                                                     "Shuffle" keeps the vanilla values and shuffles them around.
                                                     Meanwhile, "Random" generates all-new random values.  Hover
-                                                    individual options to see how these options affect them.` },
+                                                    individual features to see how these options affect them.` },
                                         { id: "techPower",
                                         inputType: InputVariation.Checkbox,
                                         defaultVal: false,
@@ -163,6 +247,50 @@ export default class MainContainer extends Component<object, object> {
                                         tooltip: `Randomize the chance of a status effect being inflicted for
                                                     each tech.  Techs will be assigned a random value between 
                                                     1% and 70%.  This option is not affected by the mode.` }
+                                    ]}
+                        />
+                    </div>
+                    {/* center column */}
+                    <div className="column">
+                    < SectionContainer 
+                            id="digimonevos" 
+                            title="Digivolutions" 
+                            tooltip={`Enable digivolution tree randomization.  Randomizes which digimon each
+                                     digimon can randomize into.  Each fresh will get 1 target, each in-training
+                                     will get 2 targets, each rookie gets 4-6 targets, and each champion
+                                     gets 1-2 targets.  Unless "Obtain All" is set, not all playable digimon
+                                     are guaranteed to be obtainable through natural digivolution.`}
+                            elements={[ { id: "requirements",
+                                          inputType: InputVariation.Checkbox,
+                                          defaultVal: false,
+                                          label: "Requirements",
+                                          tooltip: `Randomize the requiremnts to digivolve to each digimon.
+                                                    requirements will generally look fairly similar to vanilla
+                                                    values, but totally random.  All digimon will have a stat
+                                                    requirement, a care mistake required (min or max), a 
+                                                    weight requirement (within 5 of), and a techs learned requirement.
+                                                    Digimon may randomly have other bonus requirements, including
+                                                    max/min battles fought, discipline, and happiness.` },
+                                        { id: "specialEvos",
+                                          inputType: InputVariation.Checkbox,
+                                          defaultVal: false,
+                                          label: "Special Digivolutions",
+                                          tooltip: `Randomize the result of some special evolutions.  Specifically,
+                                                    this currently includes death digivolutions (such as Bakemon and
+                                                    Devimon), MetalMamemon's "upgrade" digivolutions, and the Toy Town
+                                                    Monzemon suit.  To preserve completion, Toy Town will be accessible
+                                                    by whatever the suit digivolves Numemon into, rather than by
+                                                    Monzaemon.` },
+                                        { id: "obtainAll",
+                                        inputType: InputVariation.Checkbox,
+                                        defaultVal: true,
+                                        label: "Obtain All",
+                                        tooltip: `When this option is enabled, randomized evolutions are guaranteed
+                                                  to be organized in such a way that all natural evolution digimon
+                                                  can still be obtained naturally through evolution.  That means
+                                                  each in-training, rookie, champion, and ultimate level digimon
+                                                  will have at least one digimon in the previous level that can
+                                                  naturally digivolve to it.` }
                                     ]}
                         />
                         < SectionContainer 

@@ -8,13 +8,21 @@ body {
     background-color: rgb(240, 240, 240);
 }
 
-/* Create three equal columns that floats next to each other */
+/* Create two equal columns that float next to each other */
+.topColumn {
+    float: left;
+    min-width: 150px;
+    width: 50%;
+    padding: 10px;
+}
+
+/* Create three equal columns that float next to each other */
 .column {
     float: left;
     min-width: 242px;
     width: 33.33%;
     padding: 10px;
-  }
+}
   
 /* Clear floats after the columns */
 .row:after {
@@ -27,10 +35,15 @@ div {
     background-color: inherit
 }
 
+#randomize {
+    margin-left: 40px;
+}
+
 hr {
     width: 100%;
+    margin-bottom: 0px;
     border-top: 1px solid lightgrey;
-    margin: 0px 10px
+    padding: 0px 10px;
 }
 
 div.category {
@@ -70,6 +83,14 @@ div.category {
 }
 
 #recruit {
+    min-width: 212px;
+}
+
+#techgifts{
+    min-width: 212px;
+}
+
+#patches{
     min-width: 212px;
 }
 
@@ -211,9 +232,15 @@ input[type="range"]::-moz-range-thumb {
   cursor: pointer;
 }
 
-input[type="number"] {
+/* number input styling */
+#setSpawnRate {
     margin: 4px 0px;
     width: 28px;
+}
+
+#seed {
+    margin: 4px 0px;
+    width: 60px;
 }
 
 input[type=number]::-webkit-inner-spin-button, 
@@ -236,10 +263,15 @@ input[type="number"]:disabled+span {
     color: #999; 
 }
 
-span.inputNum {
-    margin-top: 40px;
-}
-
+/* multi select styling */
 input[type="radio"] {
     margin: 4px 10px;
+}
+
+input[type="radio"]:disabled {
+    color: rgb( 210, 210, 210 );
+}
+
+input[type="radio"]:disabled+label {
+    color: #999; 
 }
