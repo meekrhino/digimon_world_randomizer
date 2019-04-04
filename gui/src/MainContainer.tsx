@@ -115,10 +115,10 @@ export default class MainContainer extends Component<object, object> {
                                         inputType: InputVariation.Multiselect,
                                         defaultVal: false,
                                         label: "Randomization Mode",
-                                        multiSelect: new Array( "Shuffle", "Random" ),
+                                        multiSelect: [ "Shuffle", "Random" ],
                                         tooltip: `Mode of randomization for technique data.  In general, 
-                                                    "shuffle" keeps the vanilla values by shuffles them around.
-                                                    Meanwhile, "random" generates all-new random values.  Hover
+                                                    "Shuffle" keeps the vanilla values and shuffles them around.
+                                                    Meanwhile, "Random" generates all-new random values.  Hover
                                                     individual options to see how these options affect them.` },
                                         { id: "techPower",
                                         inputType: InputVariation.Checkbox,
@@ -126,7 +126,7 @@ export default class MainContainer extends Component<object, object> {
                                         label: "Power",
                                         tooltip: `Randomize the power of each tech.  When mode is "Shuffle", 
                                                     the power of all techs will be shuffled amongst themselves.  
-                                                    When mode is "RRandom", techs will be assigned a random power
+                                                    When mode is "Random", techs will be assigned a random power
                                                     ranging from 30% below the weakest vanilla tech and 999,
                                                     the max possible value.` },
                                         { id: "techCost",

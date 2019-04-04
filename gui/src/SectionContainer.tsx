@@ -45,6 +45,7 @@ export default class SectionContainer extends Component<Props, State> {
                             enabled={this.state.enabled}
                             label={elem.label}
                             tooltip={elem.tooltip}
+                            multiSelect={elem.multiSelect}
                         /> )}
                 </div> )
     }

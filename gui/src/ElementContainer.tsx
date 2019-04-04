@@ -17,7 +17,7 @@ export interface SectionElement {
     tooltip     : string
     sliderMin?  : string
     sliderMax?  : string
-    multiSelect?: Array<string>
+    multiSelect?: string[]
 }
 
 interface Props { 
@@ -29,7 +29,7 @@ interface Props {
     tooltip     : string
     sliderMin?  : string
     sliderMax?  : string
-    multiSelect?: Array<string>
+    multiSelect?: string[]
 }
 
 
@@ -66,15 +66,12 @@ export default class ElementContainer extends Component<Props, object> {
 
             case InputVariation.Multiselect:
                 return( <div className="tooltip" >
-                            {this.props.multiSelect
-                          && this.props.multiSelect!.map( ( opt, index ) =>
-                                <div>
+                            {this.props.multiSelect.map( ( opt, index ) =>
+                                <div key={index}>
                                     <input type="radio"
-                                        key={index}
                                         disabled={!this.props.enabled}
                                         name={this.props.id + "Name"}
                                         value={opt}
-                                        checked={index? false : true}
                                         id={this.props.id + opt} />
                                     <label htmlFor={this.props.id + opt}>{opt}</label>
                                     <span className="tooltiptext">{this.props.tooltip}</span><br/>
@@ -96,8 +93,6 @@ export default class ElementContainer extends Component<Props, object> {
                                 </div></span>
                             </label> <br/>
                         </div> )
-
-                
         }
     }   
 }
