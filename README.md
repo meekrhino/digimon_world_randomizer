@@ -33,12 +33,18 @@ See race instructions below for creating identical race ROMs.
 
 ### Version log:
 
+##### Public Beta 0.8.2
+###### Bug Fixes
+    - Fixed hardware crash caused by invalid targeting during confusion status.
+    
+
 ##### Public Beta 0.8.1
 ###### New Features
     - Configurable option to change spawn rate of Mamemon, Piximon, MetalMamemon, and Otamamon to a specific value.
 
 ###### Bug Fixes
     - Recruitment messages should now properly match random recruit.
+    - Counter will never be assigned as the starting tech
 
 
 ##### Public Beta 0.8.0
