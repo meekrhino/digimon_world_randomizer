@@ -3,42 +3,49 @@
 
 import random
 import configparser
+import argparse
 import sys
 from builtins import input
 from log.logger import Logger
 from digimon.handler import DigimonWorldHandler
 
+#Parse settings argument
+args = argparse.ArgumentParser( description='Randomize Digimon World' )
+args.add_argument( '-settings', required=True, help='Settings INI file to use to configure the randomization.' )
+settings = args.parse_args( sys.argv[1:] ).settings
+
+#Load settings from specified file
+if( settings == '' ):
+    print( 'Settings file must be provided at command line.  Use [-h] for help.' )
+    exit()
 config = configparser.ConfigParser( allow_no_value=True )
-config.read( 'settings.ini' )
+config.read( settings )
 
 verbose = config[ 'general' ][ 'LogLevel' ]
 logger = Logger( verbose, filename='randomize.log' )
 
-if( len(sys.argv) > 1 ):
-    inFile = sys.argv[1]
-elif( config[ 'general' ][ 'Input' ] != '' ):
+if( config[ 'general' ][ 'Input' ] != '' ):
     inFile = config[ 'general' ][ 'Input' ]
 else:
-    logger.fatalError( 'Must provide file name via command line or settings.' )
+    logger.fatalError( 'Must provide file name in settings "Input".' )
     exit()
 
-#If an output file was passed or set, use that as the output.
+#If an output file was Set, use that as the output.
 #Otherwise, read and write the same file
-if( len(sys.argv) > 2 ):
-    outFile = sys.argv[2]
-elif( config[ 'general' ][ 'Output' ] != '' ):
+if( config[ 'general' ][ 'Output' ] != '' ):
     outFile = config[ 'general' ][ 'Output' ]
 else:
     outFile = inFile
 
 #Give the user a warning when we are going to overwrite the base ROM
-if( outFile == inFile ):
-    qa = input( 'Warning: currently set to overwrite the input file.\nAre you sure you want to continue? (y/n)' )
-    if( qa != 'y' ):
-        print( 'Exiting.  Please update settings.ini \'Output\' to select a different output location.' )
-        exit()
+#if( outFile == inFile ):
+#    qa = input( 'Warning: currently set to overwrite the input file.\nAre you sure you want to continue? (y/n)' )
+#    if( qa != 'y' ):
+#        print( 'Exiting.  Please update settings.ini \'Output\' to select a different output location.' )
+#        exit()
 
-print( 'Reading data from ' + inFile + '...\n' )
+print( 'Reading data from ' + inFile + '...' )
+sys.stdout.flush()
 
 seedcfg = config[ 'general' ][ 'Seed' ]
 
@@ -50,7 +57,8 @@ else:
     except ValueError:
         logger.fatalError( 'Seed must be an integer. ' + str( seedcfg ) + ' is not a valid value.' )
 
-print( 'Modifying data...\n' )
+print( 'Modifying data...' )
+sys.stdout.flush()
 
 if( config[ 'digimon' ].getboolean( 'Enabled' ) ):
     pricecfg =  config[ 'digimon' ][ 'ValuableItemCutoff' ]
@@ -124,7 +132,8 @@ if( config[ 'patches' ][ 'SetSpawnRate' ] != '' ):
     handler.applyPatch( 'spawn', int( config[ 'patches' ][ 'SetSpawnRate' ] ) )
 
 
-print( 'Writing to ' + outFile + '...\n' )
+print( 'Writing to ' + outFile + '...' )
+sys.stdout.flush()
 handler.write( outFile )
 
 if( not logger.error ):
@@ -133,11 +142,10 @@ if( not logger.error ):
     print( 'Enter this seed in settings file to produce the same ROM again.' )
 else:
     print( 'Program ended with errors.  See log file for details.' )
+sys.stdout.flush()
 
 logger.logAlways( logger.getHeader( 'Seed' ) )
 
 logger.logAlways( 'Seed was ' + str( handler.randomseed ) + '.' )
 
 logger.logAlways( logger.getHeader( 'End of log' ) )
-
-input( 'Press Enter to finish...' )

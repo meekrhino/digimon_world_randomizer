@@ -275,3 +275,37 @@ input[type="radio"]:disabled {
 input[type="radio"]:disabled+label {
     color: #999; 
 }
+
+.terminalOutput {
+    position: fixed;
+    border: 3px solid rgb(38, 99, 143);
+    height: 120px;
+    width: 80%;
+    background-color: black;
+    color: white;
+}
+
+.terminalOutput .terminalHeader {
+    position: fixed;
+    border: 2px solid rgb(27, 68, 97);
+    height: 26px;
+    width: calc(80% - 8px);
+    background-color: white;
+    margin: 1px;
+    padding: 2px 4px;
+    color: black;
+}
+
+/* .terminalOutput .terminalText {
+    height: calc(100% - 30px);
+    overflow-y: auto;
+    padding: 5px 10px;
+    text-align: left;
+    white-space: pre-wrap;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14pt;
+} */
+
+.terminalOutput .terminalText .error {
+    color: #A82A2A;
+}

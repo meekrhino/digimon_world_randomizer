@@ -10,4 +10,5 @@ namespace global {
 	}
 }
 //Render the main container into the html
-ReactDOM.render( <MainContainer rootDirectory={__dirname + "/../"} />, document.getElementById( 'MainContainer' ) )
+
+ReactDOM.render( <MainContainer rootDirectory={__dirname + "\\..\\"} />, document.getElementById( 'MainContainer' ) )

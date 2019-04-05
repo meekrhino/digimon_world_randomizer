@@ -1,21 +1,21 @@
 {
   "name": "electron-quick-start-typescript",
-  "version": "1.0.0",
-  "description": "A minimal Electron application written with Typescript",
+  "version": "0.8.2",
+  "description": "Digimon World 1 Randomizer",
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
     "lint": "tslint -c tslint.json -p tsconfig.json",
     "start": "npm run build && electron ./dist/main.js"
   },
-  "repository": "https://github.com/electron/electron-quick-start-typescript",
+  "repository": "https://github.com/challenert/digimon_world_randomizer",
   "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo",
-    "typescript"
+    "Digimon",
+    "World",
+    "randomizer",
+    "starter",
+    "data",
+    "patch"
   ],
   "author": "GitHub",
   "license": "CC0-1.0",
