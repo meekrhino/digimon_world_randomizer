@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {Component } from 'react'
 import * as child_process from 'child_process';
-import * as path from "path";
+import * as Path from "path";
 
 import SectionContainer from "./SectionContainer"
 import ElementContainer, { InputVariation } from './ElementContainer';
@@ -19,102 +19,57 @@ interface Settings {
     techMode        : string
 }
 
+interface Props {
+    rootDirectory   : string
+}
 
-export default class MainContainer extends Component<object, object> {
+interface State {
+    settingsPath : string
+    terminalOut  : JSX.Element[]
+}
 
-    private settingsPath = "settings.ini"
-    // interface Props {
-    //     rootDirectory   : string
-    //     pathToGambitFile: string
-    //     pythonFiles     : string[]
-    //     addScript       : Function
-    //     updateScript    : Function
-    //     removeScript    : Function
-    //     buildFlags      : string[]
-    //     checkedBldFlags : boolean[]
-    //     checkFlag       : Function
-    //     updateFlag      : Function
-    //     removeFlag      : Function
-    // }
-    
-    // interface State {
-    //     output          : JSX.Element[]
-    //     processCount    : number
-    //     newFlagName     : string
-    //     managingFlags   : boolean
-    // }
-    
-    // export default class BuildContainer extends React.Component<Props, State> {
-    //     container = null;
-    //     scrollDown = false;
-    //     constructor(props) {
-    //         super(props);
-    //         this.state = {
-    //             output: [],
-    //             processCount: 0,
-    //             newFlagName: '',
-    //             managingFlags: false
-    //         }
-    //     }
-    //     /**
-    //      * State Changes
-    //      */
-    //     addToOutput(text: string, className: string) {
-    //         let output = this.state.output;
-    //         let newDiv = <div key={output.length} className={className}>
-    //                         {text}
-    //                      </div>
-    
-    //         output.push(newDiv);
-    //         this.setState({ output: output })
-    //         this.scrollDown = true;
-    //     }
-    // executeFile(index: number) {
-    //     if (!this.props.pathToGambitFile.length) {
-    //         alert('Please import a gambit file!')
-    //         return
-    //     } else if (!this.props.pythonFiles[index].length) {
-    //         alert('Please define a script to execute!')
-    //         return
-    //     }
+export default class MainContainer extends Component<Props, State> {
+    constructor(props: Readonly<Props>) {
+        super(props);
+        this.state = {
+            settingsPath: Path.join( props.rootDirectory, "settings.ini" ),
+            terminalOut: []
+        }
+    }
 
-    //     const fullPath = Path.join(this.props.rootDirectory, this.props.pythonFiles[index])
-    //     const args = ['-u', fullPath, '-g', this.props.pathToGambitFile]
-    //     const env = Object.assign({}, process.env)
-    //     const options = {
-    //         detached: true,
-    //         cwd: this.props.rootDirectory,
-    //         env
-    //     }
-    //     let spawn = child_process.spawn;
-    //     let proc = spawn('python', args, options);
-    //     proc.stdout.on('data', (chunk) => {
-    //         let textChunk = chunk.toString();
-    //         this.addToOutput(textChunk, 'standard');
-    //     })
-    //     proc.stderr.on('data', (chunk) => {
-    //         let textChunk = chunk.toString();
-    //         this.addToOutput(textChunk, 'error');
-    //     })
-    //     this.increaseProcessCount();
-    //     proc.on('exit', this.decreaseProcessCount.bind(this))
-    // }
+    addToOutput(text: string) {
+        let output = this.state.terminalOut;
+        let newDiv = <div key={output.length} className="terminalText">
+                        {text}
+                        </div>
+
+        output.push(newDiv);
+        this.setState({ terminalOut: output })
+    }
 
     private runRandomize() {
-        let child = require( 'child_process' ).execFile;
-        let executablePath = "digimon_randomize.exe";
-        let parameters = [ this.settingsPath ];
-        console.log( "ASLDFKJ:SLKFDJ:LSKDJLF:KJSD" );
-    
-        child( executablePath, parameters, function( err: any, data: any ) {
-            if( err ){
-                console.error( err );
-                return;
-            }
-     
-            console.log( data.toString() );
-        });
-        //do stuff
+        const path = Path.join( this.props.rootDirectory, "digimon_randomize.exe" )
+        const args = [ this.state.settingsPath ]
+        const env = Object.assign({}, process.env)
+        const options = {
+            detached: true,
+            cwd: this.props.rootDirectory,
+            env
+        }
+        let spawn = child_process.execFile;
+        let proc = spawn( path, args, options, (error, stdout, stderr) => {
+                        this.addToOutput( stdout )
+                    } );
+        // proc.stdout.on('data', (chunk) => {
+        //     let textChunk = chunk.toString();
+        //     this.addToOutput(textChunk, 'standard');
+        // })
+        // proc.stderr.on('data', (chunk) => {
+        //     let textChunk = chunk.toString();
+        //     this.addToOutput(textChunk, 'error');
+        // })
+        // this.increaseProcessCount();
+        // proc.on('exit', this.decreaseProcessCount.bind(this))
     }
 
     render() {
@@ -451,6 +406,7 @@ export default class MainContainer extends Component<object, object> {
                                     ]}
                         />
                     </div>
+                    {this.state.terminalOut}
                 </div> )
     }
 }
