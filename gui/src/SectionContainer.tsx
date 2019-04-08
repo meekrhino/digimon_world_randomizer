@@ -27,10 +27,10 @@ export default class SectionContainer extends Component<Props, State> {
 
     render() {
         const { enabled } = this.state
-        return ( <div id={this.props.id} className="category">
+        return ( <div id={this.props.id + "Container"} className="category">
                     <h1 className="category">{this.props.title}</h1>
                     <label><input type="checkbox" 
-                                  id="enable" 
+                                  id={this.props.id}
                                   value="Enabled" 
                                   disabled={this.props.disabled} 
                                   onClick = { this.handleToggle } /> 

@@ -4,23 +4,11 @@ import {Component } from 'react'
 import * as child_process from 'child_process'
 import * as Path from "path";
 
+import Settings from "./settings"
 import SectionContainer from "./SectionContainer"
-import ElementContainer, { InputVariation } from './ElementContainer';
+import { InputVariation } from './ElementContainer';
 
 const { dialog } = require( 'electron' ).remote
-
-interface Settings {
-    input           : string
-    output          : string
-    log             : string
-    seed            : string
-    digimon         : string
-    digiDropItem    : string
-    digiDropRate    : string
-    digiMatchValue  : string
-    techs           : string
-    techMode        : string
-}
 
 interface Props {
     rootDirectory   : string
@@ -33,6 +21,47 @@ interface State {
 }
 
 export default class MainContainer extends Component<Props, State> {
+    private settings: Settings = {
+        input           : "",
+        output          : "",
+        log             : "full",
+        seed            : "",
+        digimon         : "no",
+        digiDropItem    : "no",
+        digiDropRate    : "no",
+        digiMatchValue  : "10000",
+        techs           : "no",
+        techMode        : "no",
+        techPower       : "no",
+        techCost        : "no",
+        techAccuracy    : "no",
+        techEffect      : "no",
+        techEffChance   : "no",
+        starter         : "no",
+        starterWeakest  : "no",
+        recruitment     : "no",
+        chests          : "no",
+        chestsEvo       : "no",
+        tokomon         : "no",
+        tokomonConsume  : "no",
+        techgifts       : "no",
+        spawn           : "no",
+        spawnFoodOnly   : "no",
+        spawnItemCutoff : "10000",
+        evo             : "no",
+        evoReqs         : "no",
+        evoSpecial      : "no",
+        evoObtainAll    : "no",
+        patchEvoStats   : "no",
+        patchDropQuest  : "no",
+        patchFixBrain   : "no",
+        patchFixGiromon : "no",
+        patchTechLearn  : "no",
+        patchSpawnRate  : "",
+        patchWoah       : "no",
+        patchGabu       : "no"
+    }
+
     terminal: any = null;
     scrollDown = false;
 
@@ -45,6 +74,123 @@ export default class MainContainer extends Component<Props, State> {
         }
     }
 
+    /* snapshot current settings */
+    private calculateSettings() {
+        /* get "checked" status of element with ID */
+        function getCheckedOfInputById( id: string ): string {
+            return ( document.getElementById( id ) as HTMLInputElement ).checked? "yes" : "no"
+        }
+
+        /* get "value" of element with ID */
+        function getValueOfInputById( id: string ): string {
+            return ( document.getElementById( id ) as HTMLInputElement ).value
+        }
+
+        /* get value (name) of checked radio button in group */
+        function getValueOfRadioButtonByName( name: string ): string {
+            let list = document.getElementsByName( name ) as NodeListOf<HTMLInputElement>
+            list.forEach( ( elem ) => {
+                if( elem.checked )
+                    return elem.value
+            })
+            return ""
+        }
+
+        /* general */  
+        this.settings.input             = getValueOfInputById( "inputFile" )
+        this.settings.output            = getValueOfInputById( "outputFile" )
+        this.settings.log               = getValueOfRadioButtonByName( "log" )
+        this.settings.seed              = getValueOfInputById( "seed" ) 
+
+        /* digimon */  
+        this.settings.digimon           = getCheckedOfInputById( "digimondata" )
+        if( this.settings.digimon ) {
+            this.settings.digiDropItem  = getCheckedOfInputById( "digiDropItem" )
+            this.settings.digiDropRate  = getCheckedOfInputById( "digiDropRate" ) 
+        }
+        else {
+            this.settings.digiDropItem  = "no"
+            this.settings.digiDropRate  = "no"
+        } 
+
+        if( getCheckedOfInputById( "digiEnableThreshold" ) == "yes" ) {
+            this.settings.digiMatchValue= getValueOfInputById( "digiThreshold" )  
+        }
+        else {
+            this.settings.digiMatchValue= "10000"
+        }
+
+        /* techs */  
+        this.settings.techs                 = getCheckedOfInputById( "techdata" )  
+        this.settings.techMode              = getValueOfRadioButtonByName( "techModeName" ).toLowerCase()
+        this.settings.techPower             = getCheckedOfInputById( "techPower" )  
+        this.settings.techCost              = getCheckedOfInputById( "techCost" )  
+        this.settings.techAccuracy          = getCheckedOfInputById( "techAccuracy" )  
+        this.settings.techEffect            = getCheckedOfInputById( "effect" )  
+        this.settings.techEffChance         = getCheckedOfInputById( "effectChance" )
+
+        
+        /* starter */  
+        this.settings.starter               = getCheckedOfInputById( "starter" )  
+        this.settings.starterWeakest        = getCheckedOfInputById( "useWeakest" ) 
+        
+        /* recruits */ 
+        this.settings.recruitment           = getCheckedOfInputById( "recruit" )  
+        
+        /* chests */
+        this.settings.chests                = getCheckedOfInputById( "chests" )  
+        this.settings.chestsEvo             = getCheckedOfInputById( "allowEvo" )
+        
+        /* tokomon */
+        this.settings.tokomon               = getCheckedOfInputById( "tokomon" )  
+        this.settings.tokomonConsume        = getCheckedOfInputById( "consumableOnly" )
+
+        /* tech gifts */
+        this.settings.techgifts             = getCheckedOfInputById( "techgifts" )  
+        
+        /* spawns */
+        this.settings.spawn                 = getCheckedOfInputById( "spawns" )  
+        this.settings.spawnFoodOnly         = getCheckedOfInputById( "foodOnly" )  
+
+        if( getCheckedOfInputById( "spawnEnableThreshold" ) == "yes" ) {
+            this.settings.spawnItemCutoff   = getValueOfInputById( "spawnThreshold" )  
+        }
+        else {
+            this.settings.digiMatchValue    = "10000"
+        }
+
+        /* evolutions */
+        this.settings.evo                   = getCheckedOfInputById( "digimonevos" )
+        this.settings.evoReqs               = getCheckedOfInputById( "requirements" )
+        this.settings.evoSpecial            = getCheckedOfInputById( "specialEvos" )
+        this.settings.evoObtainAll          = getCheckedOfInputById( "obtainAll" )
+
+        /* patches */
+        if( getCheckedOfInputById( "patches" ) == "yes" ) {
+            this.settings.patchEvoStats     = getCheckedOfInputById( "fixEvoItemStatGain" )  
+            this.settings.patchDropQuest    = getCheckedOfInputById( "allowDropQuestItems" )  
+            this.settings.patchFixBrain     = getCheckedOfInputById( "fixBrainTrainTierOne" )  
+            this.settings.patchFixGiromon   = getCheckedOfInputById( "fixGiromonJukeboxGlitch" )
+            this.settings.patchTechLearn    = getCheckedOfInputById( "increaseTechLearnChance" )  
+            this.settings.patchSpawnRate    = getValueOfInputById( "setSpawnRate" )  
+            this.settings.patchWoah         = getCheckedOfInputById( "woah" )  
+            this.settings.patchGabu         = getCheckedOfInputById( "gabu" )  
+        }
+        else {
+            this.settings.patchEvoStats     = "no"
+            this.settings.patchDropQuest    = "no"
+            this.settings.patchFixBrain     = "no"
+            this.settings.patchFixGiromon   = "no"
+            this.settings.patchTechLearn    = "no"
+            this.settings.patchSpawnRate    = ""
+            this.settings.patchWoah         = "no"
+            this.settings.patchGabu         = "no"
+        }
+
+        console.log( this.settings )
+    }
+
+    /* Handle capturing terminal output */
     private addToOutput( text: string ) {
         let output = this.state.terminalOut;
         let newDiv = <div key={output.length} className="terminalText">
@@ -57,6 +203,7 @@ export default class MainContainer extends Component<Props, State> {
         this.scrollDown = true
     }
 
+    /* Notification callback for end of execution */
     private notifyDone() {
         const options = {
             title: "DONE",
@@ -67,6 +214,7 @@ export default class MainContainer extends Component<Props, State> {
         dialog.showMessageBox( options )
     }
 
+    /* Run the randomizer */
     private runRandomize() {
         this.setState( { terminalOut: [], inProgress: true } )
         const path = Path.join( this.props.rootDirectory, "digimon_randomize.exe" )
@@ -77,6 +225,9 @@ export default class MainContainer extends Component<Props, State> {
             cwd: this.props.rootDirectory,
             env
         }
+
+        this.calculateSettings()
+
 
         let spawn = child_process.execFile;
         let proc = spawn( path, args, options )
@@ -94,32 +245,36 @@ export default class MainContainer extends Component<Props, State> {
                     <div className="row">
                         <div id="fileOptions">
                             <div className="topColumn">
-                            <b>Select ROM: </b><input type="file" 
-                                                      name="inputFile" 
-                                                      accept=".bin"
-                                                      disabled={this.state.inProgress}/> <br/><br/>
-                            <b>Logging Level: </b><input type="radio" 
-                                                         name="log" 
-                                                         value="full" 
-                                                         id="logFull"
-                                                         disabled={this.state.inProgress} />
-                                            <label htmlFor="log">Full</label>
-                                        <input type="radio" 
-                                               name="log" 
-                                               value="casual" 
-                                               id="logCasual"
-                                               disabled={this.state.inProgress} />
-                                            <label htmlFor="log">Casual</label>
-                                        <input type="radio" 
-                                               name="log" 
-                                               value="race" 
-                                               id="logRace"
-                                               disabled={this.state.inProgress} />
-                                            <label htmlFor="log">Race</label>
+                            <b>Select ROM: </b>
+                                <input type="file" 
+                                       id="inputFile"
+                                       name="inputFile" 
+                                       accept=".bin"
+                                       disabled={this.state.inProgress}/> <br/><br/>
+                            <b>Logging Level: </b>
+                                <input type="radio" 
+                                       name="log" 
+                                       value="full" 
+                                       id="logFull"
+                                       disabled={this.state.inProgress} />
+                                    <label htmlFor="log">Full</label>
+                                <input type="radio" 
+                                       name="log" 
+                                       value="casual" 
+                                       id="logCasual"
+                                       disabled={this.state.inProgress} />
+                                    <label htmlFor="log">Casual</label>
+                                <input type="radio" 
+                                       name="log" 
+                                       value="race" 
+                                       id="logRace"
+                                       disabled={this.state.inProgress} />
+                                    <label htmlFor="log">Race</label>
                             </div>
                             <div className="topColumn">
                                 <b>Output File Name: </b><input type="text" 
                                                                 name="outputFile" 
+                                                                id="outputFile"
                                                                 defaultValue="Digimon World Rando.bin"
                                                                 disabled={this.state.inProgress} /><br/><br/>
                                 <b>Seed: </b><input type="number" 
