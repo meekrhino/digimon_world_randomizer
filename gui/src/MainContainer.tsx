@@ -1,3 +1,4 @@
+import { remote, OpenDialogOptions } from 'electron';
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import {Component } from 'react'
@@ -9,6 +10,7 @@ import * as ini from "ini";
 import SectionContainer from "./SectionContainer"
 import { InputVariation } from './ElementContainer';
 import { fstat } from 'fs';
+import { fileURLToPath } from 'url';
 
 const { dialog } = require( 'electron' ).remote
 
@@ -116,6 +118,27 @@ export default class MainContainer extends Component<Props, State> {
         }
             
         return null
+    }
+
+    /* load settings from specified file */
+    private loadSettings() {
+        let path = remote.dialog.showOpenDialog( {
+                    title: "Select settings file to load",
+                    properties: [ 'openFile' ],
+                    filters: [ { name: "Settings File", extensions: [ "ini" ] } ],
+                    defaultPath: this.props.rootDirectory 
+                } )[ 0 ];
+
+        try {
+            let file = fs.openSync( path, 'r' )
+        }
+        catch( e ) {
+            return e
+        }
+
+        this.settings = ini.decode( fs.readFileSync( path, "utf-8" ) )
+
+        this.applySettings()
     }
 
     /* snapshot current settings */
@@ -233,6 +256,10 @@ export default class MainContainer extends Component<Props, State> {
         }
 
         return null
+    }
+
+    private applySettings() {
+        
     }
 
     /* Handle capturing terminal output */
