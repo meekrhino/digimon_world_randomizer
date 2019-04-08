@@ -36,8 +36,8 @@ export default class MainContainer extends Component<Props, State> {
     terminal: any = null;
     scrollDown = false;
 
-    constructor(props: Readonly<Props>) {
-        super(props);
+    constructor( props: Readonly<Props> ) {
+        super( props );
         this.state = {
             settingsPath: Path.join( props.rootDirectory, "settings.ini" ),
             inProgress: false,
@@ -45,14 +45,15 @@ export default class MainContainer extends Component<Props, State> {
         }
     }
 
-    private addToOutput(text: string) {
+    private addToOutput( text: string ) {
         let output = this.state.terminalOut;
         let newDiv = <div key={output.length} className="terminalText">
                         {"> " + text}
                      </div>
 
-        output.push(newDiv)
-        this.setState({ terminalOut: output })
+        output.push( newDiv )
+
+        this.setState( { terminalOut: output } )
         this.scrollDown = true
     }
 
@@ -93,17 +94,39 @@ export default class MainContainer extends Component<Props, State> {
                     <div className="row">
                         <div id="fileOptions">
                             <div className="topColumn">
-                            <b>Select ROM: </b><input type="file" name="inputFile" accept=".bin"/><br/><br/>
-                            <b>Logging Level: </b><input type="radio" name="log" value="full" id="logFull"/>
+                            <b>Select ROM: </b><input type="file" 
+                                                      name="inputFile" 
+                                                      accept=".bin"
+                                                      disabled={this.state.inProgress}/> <br/><br/>
+                            <b>Logging Level: </b><input type="radio" 
+                                                         name="log" 
+                                                         value="full" 
+                                                         id="logFull"
+                                                         disabled={this.state.inProgress} />
                                             <label htmlFor="log">Full</label>
-                                        <input type="radio" name="log" value="casual" id="logCasual"/>
+                                        <input type="radio" 
+                                               name="log" 
+                                               value="casual" 
+                                               id="logCasual"
+                                               disabled={this.state.inProgress} />
                                             <label htmlFor="log">Casual</label>
-                                        <input type="radio" name="log" value="race" id="logRace"/>
+                                        <input type="radio" 
+                                               name="log" 
+                                               value="race" 
+                                               id="logRace"
+                                               disabled={this.state.inProgress} />
                                             <label htmlFor="log">Race</label>
                             </div>
                             <div className="topColumn">
-                                <b>Output File Name: </b><input type="text" name="outputFile" defaultValue="Digimon World Rando.bin"/><br/><br/>
-                                <b>Seed: </b><input type="number" name="seed" placeholder="Random" id="seed"/>
+                                <b>Output File Name: </b><input type="text" 
+                                                                name="outputFile" 
+                                                                defaultValue="Digimon World Rando.bin"
+                                                                disabled={this.state.inProgress} /><br/><br/>
+                                <b>Seed: </b><input type="number" 
+                                                    name="seed" 
+                                                    placeholder="Random" 
+                                                    id="seed"
+                                                    disabled={this.state.inProgress} />
                                 <button id="randomize" 
                                         disabled={this.state.inProgress} 
                                         onClick={this.runRandomize.bind(this)}>
@@ -118,6 +141,7 @@ export default class MainContainer extends Component<Props, State> {
                             < SectionContainer 
                                 id="starter" 
                                 title="Starter" 
+                                disabled= {this.state.inProgress}
                                 tooltip={`Enable starter randomization.  This will select two random rookies to replace
                                         the starting partner digimon, Agumon and Gabumon.  They will each be assigned 
                                         a random starting tech from the new starter's pool of learnable techniques.`}
@@ -134,6 +158,7 @@ export default class MainContainer extends Component<Props, State> {
                             < SectionContainer 
                                 id="digimondata" 
                                 title="Digimon Data" 
+                                disabled= {this.state.inProgress}
                                 tooltip="Enable digimon data randomization."
                                 elements={[ { id: "digiDropItem",
                                             inputType: InputVariation.Checkbox,
@@ -170,6 +195,7 @@ export default class MainContainer extends Component<Props, State> {
                             < SectionContainer 
                                 id="techdata" 
                                 title="Technique Data" 
+                                disabled= {this.state.inProgress}
                                 tooltip="Enable technique data randomization."
                                 elements={[ { id: "techMode",
                                             inputType: InputVariation.Multiselect,
@@ -231,6 +257,7 @@ export default class MainContainer extends Component<Props, State> {
                         < SectionContainer 
                                 id="digimonevos" 
                                 title="Digivolutions" 
+                                disabled= {this.state.inProgress}
                                 tooltip={`Enable digivolution tree randomization.  Randomizes which digimon each
                                         digimon can randomize into.  Each fresh will get 1 target, each in-training
                                         will get 2 targets, each rookie gets 4-6 targets, and each champion
@@ -272,6 +299,7 @@ export default class MainContainer extends Component<Props, State> {
                             < SectionContainer 
                                 id="chests" 
                                 title="Chest Contents" 
+                                disabled= {this.state.inProgress}
                                 tooltip={`Enable item chest contents randomization.  This will randomize the item
                                         contained in each of the "computers".  Any item except digivolution items or
                                         quest items can be randomized into chests.  Quest items include, for example,
@@ -287,6 +315,7 @@ export default class MainContainer extends Component<Props, State> {
                             < SectionContainer 
                                 id="tokomon" 
                                 title="Tokomon Items" 
+                                disabled= {this.state.inProgress}
                                 tooltip={`Randomize the items given by Tokomon at the start of the game.  This will by
                                         default include only consumable, non-quest items.  It also does not include
                                         digivolution items.  Tokomon will give 1-3 copies of 6 different items chosen
@@ -302,6 +331,7 @@ export default class MainContainer extends Component<Props, State> {
                             < SectionContainer 
                                 id="spawns" 
                                 title="Map Item Spawns" 
+                                disabled= {this.state.inProgress}
                                 tooltip={`Randomize items that spawn on maps (such as Digimushrooms).  Only non-quest 
                                         consumable items will be selected.  Does not allow digivolution items to spawn.
                                         Uses the "valuable item threshhold" to exchange vanilla map items for similar-
@@ -341,6 +371,7 @@ export default class MainContainer extends Component<Props, State> {
                             < SectionContainer 
                                 id="recruit" 
                                 title="Recruitment" 
+                                disabled= {this.state.inProgress}
                                 tooltip={`Enable recruitment randomization.  Randomizes which recruit shows up in 
                                         town when you recruit one.  For example, it is possible to have Whamon 
                                         show up in town (thus opening the dock to Factorial Town) when Bakemon is
@@ -354,6 +385,7 @@ export default class MainContainer extends Component<Props, State> {
                             < SectionContainer 
                                 id="techgifts" 
                                 title="Technique Gifts" 
+                                disabled= {this.state.inProgress}
                                 tooltip={`Randomize the three techniques that Seadramon can teach you, as well
                                         the one that can be taught in Beetle Land (Bug, in vanilla).  They will
                                         still only be able to teach you a move that your current digimon can
@@ -366,6 +398,7 @@ export default class MainContainer extends Component<Props, State> {
                             < SectionContainer 
                                 id="patches" 
                                 title="Miscellaneous Patches" 
+                                disabled= {this.state.inProgress}
                                 tooltip={`Various patches to improve different aspects of the game.`}
                                 elements={[ { id: "fixEvoItemStatGain",
                                             inputType: InputVariation.Checkbox,
@@ -428,15 +461,17 @@ export default class MainContainer extends Component<Props, State> {
                             />
                         </div>
                     </div>
-                    <div className="terminalOutput" 
+                    <div className="terminalOutput" >
+                        <span className="terminalHeader">Execution Output</span><br/><br/>
+                        <div className="terminalTextBox"
                          ref={terminal => { this.terminal = terminal } }>
-                        <span className="terminalHeader">Execution Output</span>
-                        {this.state.terminalOut}
+                            {this.state.terminalOut}
+                        </div>
                     </div>
                 </div> )
     }
 
-    componentDidUpdate(prevProps: Props, prevState: State) {
+    componentDidUpdate( prevProps: Props, prevState: State ) {
         if ( this.scrollDown ) {
             const elem = ReactDOM.findDOMNode( this.terminal );
             if ( elem instanceof Element ) {

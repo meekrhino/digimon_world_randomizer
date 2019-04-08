@@ -11,6 +11,7 @@ interface Props {
     id              : string
     title           : string
     tooltip         : string
+    disabled        : boolean
     elements?       : SectionElement[]
 }
 
@@ -28,7 +29,11 @@ export default class SectionContainer extends Component<Props, State> {
         const { enabled } = this.state
         return ( <div id={this.props.id} className="category">
                     <h1 className="category">{this.props.title}</h1>
-                    <label><input type="checkbox" id="enable" value="Enabled" onClick = { this.handleToggle } /> 
+                    <label><input type="checkbox" 
+                                  id="enable" 
+                                  value="Enabled" 
+                                  disabled={this.props.disabled} 
+                                  onClick = { this.handleToggle } /> 
                         <span><div className="tooltip">
                             Enabled
                             <span className="tooltiptext">{this.props.tooltip}</span>
@@ -42,7 +47,7 @@ export default class SectionContainer extends Component<Props, State> {
                             defaultVal={elem.defaultVal}
                             sliderMin={elem.sliderMin}
                             sliderMax={elem.sliderMax}
-                            enabled={this.state.enabled}
+                            enabled={this.state.enabled && !this.props.disabled}
                             label={elem.label}
                             tooltip={elem.tooltip}
                             multiSelect={elem.multiSelect}
