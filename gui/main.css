@@ -307,6 +307,7 @@ input[type="radio"]:disabled+label {
     color: white;
 }
 
-.terminalOutput .terminalText .error {
+.terminalOutput .terminalTextBox .error {
+    font-style: bold;
     color: #A82A2A;
 }

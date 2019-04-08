@@ -10,4 +10,6 @@ dist/
 gui/node_modules/
 gui/dist/
 
+gui/TEMP__last_settings.ini
+
 out.txt

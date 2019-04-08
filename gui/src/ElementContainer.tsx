@@ -72,6 +72,7 @@ export default class ElementContainer extends Component<Props, object> {
                                         disabled={!this.props.enabled}
                                         name={this.props.id + "Name"}
                                         value={opt}
+                                        defaultChecked={index? false : true}
                                         id={this.props.id + opt} />
                                     <label htmlFor={this.props.id + opt}>{opt}</label>
                                     <span className="tooltiptext">{this.props.tooltip}</span><br/>

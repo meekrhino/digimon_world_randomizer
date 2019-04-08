@@ -3,12 +3,18 @@ import * as ReactDOM from 'react-dom'
 import {Component } from 'react'
 import * as child_process from 'child_process'
 import * as Path from "path";
+import * as fs from "fs";
+import * as ini from "ini";
 
-import Settings from "./settings"
 import SectionContainer from "./SectionContainer"
 import { InputVariation } from './ElementContainer';
+import { fstat } from 'fs';
 
 const { dialog } = require( 'electron' ).remote
+
+interface Settings {
+    [key: string]: any
+}
 
 interface Props {
     rootDirectory   : string
@@ -16,66 +22,104 @@ interface Props {
 
 interface State {
     settingsPath : string
-    inProgress   : boolean
     terminalOut  : JSX.Element[]
 }
 
 export default class MainContainer extends Component<Props, State> {
     private settings: Settings = {
-        input           : "",
-        output          : "",
-        log             : "full",
-        seed            : "",
-        digimon         : "no",
-        digiDropItem    : "no",
-        digiDropRate    : "no",
-        digiMatchValue  : "10000",
-        techs           : "no",
-        techMode        : "no",
-        techPower       : "no",
-        techCost        : "no",
-        techAccuracy    : "no",
-        techEffect      : "no",
-        techEffChance   : "no",
-        starter         : "no",
-        starterWeakest  : "no",
-        recruitment     : "no",
-        chests          : "no",
-        chestsEvo       : "no",
-        tokomon         : "no",
-        tokomonConsume  : "no",
-        techgifts       : "no",
-        spawn           : "no",
-        spawnFoodOnly   : "no",
-        spawnItemCutoff : "10000",
-        evo             : "no",
-        evoReqs         : "no",
-        evoSpecial      : "no",
-        evoObtainAll    : "no",
-        patchEvoStats   : "no",
-        patchDropQuest  : "no",
-        patchFixBrain   : "no",
-        patchFixGiromon : "no",
-        patchTechLearn  : "no",
-        patchSpawnRate  : "",
-        patchWoah       : "no",
-        patchGabu       : "no"
+        general: {
+            Input                   : "",
+            Output                  : "",
+            LogLevel                : "casual",
+            Seed                    : "" 
+        },  
+        digimon: {  
+            Enabled                 : "no",
+            DropItem                : "no",
+            DropRate                : "no",
+            ValuableItemCutoff      : "10000" 
+        },  
+        techs: {    
+            Enabled                 : "no",
+            Mode                    : "no",
+            Power                   : "no",
+            Cost                    : "no",
+            Accuracy                : "no",
+            Effect                  : "no",
+            EffectChance            : "no"
+        },  
+        starter: {  
+            Enabled                 : "no",
+            UseWeakestTech          : "no"
+        },  
+        recruitment: {  
+            Enabled                 : "no"
+        },  
+        chests: {   
+            Enabled                 : "no",
+            AllowEvo                : "no"
+        },  
+        tokomon: {  
+            Enabled                 : "no",
+            ConsumableOnly          : "no"
+        },  
+        techgifts: {    
+            Enabled                 : "no"
+        },  
+        mapItems: { 
+            Enabled                 : "no",
+            FoodOnly                : "no",
+            ValuableItemCutoff      : "10000"
+        },  
+        evolution: {    
+            Enabled                 : "no",
+            Requirements            : "no",
+            SpecialEvos             : "no",
+            ObtainAll               : "no"
+        },
+        patches: {
+            FixEvoItemStatGain      : "no",
+            AllowDropQuestItems     : "no",
+            FixBrainTrainTierOne    : "no",
+            FixGiromonJukeboxGlitch : "no",
+            IncreaseTechLearnChance : "no",
+            SetSpawnRate            : "",
+            Woah                    : "no",
+            Gabu                    : "no"
+        }
     }
 
-    terminal: any = null;
-    scrollDown = false;
+    private inProgress: boolean
+    private terminal: any = null
+    private scrollDown = false
 
     constructor( props: Readonly<Props> ) {
         super( props );
         this.state = {
-            settingsPath: Path.join( props.rootDirectory, "settings.ini" ),
-            inProgress: false,
+            settingsPath: Path.join( props.rootDirectory, "TEMP__last_settings.ini" ),
             terminalOut: []
         }
+        this.inProgress = false
+    }
+
+    /* save current settings to specified file */
+    private saveSettings( path: string ): Error {
+        const settingsResult = this.calculateSettings()
+        if( settingsResult ) {
+            return settingsResult
+        }
+
+        let encodedSettings = ini.encode( this.settings, { section: undefined, whitespace: true } )
+        let file = fs.openSync( path, 'w' )
+        if( fs.writeSync( file, encodedSettings ) != encodedSettings.length ) {
+            return Error( "ERR: unable to write settings to " + path )
+        }
+            
+        return null
     }
 
     /* snapshot current settings */
-    private calculateSettings() {
+    private calculateSettings(): Error {
         /* get "checked" status of element with ID */
         function getCheckedOfInputById( id: string ): string {
             return ( document.getElementById( id ) as HTMLInputElement ).checked? "yes" : "no"
@@ -88,112 +132,114 @@ export default class MainContainer extends Component<Props, State> {
 
         /* get value (name) of checked radio button in group */
         function getValueOfRadioButtonByName( name: string ): string {
+            let val: string = ""
             let list = document.getElementsByName( name ) as NodeListOf<HTMLInputElement>
             list.forEach( ( elem ) => {
                 if( elem.checked )
-                    return elem.value
+                    val = elem.value
             })
-            return ""
+            return val
         }
 
         /* general */  
-        this.settings.input             = getValueOfInputById( "inputFile" )
-        this.settings.output            = getValueOfInputById( "outputFile" )
-        this.settings.log               = getValueOfRadioButtonByName( "log" )
-        this.settings.seed              = getValueOfInputById( "seed" ) 
+        let inputFile = ( document.getElementById( "inputFile" ) as HTMLInputElement ).files[ 0 ]
+        if( inputFile ) {
+            this.settings.general.Input                     = inputFile.path
+        }
+        else {
+            return new Error( "ERR: must select a ROM input file" )
+        }
+        this.settings.general.Output                        = getValueOfInputById( "outputFile" )
+        this.settings.general.LogLevel                      = getValueOfRadioButtonByName( "log" )
+        this.settings.general.Seed                          = getValueOfInputById( "seed" ) 
 
         /* digimon */  
-        this.settings.digimon           = getCheckedOfInputById( "digimondata" )
-        if( this.settings.digimon ) {
-            this.settings.digiDropItem  = getCheckedOfInputById( "digiDropItem" )
-            this.settings.digiDropRate  = getCheckedOfInputById( "digiDropRate" ) 
-        }
-        else {
-            this.settings.digiDropItem  = "no"
-            this.settings.digiDropRate  = "no"
-        } 
+        this.settings.digimon.Enabled                       = getCheckedOfInputById( "digimondata" )
+        this.settings.digimon.DropItem                      = getCheckedOfInputById( "digiDropItem" )
+        this.settings.digimon.DropRate                      = getCheckedOfInputById( "digiDropRate" ) 
 
         if( getCheckedOfInputById( "digiEnableThreshold" ) == "yes" ) {
-            this.settings.digiMatchValue= getValueOfInputById( "digiThreshold" )  
+            this.settings.digimon.ValuableItemCutoff        = getValueOfInputById( "digiThreshold" )  
         }
         else {
-            this.settings.digiMatchValue= "10000"
+            this.settings.digimon.ValuableItemCutoff        = "10000"
         }
 
         /* techs */  
-        this.settings.techs                 = getCheckedOfInputById( "techdata" )  
-        this.settings.techMode              = getValueOfRadioButtonByName( "techModeName" ).toLowerCase()
-        this.settings.techPower             = getCheckedOfInputById( "techPower" )  
-        this.settings.techCost              = getCheckedOfInputById( "techCost" )  
-        this.settings.techAccuracy          = getCheckedOfInputById( "techAccuracy" )  
-        this.settings.techEffect            = getCheckedOfInputById( "effect" )  
-        this.settings.techEffChance         = getCheckedOfInputById( "effectChance" )
+        this.settings.techs.Enabled                         = getCheckedOfInputById( "techdata" )  
+        this.settings.techs.Mode                            = getValueOfRadioButtonByName( "techModeName" ).toLowerCase()
+        this.settings.techs.Power                           = getCheckedOfInputById( "techPower" )  
+        this.settings.techs.Cost                            = getCheckedOfInputById( "techCost" )  
+        this.settings.techs.Accuracy                        = getCheckedOfInputById( "techAccuracy" )  
+        this.settings.techs.Effect                          = getCheckedOfInputById( "effect" )  
+        this.settings.techs.EffectChance                    = getCheckedOfInputById( "effectChance" )
 
         
         /* starter */  
-        this.settings.starter               = getCheckedOfInputById( "starter" )  
-        this.settings.starterWeakest        = getCheckedOfInputById( "useWeakest" ) 
+        this.settings.starter.Enabled                       = getCheckedOfInputById( "starter" )  
+        this.settings.starter.UseWeakestTech                = getCheckedOfInputById( "useWeakest" ) 
         
         /* recruits */ 
-        this.settings.recruitment           = getCheckedOfInputById( "recruit" )  
+        this.settings.recruitment.Enabled                   = getCheckedOfInputById( "recruit" )  
         
         /* chests */
-        this.settings.chests                = getCheckedOfInputById( "chests" )  
-        this.settings.chestsEvo             = getCheckedOfInputById( "allowEvo" )
+        this.settings.chests.Enabled                        = getCheckedOfInputById( "chests" )  
+        this.settings.chests.AllowEvo                       = getCheckedOfInputById( "allowEvo" )
         
         /* tokomon */
-        this.settings.tokomon               = getCheckedOfInputById( "tokomon" )  
-        this.settings.tokomonConsume        = getCheckedOfInputById( "consumableOnly" )
+        this.settings.tokomon.Enabled                       = getCheckedOfInputById( "tokomon" )  
+        this.settings.tokomon.ConsumableOnly                = getCheckedOfInputById( "consumableOnly" )
 
         /* tech gifts */
-        this.settings.techgifts             = getCheckedOfInputById( "techgifts" )  
+        this.settings.techgifts.Enabled                     = getCheckedOfInputById( "techgifts" )  
         
         /* spawns */
-        this.settings.spawn                 = getCheckedOfInputById( "spawns" )  
-        this.settings.spawnFoodOnly         = getCheckedOfInputById( "foodOnly" )  
+        this.settings.mapItems.Enabled                      = getCheckedOfInputById( "spawns" )  
+        this.settings.mapItems.FoodOnly                     = getCheckedOfInputById( "foodOnly" )  
 
         if( getCheckedOfInputById( "spawnEnableThreshold" ) == "yes" ) {
-            this.settings.spawnItemCutoff   = getValueOfInputById( "spawnThreshold" )  
+            this.settings.mapItems.ValuableItemCutoff       = getValueOfInputById( "spawnThreshold" )  
         }
         else {
-            this.settings.digiMatchValue    = "10000"
+            this.settings.mapItems.ValuableItemCutoff       = "10000"
         }
 
         /* evolutions */
-        this.settings.evo                   = getCheckedOfInputById( "digimonevos" )
-        this.settings.evoReqs               = getCheckedOfInputById( "requirements" )
-        this.settings.evoSpecial            = getCheckedOfInputById( "specialEvos" )
-        this.settings.evoObtainAll          = getCheckedOfInputById( "obtainAll" )
+        this.settings.evolution.Enabled                     = getCheckedOfInputById( "digimonevos" )
+        this.settings.evolution.Requirements                = getCheckedOfInputById( "requirements" )
+        this.settings.evolution.SpecialEvos                 = getCheckedOfInputById( "specialEvos" )
+        this.settings.evolution.ObtainAll                   = getCheckedOfInputById( "obtainAll" )
 
         /* patches */
         if( getCheckedOfInputById( "patches" ) == "yes" ) {
-            this.settings.patchEvoStats     = getCheckedOfInputById( "fixEvoItemStatGain" )  
-            this.settings.patchDropQuest    = getCheckedOfInputById( "allowDropQuestItems" )  
-            this.settings.patchFixBrain     = getCheckedOfInputById( "fixBrainTrainTierOne" )  
-            this.settings.patchFixGiromon   = getCheckedOfInputById( "fixGiromonJukeboxGlitch" )
-            this.settings.patchTechLearn    = getCheckedOfInputById( "increaseTechLearnChance" )  
-            this.settings.patchSpawnRate    = getValueOfInputById( "setSpawnRate" )  
-            this.settings.patchWoah         = getCheckedOfInputById( "woah" )  
-            this.settings.patchGabu         = getCheckedOfInputById( "gabu" )  
+            this.settings.patches.FixEvoItemStatGain        = getCheckedOfInputById( "fixEvoItemStatGain" )  
+            this.settings.patches.AllowDropQuestItems       = getCheckedOfInputById( "allowDropQuestItems" )  
+            this.settings.patches.FixBrainTrainTierOne      = getCheckedOfInputById( "fixBrainTrainTierOne" )  
+            this.settings.patches.FixGiromonJukeboxGlitch   = getCheckedOfInputById( "fixGiromonJukeboxGlitch" )
+            this.settings.patches.IncreaseTechLearnChance   = getCheckedOfInputById( "increaseTechLearnChance" )  
+            this.settings.patches.SetSpawnRate              = getValueOfInputById( "setSpawnRate" )  
+            this.settings.patches.Woah                      = getCheckedOfInputById( "woah" )  
+            this.settings.patches.Gabu                      = getCheckedOfInputById( "gabu" )  
         }
         else {
-            this.settings.patchEvoStats     = "no"
-            this.settings.patchDropQuest    = "no"
-            this.settings.patchFixBrain     = "no"
-            this.settings.patchFixGiromon   = "no"
-            this.settings.patchTechLearn    = "no"
-            this.settings.patchSpawnRate    = ""
-            this.settings.patchWoah         = "no"
-            this.settings.patchGabu         = "no"
+            this.settings.patches.FixEvoItemStatGain        = "no"
+            this.settings.patches.AllowDropQuestItems       = "no"
+            this.settings.patches.FixBrainTrainTierOne      = "no"
+            this.settings.patches.FixGiromonJukeboxGlitch   = "no"
+            this.settings.patches.IncreaseTechLearnChance   = "no"
+            this.settings.patches.SetSpawnRate              = ""
+            this.settings.patches.Woah                      = "no"
+            this.settings.patches.Gabu                      = "no"
         }
 
-        console.log( this.settings )
+        return null
     }
 
     /* Handle capturing terminal output */
-    private addToOutput( text: string ) {
+    private addToOutput( text: string, name?: string ) {
         let output = this.state.terminalOut;
-        let newDiv = <div key={output.length} className="terminalText">
+        let newDiv = <div key={output.length} 
+                          className={"terminalText" + ( name? ( " " + name ) : "" )}>
                         {"> " + text}
                      </div>
 
@@ -210,13 +256,13 @@ export default class MainContainer extends Component<Props, State> {
             message: "Done.",
             detail: "Yes, it is really done."
         }
-        this.setState( { inProgress: false } )
+        this.inProgress = false
         dialog.showMessageBox( options )
     }
 
     /* Run the randomizer */
     private runRandomize() {
-        this.setState( { terminalOut: [], inProgress: true } )
+        this.setState( { terminalOut: [] } )
         const path = Path.join( this.props.rootDirectory, "digimon_randomize.exe" )
         const args = [ "-settings", this.state.settingsPath ]
         const env = Object.assign({}, process.env)
@@ -226,9 +272,18 @@ export default class MainContainer extends Component<Props, State> {
             env
         }
 
-        this.calculateSettings()
+        let err = this.saveSettings( this.state.settingsPath )
+        if( err ) {
+            this.addToOutput( err.message, "error" )
+            return
+        }
 
+        if( !fs.existsSync( path ) ) {
+            this.addToOutput( "'digimon_randomize.exe' does not exist in working directory", "error" )
+            return
+        }
 
+        this.inProgress = true
         let spawn = child_process.execFile;
         let proc = spawn( path, args, options )
         
@@ -236,7 +291,7 @@ export default class MainContainer extends Component<Props, State> {
 
         proc.stdout.on('data', (chunk) => {
             let textChunk = chunk.toString();
-            this.addToOutput( textChunk );
+            this.addToOutput( textChunk )
         })
     }
 
@@ -250,25 +305,28 @@ export default class MainContainer extends Component<Props, State> {
                                        id="inputFile"
                                        name="inputFile" 
                                        accept=".bin"
-                                       disabled={this.state.inProgress}/> <br/><br/>
+                                       disabled={this.inProgress}/> <br/><br/>
                             <b>Logging Level: </b>
                                 <input type="radio" 
                                        name="log" 
                                        value="full" 
                                        id="logFull"
-                                       disabled={this.state.inProgress} />
+                                       defaultChecked={true}
+                                       disabled={this.inProgress} />
                                     <label htmlFor="log">Full</label>
                                 <input type="radio" 
                                        name="log" 
                                        value="casual" 
                                        id="logCasual"
-                                       disabled={this.state.inProgress} />
+                                       defaultChecked={false}
+                                       disabled={this.inProgress} />
                                     <label htmlFor="log">Casual</label>
                                 <input type="radio" 
                                        name="log" 
                                        value="race" 
                                        id="logRace"
-                                       disabled={this.state.inProgress} />
+                                       defaultChecked={false}
+                                       disabled={this.inProgress} />
                                     <label htmlFor="log">Race</label>
                             </div>
                             <div className="topColumn">
@@ -276,16 +334,16 @@ export default class MainContainer extends Component<Props, State> {
                                                                 name="outputFile" 
                                                                 id="outputFile"
                                                                 defaultValue="Digimon World Rando.bin"
-                                                                disabled={this.state.inProgress} /><br/><br/>
+                                                                disabled={this.inProgress} /><br/><br/>
                                 <b>Seed: </b><input type="number" 
                                                     name="seed" 
                                                     placeholder="Random" 
                                                     id="seed"
-                                                    disabled={this.state.inProgress} />
+                                                    disabled={this.inProgress} />
                                 <button id="randomize" 
-                                        disabled={this.state.inProgress} 
+                                        disabled={this.inProgress} 
                                         onClick={this.runRandomize.bind(this)}>
-                                    {this.state.inProgress? "Randomizing..." : "Randomize"}
+                                    {this.inProgress? "Randomizing..." : "Randomize"}
                                 </button>
                             </div>
                         </div>
@@ -296,7 +354,7 @@ export default class MainContainer extends Component<Props, State> {
                             < SectionContainer 
                                 id="starter" 
                                 title="Starter" 
-                                disabled= {this.state.inProgress}
+                                disabled= {this.inProgress}
                                 tooltip={`Enable starter randomization.  This will select two random rookies to replace
                                         the starting partner digimon, Agumon and Gabumon.  They will each be assigned 
                                         a random starting tech from the new starter's pool of learnable techniques.`}
@@ -313,7 +371,7 @@ export default class MainContainer extends Component<Props, State> {
                             < SectionContainer 
                                 id="digimondata" 
                                 title="Digimon Data" 
-                                disabled= {this.state.inProgress}
+                                disabled= {this.inProgress}
                                 tooltip="Enable digimon data randomization."
                                 elements={[ { id: "digiDropItem",
                                             inputType: InputVariation.Checkbox,
@@ -350,7 +408,7 @@ export default class MainContainer extends Component<Props, State> {
                             < SectionContainer 
                                 id="techdata" 
                                 title="Technique Data" 
-                                disabled= {this.state.inProgress}
+                                disabled= {this.inProgress}
                                 tooltip="Enable technique data randomization."
                                 elements={[ { id: "techMode",
                                             inputType: InputVariation.Multiselect,
@@ -412,7 +470,7 @@ export default class MainContainer extends Component<Props, State> {
                         < SectionContainer 
                                 id="digimonevos" 
                                 title="Digivolutions" 
-                                disabled= {this.state.inProgress}
+                                disabled= {this.inProgress}
                                 tooltip={`Enable digivolution tree randomization.  Randomizes which digimon each
                                         digimon can randomize into.  Each fresh will get 1 target, each in-training
                                         will get 2 targets, each rookie gets 4-6 targets, and each champion
@@ -454,7 +512,7 @@ export default class MainContainer extends Component<Props, State> {
                             < SectionContainer 
                                 id="chests" 
                                 title="Chest Contents" 
-                                disabled= {this.state.inProgress}
+                                disabled= {this.inProgress}
                                 tooltip={`Enable item chest contents randomization.  This will randomize the item
                                         contained in each of the "computers".  Any item except digivolution items or
                                         quest items can be randomized into chests.  Quest items include, for example,
@@ -470,7 +528,7 @@ export default class MainContainer extends Component<Props, State> {
                             < SectionContainer 
                                 id="tokomon" 
                                 title="Tokomon Items" 
-                                disabled= {this.state.inProgress}
+                                disabled= {this.inProgress}
                                 tooltip={`Randomize the items given by Tokomon at the start of the game.  This will by
                                         default include only consumable, non-quest items.  It also does not include
                                         digivolution items.  Tokomon will give 1-3 copies of 6 different items chosen
@@ -486,7 +544,7 @@ export default class MainContainer extends Component<Props, State> {
                             < SectionContainer 
                                 id="spawns" 
                                 title="Map Item Spawns" 
-                                disabled= {this.state.inProgress}
+                                disabled= {this.inProgress}
                                 tooltip={`Randomize items that spawn on maps (such as Digimushrooms).  Only non-quest 
                                         consumable items will be selected.  Does not allow digivolution items to spawn.
                                         Uses the "valuable item threshhold" to exchange vanilla map items for similar-
@@ -526,7 +584,7 @@ export default class MainContainer extends Component<Props, State> {
                             < SectionContainer 
                                 id="recruit" 
                                 title="Recruitment" 
-                                disabled= {this.state.inProgress}
+                                disabled= {this.inProgress}
                                 tooltip={`Enable recruitment randomization.  Randomizes which recruit shows up in 
                                         town when you recruit one.  For example, it is possible to have Whamon 
                                         show up in town (thus opening the dock to Factorial Town) when Bakemon is
@@ -540,7 +598,7 @@ export default class MainContainer extends Component<Props, State> {
                             < SectionContainer 
                                 id="techgifts" 
                                 title="Technique Gifts" 
-                                disabled= {this.state.inProgress}
+                                disabled= {this.inProgress}
                                 tooltip={`Randomize the three techniques that Seadramon can teach you, as well
                                         the one that can be taught in Beetle Land (Bug, in vanilla).  They will
                                         still only be able to teach you a move that your current digimon can
@@ -553,7 +611,7 @@ export default class MainContainer extends Component<Props, State> {
                             < SectionContainer 
                                 id="patches" 
                                 title="Miscellaneous Patches" 
-                                disabled= {this.state.inProgress}
+                                disabled= {this.inProgress}
                                 tooltip={`Various patches to improve different aspects of the game.`}
                                 elements={[ { id: "fixEvoItemStatGain",
                                             inputType: InputVariation.Checkbox,
