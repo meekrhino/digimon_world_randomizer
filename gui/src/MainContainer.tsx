@@ -29,6 +29,20 @@ interface State {
 }
 
 export default class MainContainer extends Component<Props, State> {
+    public static instance: MainContainer = null
+
+    /* Load settings from menu */
+    public onMenuLoadSettings(): void {
+        let path = remote.dialog.showOpenDialog( {
+            title: "Select settings file to load",
+            properties: [ 'openFile' ],
+            filters: [ { name: "Settings File", extensions: [ "ini" ] } ],
+            defaultPath: this.props.rootDirectory 
+        } )[ 0 ];
+
+        this.loadSettings( path )
+    }
+
     private settings: Settings = {
         general: {
             Input                   : "",
@@ -103,6 +117,10 @@ export default class MainContainer extends Component<Props, State> {
             terminalOut: []
         }
         this.inProgress = false
+
+        if( !MainContainer.instance ) {
+            MainContainer.instance = this
+        }
     }
 
     /* save current settings to specified file */
@@ -122,14 +140,7 @@ export default class MainContainer extends Component<Props, State> {
     }
 
     /* load settings from specified file */
-    private loadSettings() {
-        let path = remote.dialog.showOpenDialog( {
-                    title: "Select settings file to load",
-                    properties: [ 'openFile' ],
-                    filters: [ { name: "Settings File", extensions: [ "ini" ] } ],
-                    defaultPath: this.props.rootDirectory 
-                } )[ 0 ];
-
+    private loadSettings( path: string ) {
         try {
             let file = fs.openSync( path, 'r' )
         }
@@ -834,6 +845,6 @@ export default class MainContainer extends Component<Props, State> {
     }
 
     componentDidMount() {
-        this.loadSettings()
+        this.loadSettings( this.state.settingsPath )
     }
 }

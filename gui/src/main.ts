@@ -3,6 +3,8 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as path from "path";
 
+import MainContainer from "./MainContainer"
+
 let mainWindow: Electron.BrowserWindow;
 
 function createWindow() {
@@ -39,6 +41,12 @@ app.on( "ready", () => {
                                                     focusedWindow.reload()
                                                     }
                                                 }]
+                                          }, { label: 'Settings',
+                                               submenu: [{
+                                                 label: 'Load',
+                                                 accelerator: 'CmdOrCtrl+O',
+                                                 click: () => { MainContainer.instance.onMenuLoadSettings() }
+                                               }]
                                          }] )
     Menu.setApplicationMenu( menu )
     createWindow()
