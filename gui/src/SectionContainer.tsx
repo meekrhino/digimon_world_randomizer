@@ -19,10 +19,14 @@ interface Props {
 export default class SectionContainer extends Component<Props, State> {
     readonly state: State = initialState
     
-    private handleToggle = () => this.setState( toggleEnabled )
+    en: HTMLInputElement = null
     
     constructor( props: Props ) {
         super( props )
+    }
+
+    toggleEnabled( e: Event ) { 
+        this.setState( { enabled: this.en.checked } )
     }
 
     render() {
@@ -30,10 +34,11 @@ export default class SectionContainer extends Component<Props, State> {
         return ( <div id={this.props.id + "Container"} className="category">
                     <h1 className="category">{this.props.title}</h1>
                     <label><input type="checkbox" 
+                                  ref={elem => this.en = elem}
                                   id={this.props.id}
                                   value="Enabled" 
                                   disabled={this.props.disabled} 
-                                  onChange={this.handleToggle} /> 
+                                  onClick={this.toggleEnabled.bind( this )} /> 
                         <span><div className="tooltip">
                             Enabled
                             <span className="tooltiptext">{this.props.tooltip}</span>
@@ -55,6 +60,8 @@ export default class SectionContainer extends Component<Props, State> {
                         /> )}
                 </div> )
     }
-}
 
-const toggleEnabled = ( state: State) => { console.log("change eventtriggered" ); return { enabled: !state.enabled }}
+    componentDidMount() {
+        this.en.addEventListener( "loadSettings", this.toggleEnabled.bind(this) )
+    }
+}

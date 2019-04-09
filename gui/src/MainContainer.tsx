@@ -263,15 +263,10 @@ export default class MainContainer extends Component<Props, State> {
         /* set "checked" status of element with ID */
         function setCheckedOfInputById( id: string, value: string ) {
             let elem = ( document.getElementById( id ) as HTMLInputElement )
-            if( value == "yes" ) {
-                elem.checked = true
-                console.log( "sending change event" )
-                console.log( "RESULT: " + elem.dispatchEvent( new Event( "change" ) ) )
-            }
-            else {
-                elem.checked = false
-                //elem.dispatchEvent( new Event( "onchange" ) )
-            }
+            elem.checked = ( value == "yes" )? true : false
+
+            /* send event to allow sections to be enabled correctly */
+            elem.dispatchEvent( new Event( "loadSettings", { bubbles: true } ) )
         }
 
         /* set element with id to specified value */
