@@ -33,7 +33,7 @@ export default class SectionContainer extends Component<Props, State> {
                                   id={this.props.id}
                                   value="Enabled" 
                                   disabled={this.props.disabled} 
-                                  onClick = { this.handleToggle } /> 
+                                  onChange={this.handleToggle} /> 
                         <span><div className="tooltip">
                             Enabled
                             <span className="tooltiptext">{this.props.tooltip}</span>
@@ -51,9 +51,10 @@ export default class SectionContainer extends Component<Props, State> {
                             label={elem.label}
                             tooltip={elem.tooltip}
                             multiSelect={elem.multiSelect}
+                            multiSelectLabel={elem.multiSelectLabel}
                         /> )}
                 </div> )
     }
 }
 
-const toggleEnabled = ( state: State) => ({ enabled: !state.enabled })
+const toggleEnabled = ( state: State) => { console.log("change eventtriggered" ); return { enabled: !state.enabled }}

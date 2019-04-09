@@ -10,26 +10,28 @@ export enum InputVariation {
 }
 
 export interface SectionElement {
-    id          : string
-    inputType   : InputVariation
-    defaultVal  : any
-    label?      : string
-    tooltip     : string
-    sliderMin?  : string
-    sliderMax?  : string
-    multiSelect?: string[]
+    id                  : string
+    inputType           : InputVariation
+    defaultVal          : any
+    label?              : string
+    tooltip             : string
+    sliderMin?          : string
+    sliderMax?          : string
+    multiSelect?        : string[]
+    multiSelectLabel?   : string[]
 }
 
 interface Props { 
-    id          : string
-    inputType   : InputVariation
-    defaultVal  : any
-    enabled     : boolean
-    label?      : string
-    tooltip     : string
-    sliderMin?  : string
-    sliderMax?  : string
-    multiSelect?: string[]
+    id                  : string
+    inputType           : InputVariation
+    defaultVal          : any
+    enabled             : boolean
+    label?              : string
+    tooltip             : string
+    sliderMin?          : string
+    sliderMax?          : string
+    multiSelect?        : string[]
+    multiSelectLabel?   : string[]
 }
 
 
@@ -74,7 +76,7 @@ export default class ElementContainer extends Component<Props, object> {
                                         value={opt}
                                         defaultChecked={index? false : true}
                                         id={this.props.id + opt} />
-                                    <label htmlFor={this.props.id + opt}>{opt}</label>
+                                    <label htmlFor={this.props.id + opt}>{this.props.multiSelectLabel[ index ]}</label>
                                     <span className="tooltiptext">{this.props.tooltip}</span><br/>
                                 </div>
                             )}

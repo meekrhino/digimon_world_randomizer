@@ -11,6 +11,7 @@ import SectionContainer from "./SectionContainer"
 import { InputVariation } from './ElementContainer';
 import { fstat } from 'fs';
 import { fileURLToPath } from 'url';
+import { string } from 'prop-types';
 
 const { dialog } = require( 'electron' ).remote
 
@@ -190,7 +191,7 @@ export default class MainContainer extends Component<Props, State> {
 
         /* techs */  
         this.settings.techs.Enabled                         = getCheckedOfInputById( "techdata" )  
-        this.settings.techs.Mode                            = getValueOfRadioButtonByName( "techModeName" ).toLowerCase()
+        this.settings.techs.Mode                            = getValueOfRadioButtonByName( "techModeName" )
         this.settings.techs.Power                           = getCheckedOfInputById( "techPower" )  
         this.settings.techs.Cost                            = getCheckedOfInputById( "techCost" )  
         this.settings.techs.Accuracy                        = getCheckedOfInputById( "techAccuracy" )  
@@ -259,7 +260,122 @@ export default class MainContainer extends Component<Props, State> {
     }
 
     private applySettings() {
+        /* set "checked" status of element with ID */
+        function setCheckedOfInputById( id: string, value: string ) {
+            let elem = ( document.getElementById( id ) as HTMLInputElement )
+            if( value == "yes" ) {
+                elem.checked = true
+                console.log( "sending change event" )
+                console.log( "RESULT: " + elem.dispatchEvent( new Event( "change" ) ) )
+            }
+            else {
+                elem.checked = false
+                //elem.dispatchEvent( new Event( "onchange" ) )
+            }
+        }
+
+        /* set element with id to specified value */
+        function setValueOfInputById( id: string, value: string ) {
+            ( document.getElementById( id ) as HTMLInputElement ).value = value
+        }
+
+        /* set specified radio button to be checked */
+        function setValueOfRadioButtonByName( name: string, value: string ) {
+            let list = document.getElementsByName( name ) as NodeListOf<HTMLInputElement>
+            list.forEach( ( elem ) => {
+                if( elem.value == value ) {
+                    elem.checked = true
+                }
+                else {
+                    elem.checked = false
+                }
+            })
+        }
+
+        /* general */  
+        /* cannot set <input file> value (security reasons).  Could fix by improving UI to not
+           use the standard file input, instead using a dialog + button combo */
+        setValueOfInputById( "outputFile", this.settings.general.Output )
+        setValueOfRadioButtonByName( "log", this.settings.general.LogLevel )
+        setValueOfInputById( "seed", this.settings.general.Seed ) 
+
+        /* digimon */  
+        setCheckedOfInputById( "digimondata", this.settings.digimon.Enabled )
+        setCheckedOfInputById( "digiDropItem", this.settings.digimon.DropItem )
+        setCheckedOfInputById( "digiDropRate", this.settings.digimon.DropRate ) 
+        setValueOfInputById( "digiThreshold", this.settings.digimon.ValuableItemCutoff )  
+        if( this.settings.digimon.ValuableItemCutoff != "10000" ) {
+            setCheckedOfInputById( "digiEnableThreshold", "yes" )
+        }
+        else {
+            setCheckedOfInputById( "digiEnableThreshold", "no" )
+        }
+
+        /* techs */  
+        setCheckedOfInputById( "techdata", this.settings.techs.Enabled )  
+
+        setValueOfRadioButtonByName( "techModeName", this.settings.techs.Mode )
+        setCheckedOfInputById( "techPower", this.settings.techs.Power )  
+        setCheckedOfInputById( "techCost", this.settings.techs.Cost )  
+        setCheckedOfInputById( "techAccuracy", this.settings.techs.Accuracy )  
+        setCheckedOfInputById( "effect", this.settings.techs.Effect  )  
+        setCheckedOfInputById( "effectChance", this.settings.techs.EffectChance )
         
+        /* starter */  
+        setCheckedOfInputById( "starter", this.settings.starter.Enabled )  
+        setCheckedOfInputById( "useWeakest", this.settings.starter.UseWeakestTech ) 
+        
+        /* recruits */ 
+        setCheckedOfInputById( "recruit", this.settings.recruitment.Enabled )  
+        
+        /* chests */
+        setCheckedOfInputById( "chests", this.settings.chests.Enabled )  
+        setCheckedOfInputById( "allowEvo", this.settings.chests.AllowEvo )
+        
+        /* tokomon */
+        setCheckedOfInputById( "tokomon", this.settings.tokomon.Enabled )  
+        setCheckedOfInputById( "consumableOnly", this.settings.tokomon.ConsumableOnly )
+
+        /* tech gifts */
+        setCheckedOfInputById( "techgifts", this.settings.techgifts.Enabled )  
+        
+        /* spawns */
+        setCheckedOfInputById( "spawns", this.settings.mapItems.Enabled )  
+        setCheckedOfInputById( "foodOnly", this.settings.mapItems.FoodOnly )  
+        setValueOfInputById( "spawnThreshold", this.settings.mapItems.ValuableItemCutoff )  
+        if( this.settings.mapItems.ValuableItemCutoff != "10000" ) {
+            setCheckedOfInputById( "spawnEnableThreshold", "yes" )
+        }
+        else {
+            setCheckedOfInputById( "spawnEnableThreshold", "no" )
+        }
+
+        /* evolutions */
+        setCheckedOfInputById( "digimonevos", this.settings.evolution.Enabled )
+        setCheckedOfInputById( "requirements", this.settings.evolution.Requirements )
+        setCheckedOfInputById( "specialEvos", this.settings.evolution.SpecialEvos )
+        setCheckedOfInputById( "obtainAll", this.settings.evolution.ObtainAll )
+
+        /* patches */
+        /* if any patches are turned on, set enabled to true */
+        if( this.settings.patches.FixEvoItemStatGain == "yes"     
+         || this.settings.patches.AllowDropQuestItems == "yes"    
+         || this.settings.patches.FixBrainTrainTierOne == "yes"   
+         || this.settings.patches.FixGiromonJukeboxGlitch == "yes"
+         || this.settings.patches.IncreaseTechLearnChance == "yes"
+         || this.settings.patches.SetSpawnRate != ""          
+         || this.settings.patches.Woah == "yes"                   
+         || this.settings.patches.Gabu == "yes" ) {
+            setCheckedOfInputById( "patches", "yes" )
+         }
+        setCheckedOfInputById( "fixEvoItemStatGain", this.settings.patches.FixEvoItemStatGain )  
+        setCheckedOfInputById( "allowDropQuestItems", this.settings.patches.AllowDropQuestItems )  
+        setCheckedOfInputById( "fixBrainTrainTierOne", this.settings.patches.FixBrainTrainTierOne )  
+        setCheckedOfInputById( "fixGiromonJukeboxGlitch", this.settings.patches.FixGiromonJukeboxGlitch )
+        setCheckedOfInputById( "increaseTechLearnChance", this.settings.patches.IncreaseTechLearnChance )  
+        setValueOfInputById( "setSpawnRate", this.settings.patches.SetSpawnRate )  
+        setCheckedOfInputById( "woah", this.settings.patches.Woah )  
+        setCheckedOfInputById( "gabu", this.settings.patches.Gabu )  
     }
 
     /* Handle capturing terminal output */
@@ -441,7 +557,8 @@ export default class MainContainer extends Component<Props, State> {
                                             inputType: InputVariation.Multiselect,
                                             defaultVal: false,
                                             label: "Randomization Mode",
-                                            multiSelect: [ "Shuffle", "Random" ],
+                                            multiSelect: [ "shuffle", "random" ],
+                                            multiSelectLabel: [ "Shuffle", "Random" ],
                                             tooltip: `Mode of randomization for technique data.  In general, 
                                                         "Shuffle" keeps the vanilla values and shuffles them around.
                                                         Meanwhile, "Random" generates all-new random values.  Hover
@@ -719,5 +836,9 @@ export default class MainContainer extends Component<Props, State> {
                 this.scrollDown = false;
             }
         }
+    }
+
+    componentDidMount() {
+        this.loadSettings()
     }
 }
