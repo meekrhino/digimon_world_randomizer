@@ -6,6 +6,7 @@ import * as child_process from 'child_process'
 import * as Path from "path";
 import * as fs from "fs";
 import * as ini from "ini";
+import * as hash from "object-hash"
 
 import SectionContainer from "./SectionContainer"
 import { InputVariation } from './ElementContainer';
@@ -119,6 +120,7 @@ export default class MainContainer extends Component<Props, State> {
     private onMenuSelectROM(): void {
         let path = remote.dialog.showOpenDialog( {
                         title: "Select ROM file to randomize",
+                        buttonLabel: "Select",
                         properties: [ 'openFile' ],
                         filters: [ { name: "ROM binary", extensions: [ "bin" ] } ],
                         defaultPath: this.props.rootDirectory 
@@ -131,6 +133,7 @@ export default class MainContainer extends Component<Props, State> {
     private onMenuSelectOutput(): void {
         let path = remote.dialog.showSaveDialog( {
                         title: "Select location to save randomized ROM",
+                        buttonLabel: "Select",
                         filters: [ { name: "Settings File", extensions: [ "bin" ] } ],
                         defaultPath: this.props.rootDirectory 
                     } );
@@ -307,6 +310,13 @@ export default class MainContainer extends Component<Props, State> {
             this.settings.patches.Gabu                      = "no"
         }
 
+        this.settings.general.Hash = hash( this.settings, { algorithm: "md5", excludeKeys: ( key: any ) => {
+                                            if( key == "Input" || key == "Output" || key == "Hash" ) {
+                                                return true
+                                            }
+                                            return false
+                                        } } )
+
         return null
     }
 
@@ -439,13 +449,27 @@ export default class MainContainer extends Component<Props, State> {
 
     /* Notification callback for end of execution */
     private notifyDone() {
-        const options = {
-            title: "DONE",
-            message: "Done.",
-            detail: "Yes, it is really done."
-        }
         this.inProgress = false
+        /* hash settings, excluding input/output file names */
+        let hashedSettings = hash( this.settings, { algorithm: "md5", excludeKeys: ( key: any ) => {
+                                if( key == "Input" || key == "Output" || key == "Hash" ) {
+                                    return true
+                                }
+                                return false
+                            } } )
+
+        if( hashedSettings != this.settings.general.Hash ) {
+            this.addToOutput( "ERR: hash did not match settings!", "error" )
+        }
+
+        const options = {
+            title: "Notification",
+            message: "Randomization complete.",
+            detail: "Settings (excluding input and output file names) were hashed to the following MD5 value:\n \
+                     " + hashedSettings + "\nIf you're racing, compare this value to that of your race opponents to make sure you have the same ROM."
+        }
         dialog.showMessageBox( options )
+        this.forceUpdate()
     }
 
     /* Run the randomizer */
@@ -547,21 +571,23 @@ export default class MainContainer extends Component<Props, State> {
                                 </div>
                             </div>
                             <div className="topColumnRight">
-                                <button id="load" 
-                                        disabled={this.inProgress} 
-                                        onClick={this.onMenuLoadSettings.bind(this)}>
-                                    Load Settings
-                                </button><br/>
-                                <button id="save" 
-                                        disabled={this.inProgress} 
-                                        onClick={this.onMenuSaveSettings.bind(this)}>
-                                    Save Settings
-                                </button><br/><br/>
-                                <button id="randomize" 
-                                        disabled={this.inProgress} 
-                                        onClick={this.runRandomize.bind(this)}>
-                                    {this.inProgress? "Randomizing..." : "Randomize"}
-                                </button>
+                                <div id="topRightSection" >
+                                    <button id="load" 
+                                            disabled={this.inProgress} 
+                                            onClick={this.onMenuLoadSettings.bind(this)}>
+                                        Load Settings
+                                    </button><br/>
+                                    <button id="save" 
+                                            disabled={this.inProgress} 
+                                            onClick={this.onMenuSaveSettings.bind(this)}>
+                                        Save Settings
+                                    </button><br/><br/>
+                                    <button id="randomize" 
+                                            disabled={this.inProgress} 
+                                            onClick={this.runRandomize.bind(this)}>
+                                        {this.inProgress? "Randomizing..." : "Randomize"}
+                                    </button>
+                                </div>
                             </div>
                         </div>
 

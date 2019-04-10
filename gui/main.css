@@ -6,6 +6,11 @@
 
 body {
     background-color: rgb(240, 240, 240);
+    overflow-x: hidden;
+}
+
+::-webkit-scrollbar:horizontal {
+    display: none;
 }
 
 /* Create two unequal columns that float next to each other */
@@ -55,6 +60,7 @@ div.fileSelect:before  {
 
 #logSeedDiv {
     height: 80px;
+    padding-top: 5px;
 }
 
 div.inBlockAlign {
@@ -78,13 +84,18 @@ div.logSeedChild {
 button {
     border: 1px solid black;
     font-weight: bold;
+    margin-bottom: 3px;
     width: 120px;
     height: 22px;
     display: inline-block;
     vertical-align: top;
 }
 
-button:hover {
+#inputFileDiv {
+    margin-bottom: 3px;
+}
+
+button:not(:disabled):hover {
     border: 2px solid rgb( 27, 68, 97 );
     font-weight: bold;
     width: 120px;
@@ -98,7 +109,7 @@ span.fileName {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: calc( 100% - 125px );
+    width: calc( 100% - 135px );
     height: 22px;
     margin-left: 5px;
     padding: 1px;
@@ -112,9 +123,13 @@ span.fileName {
     width: calc( 50% - 30px );
 }
 
+#topRightSection {
+    padding-left: 10px;
+}
+
 hr {
     width: 100%;
-    margin-bottom: 0px;
+    margin: 0px;
     border-top: 1px solid lightgrey;
     padding: 0px 10px;
 }
@@ -134,11 +149,6 @@ h1.category {
     width: max-content;
     background-color: inherit;
 }
-
-#inputFileDiv {
-    margin-bottom: 3px
-}
-
 
 #digimondata {
     min-width: 212px;
