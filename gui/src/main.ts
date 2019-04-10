@@ -10,7 +10,7 @@ let mainWindow: Electron.BrowserWindow;
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    height: 700,
+    height: 800,
     width: 800,
   });
 
@@ -41,13 +41,7 @@ app.on( "ready", () => {
                                                     focusedWindow.reload()
                                                     }
                                                 }]
-                                          }, { label: 'Settings',
-                                               submenu: [{
-                                                 label: 'Load',
-                                                 accelerator: 'CmdOrCtrl+O',
-                                                 click: () => { MainContainer.instance.onMenuLoadSettings() }
-                                               }]
-                                         }] )
+                                          }] )
     Menu.setApplicationMenu( menu )
     createWindow()
     } );

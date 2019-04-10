@@ -25,23 +25,13 @@ interface Props {
 
 interface State {
     settingsPath : string
+    inputPath    : string
+    outputPath   : string
     terminalOut  : JSX.Element[]
 }
 
 export default class MainContainer extends Component<Props, State> {
     public static instance: MainContainer = null
-
-    /* Load settings from menu */
-    public onMenuLoadSettings(): void {
-        let path = remote.dialog.showOpenDialog( {
-            title: "Select settings file to load",
-            properties: [ 'openFile' ],
-            filters: [ { name: "Settings File", extensions: [ "ini" ] } ],
-            defaultPath: this.props.rootDirectory 
-        } )[ 0 ];
-
-        this.loadSettings( path )
-    }
 
     private settings: Settings = {
         general: {
@@ -114,12 +104,51 @@ export default class MainContainer extends Component<Props, State> {
         super( props );
         this.state = {
             settingsPath: Path.join( props.rootDirectory, "TEMP__last_settings.ini" ),
+            inputPath: "",
+            outputPath: "Digimon World Rando.bin",
             terminalOut: []
         }
         this.inProgress = false
 
         if( !MainContainer.instance ) {
             MainContainer.instance = this
+        }
+    }
+    
+    /* select file to use for base ROM */
+    private onMenuSelectROM(): void {
+        let path = remote.dialog.showOpenDialog( {
+                        title: "Select ROM file to randomize",
+                        properties: [ 'openFile' ],
+                        filters: [ { name: "ROM binary", extensions: [ "bin" ] } ],
+                        defaultPath: this.props.rootDirectory 
+                    } )[ 0 ];
+
+        this.setState( { inputPath: path } )
+    }
+
+    /* select location to output randomized ROM */
+    private onMenuSelectOutput(): void {
+        let path = remote.dialog.showSaveDialog( {
+                        title: "Select location to save randomized ROM",
+                        filters: [ { name: "Settings File", extensions: [ "bin" ] } ],
+                        defaultPath: this.props.rootDirectory 
+                    } );
+
+        this.setState( { outputPath: path } )
+    }
+
+    /* select file to save settings to */
+    private onMenuSaveSettings(): void {
+        let path = remote.dialog.showSaveDialog( {
+                        title: "Select settings file to save",
+                        filters: [ { name: "Settings File", extensions: [ "ini" ] } ],
+                        defaultPath: this.props.rootDirectory 
+                    } );
+
+        let err = this.saveSettings( path )
+        if( err ) {
+            this.addToOutput( err.message, "error" )
         }
     }
 
@@ -139,8 +168,23 @@ export default class MainContainer extends Component<Props, State> {
         return null
     }
 
+    /* Load settings from menu */
+    private onMenuLoadSettings(): void {
+        let path = remote.dialog.showOpenDialog( {
+                        title: "Select settings file to load",
+                        properties: [ 'openFile' ],
+                        filters: [ { name: "Settings File", extensions: [ "ini" ] } ],
+                        defaultPath: this.props.rootDirectory 
+                    } )[ 0 ];
+
+        let err = this.loadSettings( path )
+        if( err ) {
+            this.addToOutput( err.message, "error" )
+        }
+    }
+
     /* load settings from specified file */
-    private loadSettings( path: string ) {
+    private loadSettings( path: string ): Error {
         try {
             let file = fs.openSync( path, 'r' )
         }
@@ -151,6 +195,8 @@ export default class MainContainer extends Component<Props, State> {
         this.settings = ini.decode( fs.readFileSync( path, "utf-8" ) )
 
         this.applySettings()
+
+        return null
     }
 
     /* snapshot current settings */
@@ -177,14 +223,8 @@ export default class MainContainer extends Component<Props, State> {
         }
 
         /* general */  
-        let inputFile = ( document.getElementById( "inputFile" ) as HTMLInputElement ).files[ 0 ]
-        if( inputFile ) {
-            this.settings.general.Input                     = inputFile.path
-        }
-        else {
-            return new Error( "ERR: must select a ROM input file" )
-        }
-        this.settings.general.Output                        = getValueOfInputById( "outputFile" )
+        this.settings.general.Input                         = this.state.inputPath
+        this.settings.general.Output                        = this.state.outputPath
         this.settings.general.LogLevel                      = getValueOfRadioButtonByName( "log" )
         this.settings.general.Seed                          = getValueOfInputById( "seed" ) 
 
@@ -299,9 +339,8 @@ export default class MainContainer extends Component<Props, State> {
         }
 
         /* general */  
-        /* cannot set <input file> value (security reasons).  Could fix by improving UI to not
-           use the standard file input, instead using a dialog + button combo */
-        setValueOfInputById( "outputFile", this.settings.general.Output )
+        this.setState( { inputPath: this.settings.general.Input,
+                         outputPath: this.settings.general.Output } )
         setValueOfRadioButtonByName( "log", this.settings.general.LogLevel )
         setValueOfInputById( "seed", this.settings.general.Seed ) 
 
@@ -427,6 +466,11 @@ export default class MainContainer extends Component<Props, State> {
             return
         }
 
+        if( this.settings.general.Input == "" ) {
+            this.addToOutput( "ERR: must select a ROM input file", "error" )
+            return
+        }
+
         if( !fs.existsSync( path ) ) {
             this.addToOutput( "'digimon_randomize.exe' does not exist in working directory", "error" )
             return
@@ -448,47 +492,71 @@ export default class MainContainer extends Component<Props, State> {
         return ( <div className="window">
                     <div className="row">
                         <div id="fileOptions">
-                            <div className="topColumn">
-                            <b>Select ROM: </b>
-                                <input type="file" 
-                                       id="inputFile"
-                                       name="inputFile" 
-                                       accept=".bin"
-                                       disabled={this.inProgress}/> <br/><br/>
-                            <b>Logging Level: </b>
-                                <input type="radio" 
-                                       name="log" 
-                                       value="full" 
-                                       id="logFull"
-                                       defaultChecked={true}
-                                       disabled={this.inProgress} />
-                                    <label htmlFor="log">Full</label>
-                                <input type="radio" 
-                                       name="log" 
-                                       value="casual" 
-                                       id="logCasual"
-                                       defaultChecked={false}
-                                       disabled={this.inProgress} />
-                                    <label htmlFor="log">Casual</label>
-                                <input type="radio" 
-                                       name="log" 
-                                       value="race" 
-                                       id="logRace"
-                                       defaultChecked={false}
-                                       disabled={this.inProgress} />
-                                    <label htmlFor="log">Race</label>
+                            <div className="topColumnLeft" >
+                                <div id="inputFileDiv"  className="fileSelect" >
+                                    <button className="fileSelect"
+                                            name="inputFileSelect" 
+                                            id="inputFileSelect"
+                                            onClick={this.onMenuSelectROM.bind(this)}
+                                            disabled={this.inProgress}>Select ROM</button>
+                                    <span className="fileName">{this.state.inputPath}</span>
+                                    <br/>
+                                </div>
+                                <div id="outputFileDiv" className="fileSelect" >
+                                    <button className="fileSelect"
+                                            name="outputFileSelect" 
+                                            id="outputFileSelect"
+                                            onClick={this.onMenuSelectOutput.bind(this)}
+                                            disabled={this.inProgress}>Select Output</button>
+                                    <span className="fileName">{this.state.outputPath}</span>
+                                    <br/>
+                                </div>
+                                <div id="logSeedDiv" className="inBlockAlign" > 
+                                    <div id="logLevelDiv" className="category logSeedChild" >
+                                        <h1 className="category">Logging: </h1>
+                                        <input type="radio" 
+                                            name="log" 
+                                            value="full" 
+                                            id="logFull"
+                                            defaultChecked={true}
+                                            disabled={this.inProgress} />
+                                        <label htmlFor="log">Full</label>
+                                        <input type="radio" 
+                                            name="log" 
+                                            value="casual" 
+                                            id="logCasual"
+                                            defaultChecked={false}
+                                            disabled={this.inProgress} />
+                                        <label htmlFor="log">Casual</label>
+                                        <input type="radio" 
+                                            name="log" 
+                                            value="race" 
+                                            id="logRace"
+                                            defaultChecked={false}
+                                            disabled={this.inProgress} />
+                                        <label htmlFor="log">Race</label>
+                                    </div>
+                                    <div className="logSeedChild">
+                                        <b>Seed: </b>
+                                        <input type="number" 
+                                            name="seed" 
+                                            placeholder="Random" 
+                                            id="seed"
+                                            disabled={this.inProgress} />
+                                    </div>
+                                </div>
                             </div>
-                            <div className="topColumn">
-                                <b>Output File Name: </b><input type="text" 
-                                                                name="outputFile" 
-                                                                id="outputFile"
-                                                                defaultValue="Digimon World Rando.bin"
-                                                                disabled={this.inProgress} /><br/><br/>
-                                <b>Seed: </b><input type="number" 
-                                                    name="seed" 
-                                                    placeholder="Random" 
-                                                    id="seed"
-                                                    disabled={this.inProgress} />
+                            <div className="topColumnRight">
+                                <button id="load" 
+                                        disabled={this.inProgress} 
+                                        onClick={this.onMenuLoadSettings.bind(this)}>
+                                    Load Settings
+                                </button><br/>
+                                <button id="save" 
+                                        disabled={this.inProgress} 
+                                        onClick={this.onMenuSaveSettings.bind(this)}>
+                                    Save Settings
+                                </button><br/><br/>
                                 <button id="randomize" 
                                         disabled={this.inProgress} 
                                         onClick={this.runRandomize.bind(this)}>

@@ -8,11 +8,17 @@ body {
     background-color: rgb(240, 240, 240);
 }
 
-/* Create two equal columns that float next to each other */
-.topColumn {
+/* Create two unequal columns that float next to each other */
+.topColumnLeft {
     float: left;
     min-width: 150px;
-    width: 50%;
+    width: 66.66%;
+    padding: 10px;
+} 
+.topColumnRight {
+    float: right;
+    min-width: 150px;
+    width: 33.33%;
     padding: 10px;
 }
 
@@ -35,8 +41,75 @@ div {
     background-color: inherit
 }
 
-#randomize {
-    margin-left: 40px;
+div.fileSelect {
+    padding-left: 10px;
+    height: 22px;
+}
+
+div.fileSelect:before  {
+    content: "";
+    display: inline-block;
+    vertical-align: top;
+    height: 100%;
+}
+
+#logSeedDiv {
+    height: 80px;
+}
+
+div.inBlockAlign {
+    content: "";
+    display: inline-block;
+    vertical-align: top;
+}
+
+div.inBlockAlign:before  {
+    content: "";
+    display: inline-block;
+    vertical-align: top;
+    height: 100%;
+}
+
+div.logSeedChild {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+button {
+    border: 1px solid black;
+    font-weight: bold;
+    width: 120px;
+    height: 22px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+button:hover {
+    border: 2px solid rgb( 27, 68, 97 );
+    font-weight: bold;
+    width: 120px;
+    height: 22px;
+    vertical-align: 0%
+}
+
+span.fileName {
+    background-color: white;
+    border: 1px solid black;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: calc( 100% - 125px );
+    height: 22px;
+    margin-left: 5px;
+    padding: 1px;
+    vertical-align: 0%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#logLevelDiv {
+    min-width: 225px;
+    width: calc( 50% - 30px );
 }
 
 hr {
@@ -50,9 +123,22 @@ div.category {
     border-style: solid;
     border-width: 1px;
     border-color: lightgray;
-    margin: 20px 10px 10px 10px;
+    margin: 10px 10px 20px 10px;
     padding: 10px;
 }
+
+h1.category {
+    font-size: 15px;
+    margin-top: -20px;
+    margin-left: 0px;
+    width: max-content;
+    background-color: inherit;
+}
+
+#inputFileDiv {
+    margin-bottom: 3px
+}
+
 
 #digimondata {
     min-width: 212px;
@@ -94,14 +180,6 @@ div.category {
     min-width: 212px;
 }
 
-h1.category {
-    font-size: 16px;
-    margin-top: -20px;
-    margin-left: 0px;
-    width: max-content;
-    background-color: inherit;
-}
-
 /* checkbox styling */
 input[type="checkbox"] { 
     position: absolute; 
@@ -115,10 +193,10 @@ input[type="checkbox"]+span {
 }
 
 input[type="checkbox"]+span:before { 
-    font: 16pt FontAwesome; 
+    font: 14pt FontAwesome; 
     content: '\00f096';
     display: inline-block; 
-    width: 14pt; 
+    width: 13pt; 
     padding: 2px 0 0 3px; 
     margin-right: 0.5em; 
 }
@@ -142,7 +220,7 @@ input[type="checkbox"]:not(:disabled)+span:hover:before {
 
 /*tooltip styling */
 .tooltip {
-    font: 13pt FontAwesome; 
+    font: 12pt FontAwesome; 
     position: relative;
     display: inline-block;
 }
@@ -240,7 +318,7 @@ input[type="range"]::-moz-range-thumb {
 
 #seed {
     margin: 4px 0px;
-    width: 60px;
+    width: 80px;
 }
 
 input[type=number]::-webkit-inner-spin-button, 
