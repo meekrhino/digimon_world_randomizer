@@ -1,7 +1,7 @@
 import { remote, OpenDialogOptions } from 'electron';
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import {Component } from 'react'
+import { Component } from 'react'
 import * as child_process from 'child_process'
 import * as Path from "path";
 import * as fs from "fs";
@@ -10,9 +10,6 @@ import * as hash from "object-hash"
 
 import SectionContainer from "./SectionContainer"
 import { InputVariation } from './ElementContainer';
-import { fstat } from 'fs';
-import { fileURLToPath } from 'url';
-import { string } from 'prop-types';
 
 const { dialog } = require( 'electron' ).remote
 

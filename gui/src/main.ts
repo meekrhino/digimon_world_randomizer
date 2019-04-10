@@ -1,9 +1,5 @@
 import { app, BrowserWindow, Menu } from "electron";
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import * as path from "path";
-
-import MainContainer from "./MainContainer"
 
 let mainWindow: Electron.BrowserWindow;
 
@@ -17,7 +13,7 @@ function createWindow() {
   });
 
   // and load the index.html of the app.
-  mainWindow.loadFile( path.join( __dirname, "../index.html" ));
+  mainWindow.loadFile( path.join( __dirname, "../index.html" ) );
 
   // Open the DevTools.
   //mainWindow.webContents.openDevTools();

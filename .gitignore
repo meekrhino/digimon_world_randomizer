@@ -9,6 +9,7 @@ build/
 dist/
 gui/node_modules/
 gui/dist/
+gui/digimon_randomize-win32-x64/
 
 gui/TEMP__last_settings.ini
 

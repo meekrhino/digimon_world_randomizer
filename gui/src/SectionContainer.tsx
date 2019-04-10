@@ -1,6 +1,5 @@
 import * as React from 'react'
-import {Component } from 'react'
-import * as path from "path";
+import { Component } from 'react'
 
 import ElementContainer, { SectionElement } from "./ElementContainer"
 

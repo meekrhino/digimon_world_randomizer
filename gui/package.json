@@ -1,12 +1,14 @@
 {
-  "name": "electron-quick-start-typescript",
-  "version": "0.8.2",
+  "name": "digimon_randomize",
+  "version": "1.0.0",
   "description": "Digimon World 1 Randomizer",
+  "main": "dist/main.js",
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
     "lint": "tslint -c tslint.json -p tsconfig.json",
-    "start": "npm run build && electron ./dist/main.js"
+    "start": "npm run build && electron ./dist/main.js",
+    "package": "node packager.js"
   },
   "repository": "https://github.com/challenert/digimon_world_randomizer",
   "keywords": [
@@ -17,10 +19,11 @@
     "data",
     "patch"
   ],
-  "author": "GitHub",
+  "author": "Tristan Challener",
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^4.0.8",
+    "electron-packager": "^13.1.1",
     "tslint": "^5.13.1",
     "typescript": "^3.3.3333"
   },
@@ -29,6 +32,7 @@
     "@types/object-hash": "^1.2.0",
     "@types/react": "^16.8.10",
     "@types/react-dom": "^16.8.3",
+    "electron-rebuild": "^1.8.4",
     "ini": "^1.3.5",
     "object-hash": "^1.3.1",
     "react": "^16.8.6",
