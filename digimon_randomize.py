@@ -130,6 +130,9 @@ if( config[ 'patches' ].getboolean( 'Gabu' ) ):
     
 if( config[ 'patches' ][ 'SetSpawnRate' ] != '' ):
     handler.applyPatch( 'spawn', int( config[ 'patches' ][ 'SetSpawnRate' ] ) )
+    
+if( config[ 'patches' ].getboolean( 'ShowHashIntro' ) ):
+    handler.applyPatch( 'hash', config[ 'general' ][ 'Hash '] )
 
 
 print( 'Writing to ' + outFile + '...' )

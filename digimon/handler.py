@@ -1159,6 +1159,8 @@ class DigimonWorldHandler:
                     self._applyPatchGiromon( file )
                 elif( patch == 'spawn' ):
                     self._applyPatchSpawn( file, val )
+                elif( patch == 'hash' ):
+                    self._applyPatchIntroHash( file, val )
 
 
             #------------------------------------------------------
@@ -2375,6 +2377,7 @@ class DigimonWorldHandler:
 
         self.logger.logChange( 'Patched out Giromon/jukebox glitch.' )
         
+
     def _applyPatchSpawn( self, file, val ):
         """
         Set spawn rate for Mamemon, etc. to specified percentage.
@@ -2413,4 +2416,15 @@ class DigimonWorldHandler:
                                   ofst,
                                   struct.pack( data.spawnRateFormat, smallPercent ),
                                   self.logger )
-                                  
+
+
+    def _applyPatchIntroHash( self, file, hash ):
+        """
+        Write settings hash value to script in Jijimon intro.
+        """
+
+        # Write on two lines with a newline character in between
+        util.writeDataToFile( file,
+                                data.introHashOffset,
+                                scrutil.encode( hash[:16] + '\n' + hash[15:]+ "   " ),
+                                self.logger )

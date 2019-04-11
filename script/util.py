@@ -134,7 +134,7 @@ def findSequenceInFile( filename, seq, ofst=None ):
 def encode( str ):
     """
     Encode string in script text format.  Currently only
-    supports all-alpha strings.
+    supports alphanumeric strings. (plus " " and "\n" )
 
     Keyword arguments:
     str -- String to encode
@@ -155,12 +155,25 @@ def encode( str ):
                                 0x82,
                                 0x60 + ord( c ) - ord( 'A' )
                                 )
+        elif( c in "0123456789" ):
+            packed += struct.pack(
+                                '<BB',
+                                0x82,
+                                0x4F + int( c )
+            )
         elif( c in ' ' ):
             packed += struct.pack(
                                 '<BB',
                                 0x81,
                                 0x40
                                 )
+        elif( c in '\n' ):
+            packed += struct.pack(
+                                '<BB',
+                                0x0D,
+                                0x00
+                                )
+
         else:
             print( 'Error: trying to encode unsupported character' )
 
@@ -169,18 +182,6 @@ def encode( str ):
     #pyperclip.copy(out)
 
     return packed
-"""
-0x4F82 -> "0"
-0x5082 -> "1"
-0x5182 -> "2"
-0x5282 -> "3"
-0x5382 -> "4"
-0x5482 -> "5"
-0x5582 -> "6"
-0x5682 -> "7"
-0x5782 -> "8"
-0x5882 -> "9"
-"""
 
 
 def decode( str ):
@@ -192,26 +193,31 @@ def decode( str ):
     str -- String to decode
     """
 
-    packed = b''
-
     out = ''
 
     for c in str[1::2]:
         if( type( c ) != int ):
             c = ord( c )
-        if( c >= 0x40 ):
-            c = c - 0x40
-            if( c >= 0x20 ):
-                c = c - 0x20
-                if( c >= 0x21 ):
-                    c = c - 0x21
-                    out += 'abcdefghijklmnopqrstuvwxyz'[ c ]
+        if( c > 0 ):
+            if( c >= 0x40 ):  # >= 0x40
+                c = c - 0x40
+                if( c >= 0x0F): # >= 0x4F
+                    c = c - 0x0F
+                    if( c >= 0x11 ): # >= 0x60
+                        c = c - 0x11
+                        if( c >= 0x21 ): # >= 0x81
+                            c = c - 0x21
+                            out += 'abcdefghijklmnopqrstuvwxyz'[ c ]
+                        else:
+                            out += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[ c ]
+                    else:
+                        out += '0123456789'[c]
                 else:
-                    out += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[ c ]
+                    out += ' '
             else:
-                out += ' '
+                print( 'Error: trying to encode unsupported character' )
         else:
-            print( 'Error: trying to encode unsupported character' )
+            out += '\n'
 
     return out
 

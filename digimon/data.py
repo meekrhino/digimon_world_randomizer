@@ -634,6 +634,8 @@ trackNameExclusionOffsets= (
             )
 trackNameExclusionSize   = 0x130
 
+introHashOffset          = 0x140BD212
+
 spawnRateFormat          = '<B'
 spawnRateMamemonOffset   = ( 0x13FD678F, 0x140B790F )
 spawnRatePiximonOffset   = ( 0x13FD64DB, 0x13FDD389, 0x13FE0121, 0x140B765B )
