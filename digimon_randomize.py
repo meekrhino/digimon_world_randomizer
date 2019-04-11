@@ -133,6 +133,9 @@ if( config[ 'patches' ][ 'SetSpawnRate' ] != '' ):
     
 if( config[ 'patches' ].getboolean( 'ShowHashIntro' ) ):
     handler.applyPatch( 'hash', config[ 'general' ][ 'Hash '] )
+    
+if( config[ 'patches' ].getboolean( 'SkipIntro' ) ):
+    handler.applyPatch( 'intro' )
 
 
 print( 'Writing to ' + outFile + '...' )

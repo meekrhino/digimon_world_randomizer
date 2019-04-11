@@ -89,6 +89,8 @@ export default class MainContainer extends Component<Props, State> {
             FixGiromonJukeboxGlitch : "no",
             IncreaseTechLearnChance : "no",
             SetSpawnRate            : "",
+            ShowHashIntro           : "no",
+            SkipIntro               : "no",
             Woah                    : "no",
             Gabu                    : "no"
         }
@@ -293,6 +295,8 @@ export default class MainContainer extends Component<Props, State> {
             this.settings.patches.FixGiromonJukeboxGlitch   = getCheckedOfInputById( "fixGiromonJukeboxGlitch" )
             this.settings.patches.IncreaseTechLearnChance   = getCheckedOfInputById( "increaseTechLearnChance" )  
             this.settings.patches.SetSpawnRate              = getValueOfInputById( "setSpawnRate" )  
+            this.settings.patches.ShowHashIntro             = getCheckedOfInputById( "showIntroHash" )
+            this.settings.patches.SkipIntro                 = getCheckedOfInputById( "skipIntro" )
             this.settings.patches.Woah                      = getCheckedOfInputById( "woah" )  
             this.settings.patches.Gabu                      = getCheckedOfInputById( "gabu" )  
         }
@@ -303,6 +307,8 @@ export default class MainContainer extends Component<Props, State> {
             this.settings.patches.FixGiromonJukeboxGlitch   = "no"
             this.settings.patches.IncreaseTechLearnChance   = "no"
             this.settings.patches.SetSpawnRate              = ""
+            this.settings.patches.ShowHashIntro             = "no"
+            this.settings.patches.SkipIntro                 = "no"
             this.settings.patches.Woah                      = "no"
             this.settings.patches.Gabu                      = "no"
         }
@@ -420,7 +426,9 @@ export default class MainContainer extends Component<Props, State> {
          || this.settings.patches.FixBrainTrainTierOne == "yes"   
          || this.settings.patches.FixGiromonJukeboxGlitch == "yes"
          || this.settings.patches.IncreaseTechLearnChance == "yes"
-         || this.settings.patches.SetSpawnRate != ""          
+         || this.settings.patches.SetSpawnRate != ""    
+         || this.settings.patches.ShowHashIntro  == "yes"
+         || this.settings.patches.SkipIntro  == "yes"      
          || this.settings.patches.Woah == "yes"                   
          || this.settings.patches.Gabu == "yes" ) {
             setCheckedOfInputById( "patches", "yes" )
@@ -431,6 +439,8 @@ export default class MainContainer extends Component<Props, State> {
         setCheckedOfInputById( "fixGiromonJukeboxGlitch", this.settings.patches.FixGiromonJukeboxGlitch )
         setCheckedOfInputById( "increaseTechLearnChance", this.settings.patches.IncreaseTechLearnChance )  
         setValueOfInputById( "setSpawnRate", this.settings.patches.SetSpawnRate )  
+        setCheckedOfInputById( "showHashIntro ", this.settings.patches.ShowHashIntro  )
+        setCheckedOfInputById( "skipIntro ", this.settings.patches.SkipIntro  )  
         setCheckedOfInputById( "woah", this.settings.patches.Woah )  
         setCheckedOfInputById( "gabu", this.settings.patches.Gabu )  
     }
@@ -907,6 +917,20 @@ export default class MainContainer extends Component<Props, State> {
                                             label: "Gabumon Mode",
                                             tooltip: `This makes Gabumon as powerfully as he was truly meant to be.  Not
                                                     for the faint-hearted.  Good luck.` },
+                                            { id: "showHashIntro ",
+                                            inputType: InputVariation.Checkbox,
+                                            defaultVal: false,
+                                            label: "Display Settings",
+                                            tooltip: `Show a hash of the settings used on the Jijimon intro screen when
+                                                      creating a new game.  This is useful for on-the-fly verification
+                                                      that each race participant is using the same settings (and seed).` },
+                                            { id: "skipIntro ",
+                                            inputType: InputVariation.Checkbox,
+                                            defaultVal: false,
+                                            label: "Skip Intro",
+                                            tooltip: `Enable this to cut out the majority (as much as possible) of the 
+                                                      intro dialogue when creating a new game.  Does not conflict with
+                                                      "Display Settings" option.` },
                                             { id: "setSpawnRate",
                                             inputType: InputVariation.Value,
                                             defaultVal: "",

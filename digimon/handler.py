@@ -1161,6 +1161,8 @@ class DigimonWorldHandler:
                     self._applyPatchSpawn( file, val )
                 elif( patch == 'hash' ):
                     self._applyPatchIntroHash( file, val )
+                elif( patch == 'intro' ):
+                    self._applyPatchIntroSkip( file )
 
 
             #------------------------------------------------------
@@ -2428,3 +2430,19 @@ class DigimonWorldHandler:
                                 data.introHashOffset,
                                 scrutil.encode( hash[:16] + '\n' + hash[15:]+ "   " ),
                                 self.logger )
+
+
+    def _applyPatchIntroSkip( self, file ):
+        """
+        Write settings hash value to script in Jijimon intro.
+        """
+
+        # Write jumps to skip majority of intro dialog
+        util.writeDataToFile( file,
+                              data.introSkipOutsideOffset,
+                              scrutil.compile( "jumpTo", data.introSkipOutsideDest ),
+                              self.logger )
+        util.writeDataToFile( file,
+                              data.introSkipInsideOffset,
+                              scrutil.compile( "jumpTo", data.introSkipInsideDest ),
+                              self.logger )

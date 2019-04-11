@@ -16,6 +16,7 @@ giveItem       = 0x28
 spawnItem      = 0x74
 learnMove      = 0x2D
 spawnChest     = 0x75
+jumpTo         = 0x16
 
 
 def findAll( script, bin, inst, valueList=None ):
@@ -177,7 +178,7 @@ def encode( str ):
         else:
             print( 'Error: trying to encode unsupported character' )
 
-    #out =  "".join("{:02x}".format(ord(c)) for c in packed)
+    #print( "".join("{:02x}".format(ord(c)) for c in packed) )
     #print('Copied:'  + '\'' + out  + '\'' + ' to the cipboard')
     #pyperclip.copy(out)
 
@@ -281,6 +282,12 @@ def compile( inst, *args ):
         packed = struct.pack(
                             '<BxH',
                             setTrigger,
+                            args[0]
+                            )
+    elif( inst == 'jumpTo' ):
+        packed = struct.pack(
+                            '<BxH',
+                            jumpTo,
                             args[0]
                             )
 

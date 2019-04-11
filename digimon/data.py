@@ -636,6 +636,12 @@ trackNameExclusionSize   = 0x130
 
 introHashOffset          = 0x140BD212
 
+introSkipOutsideDest     = 2306
+introSkipOutsideOffset   = 0x1407DA20 # just after "Welcome to Digimon World"
+
+introSkipInsideDest      = 5108
+introSkipInsideOffset    = 0x1407E44C # just after "I invited you here\nto save us"
+
 spawnRateFormat          = '<B'
 spawnRateMamemonOffset   = ( 0x13FD678F, 0x140B790F )
 spawnRatePiximonOffset   = ( 0x13FD64DB, 0x13FDD389, 0x13FE0121, 0x140B765B )
