@@ -330,6 +330,11 @@ export default class MainContainer extends Component<Props, State> {
         /* set element with id to specified value */
         function setValueOfInputById( id: string, value: string ) {
             ( document.getElementById( id ) as HTMLInputElement ).value = value
+
+            let span = ( document.getElementById( id + "Span" ) )
+            if( span ) {
+                span.dispatchEvent( new Event( "loadSettings", { bubbles: true } ) )
+            }
         }
 
         /* set specified radio button to be checked */
@@ -459,13 +464,11 @@ export default class MainContainer extends Component<Props, State> {
             this.addToOutput( "ERR: hash did not match settings!", "error" )
         }
 
-        const options = {
-            title: "Notification",
-            message: "Randomization complete.",
-            detail: "Settings (excluding input and output file names) were hashed to the following MD5 value:\n \
-                     " + hashedSettings + "\nIf you're racing, compare this value to that of your race opponents to make sure you have the same ROM."
-        }
-        dialog.showMessageBox( options )
+        this.addToOutput( "Settings (excluding input and output file names) were hashed " +
+                          "to the following MD5 value:" )
+        this.addToOutput( hashedSettings )
+        this.addToOutput( "If you're racing, compare this value to that of your race " +
+                          "opponents to make sure you have the same ROM." )
         this.forceUpdate()
     }
 
@@ -496,6 +499,8 @@ export default class MainContainer extends Component<Props, State> {
             this.addToOutput( "'digimon_randomize.exe' does not exist in working directory", "error" )
             return
         }
+
+        this.addToOutput( "Initiating randomizer..." )
 
         this.inProgress = true
         let spawn = child_process.execFile;

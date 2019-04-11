@@ -1,4 +1,5 @@
 import * as React from 'react'
+import * as ReactDOM from 'react-dom'
 import {Component } from 'react'
 
 export enum InputVariation {
@@ -33,10 +34,28 @@ interface Props {
     multiSelectLabel?   : string[]
 }
 
+interface State {   
+    sliderVal?          : string
+}
 
-export default class ElementContainer extends Component<Props, object> {
+
+export default class ElementContainer extends Component<Props, State> {
+    private input: any = null
+    private out: any = null
+
     constructor( props: Props ) {
         super( props )
+
+        if( props.inputType == InputVariation.Slider ) {
+            this.state = { sliderVal: props.defaultVal }
+        }
+    }
+
+    private onSliderDrag() {
+        const elem = ReactDOM.findDOMNode( this.input );
+        if ( elem instanceof HTMLInputElement ) {
+            this.setState( { sliderVal: elem.value } )
+        }
     }
 
     render() {
@@ -46,7 +65,8 @@ export default class ElementContainer extends Component<Props, object> {
                             <label><input type="checkbox" 
                                           disabled={!this.props.enabled} 
                                           defaultChecked={this.props.defaultVal as boolean}
-                                          id={this.props.id} /> 
+                                          id={this.props.id}
+                                          ref={input => { this.input = input } } /> 
                                 <span><div className="tooltip">
                                     {this.props.label}
                                     <span className="tooltiptext">{this.props.tooltip}</span>
@@ -61,8 +81,13 @@ export default class ElementContainer extends Component<Props, object> {
                                    defaultValue={this.props.defaultVal as string}
                                    min={this.props.sliderMin}
                                    max={this.props.sliderMax}
-                                   id={this.props.id} />
-                                <span className="tooltiptext">{this.props.tooltip}</span><br/>
+                                   id={this.props.id}
+                                   ref={input => { this.input = input } }
+                                   onInput={ this.onSliderDrag.bind(this) } />
+                            <span className="slidervalue" 
+                                  id={this.props.id + "Span"}
+                                  ref={out => { this.out = out } } >{this.state.sliderVal}</span>
+                            <span className="tooltiptext">{this.props.tooltip}</span><br/>
                         </div> )
 
             case InputVariation.Multiselect:
@@ -74,7 +99,8 @@ export default class ElementContainer extends Component<Props, object> {
                                         name={this.props.id + "Name"}
                                         value={opt}
                                         defaultChecked={index? false : true}
-                                        id={this.props.id + opt} />
+                                        id={this.props.id + opt}
+                                        ref={input => { this.input = input } } />
                                     <label htmlFor={this.props.id + opt}>{this.props.multiSelectLabel[ index ]}</label>
                                     <span className="tooltiptext">{this.props.tooltip}</span><br/>
                                 </div>
@@ -88,7 +114,8 @@ export default class ElementContainer extends Component<Props, object> {
                                           defaultValue={this.props.defaultVal as string}
                                           min={this.props.sliderMin}
                                           max={this.props.sliderMax}
-                                          id={this.props.id} /> 
+                                          id={this.props.id}
+                                          ref={input => { this.input = input } } /> 
                                 <span className="inputNum"><div className="tooltip">
                                     {this.props.label}
                                     <span className="tooltiptext">{this.props.tooltip}</span>
@@ -97,4 +124,10 @@ export default class ElementContainer extends Component<Props, object> {
                         </div> )
         }
     }   
+
+    componentDidMount() {
+        if( this.out ) {
+            this.out.addEventListener( "loadSettings", this.onSliderDrag.bind(this) )
+        }
+    }
 }

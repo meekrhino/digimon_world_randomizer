@@ -294,7 +294,7 @@ input[type="checkbox"]:not(:disabled)+span:hover:before {
 /* The slider itself */
 input[type="range"] {
     -webkit-appearance: none;
-    width: 100%;
+    width: 75%;
     height: 8px;
     border-radius: 5px;
     background: rgb( 170, 170, 170 );
@@ -329,6 +329,14 @@ input[type="range"]::-moz-range-thumb {
   border-radius: 50%;
   background: rgb( 100, 100, 100 );
   cursor: pointer;
+}
+
+span.slidervalue {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+    width: 22%;
+    display: inline-block;
 }
 
 /* number input styling */
