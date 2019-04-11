@@ -821,7 +821,7 @@ export default class MainContainer extends Component<Props, State> {
                             />
                         </div>
                         {/* rightmost column */}
-                        <div className="column">
+                        <div className="column bottomRightColumn">
                             < SectionContainer 
                                 id="recruit" 
                                 title="Recruitment" 

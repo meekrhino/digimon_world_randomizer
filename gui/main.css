@@ -258,15 +258,26 @@ input[type="checkbox"]:not(:disabled)+span:hover:before {
     opacity: 0;
     transition: opacity 0.3s;
 }
+
+.bottomRightColumn .tooltiptext {
+    right: 20%;
+    left: auto;
+}
+
 .tooltip .tooltiptext::after {
-  content: " ";
-  position: absolute;
-  bottom: 100%;  /* At the top of the tooltip */
-  left: 15px;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: transparent transparent black transparent;
+    content: " ";
+    position: absolute;
+    bottom: 100%;  /* At the top of the tooltip */
+    left: 15px;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent black transparent;
+}
+
+.bottomRightColumn .tooltiptext::after {
+    right: 15px;
+    left: auto;
 }
 
 /* Show the tooltip text when you mouse over the tooltip container */
