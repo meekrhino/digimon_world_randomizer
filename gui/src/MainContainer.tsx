@@ -133,7 +133,7 @@ export default class MainContainer extends Component<Props, State> {
         let path = remote.dialog.showSaveDialog( {
                         title: "Select location to save randomized ROM",
                         buttonLabel: "Select",
-                        filters: [ { name: "Settings File", extensions: [ "bin" ] } ],
+                        filters: [ { name: "ROM binary", extensions: [ "bin" ] } ],
                         defaultPath: this.props.rootDirectory 
                     } );
 
@@ -163,7 +163,13 @@ export default class MainContainer extends Component<Props, State> {
         }
 
         let encodedSettings = ini.encode( this.settings, { section: undefined, whitespace: true } )
-        let file = fs.openSync( path, 'w' )
+        let file: number
+        try {
+            file = fs.openSync( path, 'w' )
+        }
+        catch( e ) {
+            return e
+        }
         if( fs.writeSync( file, encodedSettings ) != encodedSettings.length ) {
             return Error( "ERR: unable to write settings to " + path )
         }

@@ -132,7 +132,7 @@ if( config[ 'patches' ][ 'SetSpawnRate' ] != '' ):
     handler.applyPatch( 'spawn', int( config[ 'patches' ][ 'SetSpawnRate' ] ) )
     
 if( config[ 'patches' ].getboolean( 'ShowHashIntro' ) ):
-    handler.applyPatch( 'hash', config[ 'general' ][ 'Hash '] )
+    handler.applyPatch( 'hash', config[ 'general' ][ 'Hash'] )
     
 if( config[ 'patches' ].getboolean( 'SkipIntro' ) ):
     handler.applyPatch( 'intro' )
@@ -140,7 +140,11 @@ if( config[ 'patches' ].getboolean( 'SkipIntro' ) ):
 
 print( 'Writing to ' + outFile + '...' )
 sys.stdout.flush()
-handler.write( outFile )
+
+try:
+    handler.write( outFile )
+except:
+    print( 'An irrecoverable error occured' )
 
 if( not logger.error ):
     print( 'Modifications completed successfully.  See log file for details (Warning: spoilers!).' )

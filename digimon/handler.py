@@ -2419,6 +2419,8 @@ class DigimonWorldHandler:
                                   struct.pack( data.spawnRateFormat, smallPercent ),
                                   self.logger )
 
+        self.logger.logChange( 'Updated Piximon, Mamemon, MetalMamemon, and Otamamon spawn rates.' )
+
 
     def _applyPatchIntroHash( self, file, hash ):
         """
@@ -2430,6 +2432,8 @@ class DigimonWorldHandler:
                                 data.introHashOffset,
                                 scrutil.encode( hash[:16] + '\n' + hash[15:]+ "   " ),
                                 self.logger )
+
+        self.logger.logChange( 'Inserted settings hash into intro dialogue.' )
 
 
     def _applyPatchIntroSkip( self, file ):
@@ -2446,3 +2450,5 @@ class DigimonWorldHandler:
                               data.introSkipInsideOffset,
                               scrutil.compile( "jumpTo", data.introSkipInsideDest ),
                               self.logger )
+
+        self.logger.logChange( 'Modified intro scenes to remove most of the dialogue.' )
