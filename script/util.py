@@ -103,8 +103,8 @@ def findAllDuplicatesOfDataAtOffset( filename, ofst, sz ):
 
     found = findSequenceInFile( filename, seq )
 
-    out = '(' + ",".join( "0x{:08X}".format( o ) for o in found ) + ')'
-    print( out )
+    #out = '(' + ",".join( "0x{:08X}".format( o ) for o in found ) + ')'
+    #print( out )
     #pyperclip.copy(out)
     
     return found
@@ -293,8 +293,8 @@ def compile( inst, *args ):
 
 
 
-    out =  "".join("{:02x}".format(ord(c)) for c in packed)
-    print('Copied:'  + '\'' + out  + '\'' + ' to the cipboard')
+    #out =  "".join("{:02x}".format(ord(c)) for c in packed)
+    #print('Copied:'  + '\'' + out  + '\'' + ' to the cipboard')
     #pyperclip.copy(out)
 
     return ( packed )
