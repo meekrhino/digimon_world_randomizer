@@ -581,7 +581,7 @@ techDataExclusionOffsets = (
             )
 techDataExclusionSize    = 0x130
 
-#Technique learn chance block
+#Technique battle learn chance block
 techLearnFormat          = '<BBB'
 
 techLearnBlockOffset     = 0x14D66A2C
@@ -592,6 +592,17 @@ techLearnExclusionOffsets= (
             0x14D66A88,
             )
 techLearnExclusionSize   = 0x130
+
+#Technique brain learn chance block
+techBrainFormat          = '<BBB'
+
+techBrainBlockOffset     = 0x14C8E58C
+techBrainBlockSize       = 0x18
+techBrainBlockCount      = 0x08
+
+techBrainExclusionOffsets= (
+            )
+techBrainExclusionSize   = 0x130
 
 #Technique tier list table
 techTierListFormat       = '<8B'
