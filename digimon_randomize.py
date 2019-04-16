@@ -137,6 +137,9 @@ if( config[ 'patches' ].getboolean( 'ShowHashIntro' ) ):
 if( config[ 'patches' ].getboolean( 'SkipIntro' ) ):
     handler.applyPatch( 'intro' )
 
+if( config[ 'patches' ].getboolean( 'UnlockAreas' ) ):
+    handler.applyPatch( 'unlock' )
+
 
 print( 'Writing to ' + outFile + '...' )
 sys.stdout.flush()

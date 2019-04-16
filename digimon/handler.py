@@ -1163,6 +1163,8 @@ class DigimonWorldHandler:
                     self._applyPatchIntroHash( file, val )
                 elif( patch == 'intro' ):
                     self._applyPatchIntroSkip( file )
+                elif( patch == 'unlock')
+                    self._applyPatchUnlockAreas( file )
 
 
             #------------------------------------------------------
@@ -2438,7 +2440,7 @@ class DigimonWorldHandler:
 
     def _applyPatchIntroSkip( self, file ):
         """
-        Write settings hash value to script in Jijimon intro.
+        Skip many of the textboxes in the intro dialogue
         """
 
         # Write jumps to skip majority of intro dialog
@@ -2452,3 +2454,25 @@ class DigimonWorldHandler:
                               self.logger )
 
         self.logger.logChange( 'Modified intro scenes to remove most of the dialogue.' )
+
+
+    def _applyPatchUnlockAreas( self, file ):
+        """
+        Remove the digimon type locks on Greylord's Mansion and Ice 
+        Sanctuary.
+        """
+
+        #Overwrite jumps into area lock script with non-jumps
+        for ofst in data.unlockGreylordOffset:
+            util.writeDataToFile( file,
+                                  ofst,
+                                  struct.pack( data.unlockTypeLockFormat, unlockGreylordValue ),
+                                  self.logger )
+        for ofst in data.unlockIceOffset:
+            util.writeDataToFile( file,
+                                  ofst,
+                                  struct.pack( data.unlockTypeLockFormat, unlockIceValue ),
+                                  self.logger )
+
+
+        self.logger.logChange( "Removed digimon type locks on Greylord's Mansion and Ice Sanctuary." )

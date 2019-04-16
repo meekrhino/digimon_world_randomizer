@@ -8,12 +8,14 @@ Hard coded data values and binary offsets.
 lastPartnerDigimon = 0x41
 lastNonfinishTech  = 0x39
 
+#Type enum
 types = {
             0x01 : 'DATA',
             0x02 : 'VACCINE',
             0x03 : 'VIRUS'
         }
 
+#Level name enum
 levels = {
             0x01 : 'FRESH',
             0x02 : 'IN-TRAINING',
@@ -22,6 +24,7 @@ levels = {
             0x05 : 'ULTIMATE'
         }
 
+#Level number enum
 levelsByName = {
             'FRESH'         : 0x01,
             'IN-TRAINING'   : 0x02,
@@ -30,6 +33,7 @@ levelsByName = {
             'ULTIMATE'      : 0x05
         }
 
+#Specialty enum
 specs = {
             0x00 : 'FIRE',
             0x01 : 'BATTLE',
@@ -40,6 +44,7 @@ specs = {
             0x06 : 'FILTH'
         }
 
+#Tech range enum
 ranges = {
             0x01 : 'SHORT',
             0x02 : 'LARGE',
@@ -47,6 +52,7 @@ ranges = {
             0x04 : 'SELF'
         }
 
+#Effect enum
 effects = {
             0x00 : 'NONE',
             0x01 : 'POISON',
@@ -55,6 +61,7 @@ effects = {
             0x04 : 'FLAT'
         }
 
+#Tech names (enum)
 techs = {
             0x00 : 'Fire Tower',
             0x01 : 'Prominence Beam',
@@ -179,6 +186,7 @@ techs = {
             0x78 : 'Bubble'
             }
 
+#Starter writing
 digimonIDFormat   = '<B'
 
 rookies = ( 0x03, 0x04, 0x11, 0x12, 0x1F, 0x20, 0x2D, 0x2E, 0x39 )
@@ -186,14 +194,17 @@ rookies = ( 0x03, 0x04, 0x11, 0x12, 0x1F, 0x20, 0x2D, 0x2E, 0x39 )
 techIDFormat      = '<B'
 animIDFormat      = '<B'
 
+#Evolution stat gain patch
 evoItemPatchOffset = 0x14CF5AFC
 evoItemPatchValue  = 0x00
 evoitemPatchFormat = '<B'
 
+#"Woah!" text on item pickup
 woahPatchOffset = 0x14D76EF4
 woahPatchValue = 'Oh shit!'.encode( 'ascii' )
 woahPatchFormat = '<10s'
 
+#Gabumon enemy stats
 gabuPatchFormat = '<h'
 gabuPatchWrites = (
             ( 0x0A7EEA8C, 0x7530 ), #CurrentHP 30,000
@@ -208,13 +219,15 @@ gabuPatchWrites = (
             )
 
 
-
+#Tier 1 learn chance from brain training
 tierOneTechLearnOffset = 0x14C8E58C
 tierOneTechLearnValue = 0x28
 tierOneTechLearnFormat = '<B'
 
+#Location of script within binary
 scriptOffsetInBinary = 0x13FD5809
 
+#Chest items
 chestItemFormat   = '<BB'
 
 chestItemOffsets = (
@@ -230,6 +243,7 @@ chestItemOffsets = (
             0x14081900,
             )
 
+#Map item spawns
 mapItemFormat = '<BB'
 
 mapItemOffsets = (
@@ -293,6 +307,7 @@ mapItemOffsets = (
             0x13FE9FF2, 0x13FDE3F4, 0x1400D272, 0x140413F8, 0x13FFBC78, 0x1401C7FC, 0x13FEC0AA
             )
 
+#Recruitment town triggers
 recruitFormat = '<H'
 
 #(if trigger list, trigger, name list, digimon).
@@ -487,6 +502,7 @@ recruitOffsets = (
               258, 0x3A )  #Ninjamon
             )
 
+#Special evolution target
 specEvoFormat = '<B'
 
 specEvoOffsets = (
@@ -506,6 +522,7 @@ specEvoOffsets = (
               0x06, 0x14 )  #Devimon
             )
 
+#Tokomon item gifts
 tokoItemFormat = '<BxBB'
 
 tokoItemOffsets = (
@@ -517,6 +534,7 @@ tokoItemOffsets = (
             0x14071078,
             )
 
+#Tech gift give and check 
 learnMoveFormat = '<2B'
 
 learnMoveOffsets = (
@@ -535,6 +553,7 @@ checkMoveOffsets = (
             0x13FE222A      #seadra3
             )
 
+#Technique data
 techDataFormat           = '<3H8Bxx'
 
 techDataBlockOffset      = 0x14D66DF4
@@ -546,6 +565,7 @@ techDataExclusionOffsets = (
             )
 techDataExclusionSize    = 0x130
 
+#Technique learn chance block
 techLearnFormat          = '<BBB'
 
 techLearnBlockOffset     = 0x14D66A2C
@@ -557,6 +577,7 @@ techLearnExclusionOffsets= (
             )
 techLearnExclusionSize   = 0x130
 
+#Technique tier list table
 techTierListFormat       = '<8B'
 
 techTierListBlockOffset  = 0x14C8E554
@@ -567,6 +588,7 @@ techTierListExclusionOffsets = (    #no exclusions in this block since it is tin
             )
 techTierListExclusionSize= 0x130
 
+#Digimon data
 digimonDataFormat        = '<20sihh23Bx'
 
 digimonDataBlockOffset   = 0x14D6E9DC       #start of digimon data block
@@ -582,6 +604,7 @@ digimonDataExclusionOffsets = (
             )
 digimonDataExclusionSize = 0x130
 
+#Digivolution to/from table
 evoToFromFormat          = '<11B'
 
 evoToFromBlockOffset     = 0x14D6CE04       #start of evo to/from block
@@ -593,6 +616,7 @@ evoToFromExclusionOffsets= (
             )
 evoToFromExclusionSize   = 0x130
 
+#Digivolution stat gains
 evoStatsFormat           = '<6HH'
 
 evoStatsBlockOffset      = 0x14D6CA68       #start of evo stats block
@@ -603,6 +627,7 @@ evoStatsExclusionOffsets = (
             )
 evoStatsExclusionSize    = 0x130
 
+#Digivolution requirements
 evoReqsFormat            = '<11Hh2H'
 
 evoReqsBlockOffset       = 0x14D6C254       #start of evo to/from block
@@ -614,6 +639,7 @@ evoReqsExclusionOffsets  = (
             )
 evoReqsExclusionSize     = 0x130
 
+#Item data
 itemDataFormat           = '<20sIHHb?2x'
 
 itemDataBlockOffset      = 0x14D676C4       #start of item data block
@@ -626,6 +652,7 @@ itemDataExclusionOffsets = (
             )
 itemDataExclusionSize    = 0x130
 
+#Giromon jukebox track name list
 trackNameBlockOffset     = 0x14D717E8       #start of item data block
 trackNameBlockSize       = 0x738            #total number of bytes
 
@@ -634,25 +661,38 @@ trackNameExclusionOffsets= (
             )
 trackNameExclusionSize   = 0x130
 
+#Injecting hash into Jijimon
 introHashOffset          = 0x140BD212
 
+#Intro scene skip
 introSkipOutsideDest     = 2306
 introSkipOutsideOffset   = 0x1407DA20 # just after "Welcome to Digimon World"
 
 introSkipInsideDest      = 5108
 introSkipInsideOffset    = 0x1407E44C # just after "I invited you here\nto save us"
 
+#Unrigged slots
 unrigSlotsFormat         = '<I'
 unrigSlotsValue          = 0x08023A1E #should be written to little endian, this is 'reverse' order
 unrigSlotsOffset         = ( 0x14C8DB10, 0x14C941F8 )
 
+#Unlock type-locked areas
+unlockTypeLockFormat     = '<H'
+
+unlockGreylordValue      = 1226
+unlockGreylordOffset     = ( 0x13FF808E, )
+
+unlockIceValue           = 60
+unlockIceOffset          = ( 0x1401D130, 0x1401D2A8 )
+
+#Spawn rate for RNG digimon recruit spawns
 spawnRateFormat          = '<B'
 spawnRateMamemonOffset   = ( 0x13FD678F, 0x140B790F )
 spawnRatePiximonOffset   = ( 0x13FD64DB, 0x13FDD389, 0x13FE0121, 0x140B765B )
 spawnRateMMamemonOffset  = ( 0x13FD831F, 0x140B949F )
 spawnRateOtamamonOffset  = ( 0x13FD7F47, 0x140B90C7 )
 
-
+#Starter and starter tech
 starterSetDigimonOffset  = ( 0x14D271C0, 0x14D271B8 )   #set digimon id
 starterChkDigimonOffset  = ( 0x14CD1D24, 0x14CD1D44 )   #check digimon id to set tech
 starterLearnTechOffset   = ( 0x14CD1D40, 0x14CD1D60 )   #tech to learn

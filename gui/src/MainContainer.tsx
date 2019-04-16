@@ -304,6 +304,7 @@ export default class MainContainer extends Component<Props, State> {
             this.settings.patches.SetSpawnRate              = getValueOfInputById( "setSpawnRate" )  
             this.settings.patches.ShowHashIntro             = getCheckedOfInputById( "showHashIntro" )
             this.settings.patches.SkipIntro                 = getCheckedOfInputById( "skipIntro" )
+            this.settings.patches.UnlockAreas               = getCheckedOfInputById( "unTypeLock" )
             this.settings.patches.Woah                      = getCheckedOfInputById( "woah" )  
             this.settings.patches.Gabu                      = getCheckedOfInputById( "gabu" )  
         }
@@ -316,6 +317,7 @@ export default class MainContainer extends Component<Props, State> {
             this.settings.patches.SetSpawnRate              = ""
             this.settings.patches.ShowHashIntro             = "no"
             this.settings.patches.SkipIntro                 = "no"
+            this.settings.patches.UnlockAreas               = "no"
             this.settings.patches.Woah                      = "no"
             this.settings.patches.Gabu                      = "no"
         }
@@ -436,6 +438,7 @@ export default class MainContainer extends Component<Props, State> {
          || this.settings.patches.SetSpawnRate != ""    
          || this.settings.patches.ShowHashIntro  == "yes"
          || this.settings.patches.SkipIntro  == "yes"      
+         || this.settings.patches.UnlockAreas == "yes"
          || this.settings.patches.Woah == "yes"                   
          || this.settings.patches.Gabu == "yes" ) {
             setCheckedOfInputById( "patches", "yes" )
@@ -448,6 +451,7 @@ export default class MainContainer extends Component<Props, State> {
         setValueOfInputById( "setSpawnRate", this.settings.patches.SetSpawnRate )  
         setCheckedOfInputById( "showHashIntro", this.settings.patches.ShowHashIntro  )
         setCheckedOfInputById( "skipIntro", this.settings.patches.SkipIntro  )  
+        setCheckedOfInputById( "unTypeLock", this.settings.patches.UnlockAreas )
         setCheckedOfInputById( "woah", this.settings.patches.Woah )  
         setCheckedOfInputById( "gabu", this.settings.patches.Gabu )  
     }
@@ -938,6 +942,15 @@ export default class MainContainer extends Component<Props, State> {
                                             tooltip: `Enable this to cut out the majority (as much as possible) of the 
                                                       intro dialogue when creating a new game.  Does not conflict with
                                                       "Display Settings" option.` },
+                                            { id: "unTypeLock",
+                                            inputType: InputVariation.Checkbox,
+                                            defaultVal: false,
+                                            label: "Unlock Areas",
+                                            tooltip: `Remove digimon type (Vaccine, Data, Virus) entry barriers to 
+                                                      Greylord's Mansion and Ice Sanctuary, allowing any digimon to 
+                                                      enter.  This option helps alleviate the difficulty of getting
+                                                      a partiulcar type of digimon when digivolution is random. for
+                                                      instance.` },
                                             { id: "setSpawnRate",
                                             inputType: InputVariation.Value,
                                             defaultVal: "",
