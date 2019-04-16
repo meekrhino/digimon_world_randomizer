@@ -1175,7 +1175,9 @@ class DigimonWorldHandler:
                     self._applyPatchIntroHash( file, val )
                 elif( patch == 'intro' ):
                     self._applyPatchIntroSkip( file )
-                elif( patch == 'unlock')
+                elif( patch == 'slots' ):
+                    self._applyPatchUnrigSlots( file )
+                elif( patch == 'unlock'):
                     self._applyPatchUnlockAreas( file )
                 elif( patch == 'pp' ):
                     self._applyPatchPP( file )
@@ -2522,12 +2524,12 @@ class DigimonWorldHandler:
         for ofst in data.unlockGreylordOffset:
             util.writeDataToFile( file,
                                   ofst,
-                                  struct.pack( data.unlockTypeLockFormat, unlockGreylordValue ),
+                                  struct.pack( data.unlockTypeLockFormat, data.unlockGreylordValue ),
                                   self.logger )
         for ofst in data.unlockIceOffset:
             util.writeDataToFile( file,
                                   ofst,
-                                  struct.pack( data.unlockTypeLockFormat, unlockIceValue ),
+                                  struct.pack( data.unlockTypeLockFormat, data.unlockIceValue ),
                                   self.logger )
 
 

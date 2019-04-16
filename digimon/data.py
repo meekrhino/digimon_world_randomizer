@@ -519,7 +519,23 @@ specEvoOffsets = (
             ( ( 0x140A2EA9, ),
               0x3B, 0x32 ), #Phoenixmon
             ( ( 0x140A2EFB, ),
-              0x06, 0x14 )  #Devimon
+              0x06, 0x14 ), #Devimon
+            ( ( 0x14D19FEC, ),
+              0x07, 0x0A ), #Airdramon
+            ( ( 0x14D1A01C, ),
+              0x3A, 0x19 ), #Ninjamon
+            ( ( 0x14D1A054, ),
+              0x2F, 0x26 ), #Monochromon
+            ( ( 0x14D1A0AC, ),
+              0x20, 0x02 ), #Kunemon
+            ( ( 0x14D1A0F8, ),
+              0x31, 0x18 ), #Coelamon
+            ( ( 0x14D1A114, ),
+              0x35, 0x35 ), #Nanimon
+            ( ( 0x14D1A148, ),
+              0x1C, 0x1C ), #Vademon
+            ( ( 0x14CD7578, 0x14CD7584 ),
+              0x27, 0x27 )  #Sukamon
             )
 
 #Tokomon item gifts
