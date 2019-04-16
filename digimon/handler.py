@@ -25,36 +25,48 @@ class Digimon:
     playableDigimon = list( range( 0x01, 0x3E ) ) + [ 0x3F, 0x40, 0x41 ]
 
 
-    def __init__( self, handler, id, data ):
+    def __init__( self, handler, id, readData ):
         """
         Separate out composite data into individual
         components.
 
         Keyword arguments:
-        data -- List of values (unpacked from data string).
+        readData -- List of values (unpacked from data string).
         """
 
         self.handler   = handler
         self.id        = id
 
         #decode binary data as ascii and trim trailing nulls
-        self.name      = data[ 0 ].decode( 'ascii' ).rstrip( '\0' )
-        self.models    = data[ 1 ]
-        self.radius    = data[ 2 ]
-        self.height    = data[ 3 ]
-        self.type      = data[ 4 ]
-        self.level     = data[ 5 ]
+        self.name      = readData[ 0 ].decode( 'ascii' ).rstrip( '\0' )
+        self.models    = readData[ 1 ]
+        self.radius    = readData[ 2 ]
+        self.height    = readData[ 3 ]
+        self.type      = readData[ 4 ]
+        self.level     = readData[ 5 ]
+
+        if self.level == data.levelsByName[ "ROOKIE" ]:
+            self.pp = 1
+        elif self.level == data.levelsByName[ "CHAMPION" ]:
+            self.pp = 2
+        elif self.level == data.levelsByName["ULTIMATE" ]:
+            self.pp = 3
+        else:
+            self.pp = 0
+
+        #update height to store PP value
+        self.height = ( self.height & 0xFFFC ) | self.pp
 
         self.spec = []
         for i in range( 3 ):
-            self.spec.append( data[ 6 + i ] )
+            self.spec.append( readData[ 6 + i ] )
 
-        self.item      = data[ 9 ]
-        self.drop_rate = data[ 10 ]
+        self.item      = readData[ 9 ]
+        self.drop_rate = readData[ 10 ]
 
         self.tech = []
         for i in range( 16 ):
-            self.tech.append( data[ 11 + i ] )
+            self.tech.append( readData[ 11 + i ] )
 
         self.fromEvo = []
         for i in range( 5 ):
@@ -100,7 +112,7 @@ class Digimon:
         for i in range( 3 ):
             spec.append( self.handler.getSpecialtyName( self.spec[ i ] ) )
 
-        out = '{:>3d}{:>20s} {:>5d}{:>5d}{:>5d} {:>9s} {:>11s} {:>6s} {:>6s} {:>6s} {:>12s} {:>3d}%\n{:>23s} '.format(
+        out = '{:>3d}{:>20s} {:>5d}{:>5d}{:>5d} {:>9s} {:>11s} {:>6s} {:>6s} {:>6s} {:>12s} {:>3d}% {:>1d}\n{:>23s} '.format(
                         self.id,
                         self.name.rstrip(' \t\r\n\0'),
                         self.models,
@@ -111,13 +123,14 @@ class Digimon:
                         spec[ 0 ], spec[ 1 ], spec[ 2 ],
                         item,
                         self.drop_rate,
+                        self.pp,
                         "" )
 
         for i in range( 16 ):
             if( self.tech[ i ] != 'None' ):
                 out += self.handler.getTechName( self.tech[ i ] )
             if( i == 15 or self.handler.getTechName( self.tech[ i + 1 ] ) == 'None' ):
-                break;
+                break
             out +=  ', '
 
         return out
@@ -364,7 +377,7 @@ class Digimon:
         can evolve to.
         """
 
-        sum = 0;
+        sum = 0
         for e in self.toEvo:
             if( e != 0xFF ):
                 sum += 1
@@ -378,7 +391,7 @@ class Digimon:
         can evolve from.
         """
 
-        sum = 0;
+        sum = 0
         for e in self.fromEvo:
             if( e != 0xFF ):
                 sum += 1
@@ -457,7 +470,6 @@ class Digimon:
         if( not self.handler.randomizedRequirements ):
             alwaysInvalid.append( 'Devimon' )
 
-        exclusionList = []
         i = 0
         while( i < len( validEvos ) ):
             #Panjyamon, Gigadramon, and MetalEtemon don't have digivolution requirements.
@@ -1165,6 +1177,8 @@ class DigimonWorldHandler:
                     self._applyPatchIntroSkip( file )
                 elif( patch == 'unlock')
                     self._applyPatchUnlockAreas( file )
+                elif( patch == 'pp' ):
+                    self._applyPatchPP( file )
 
 
             #------------------------------------------------------
@@ -1372,10 +1386,6 @@ class DigimonWorldHandler:
                                           scrutil.encode( nameToWrite ),
                                           self.logger )
 
-
-                self.logger.logChange( self.getDigimonName( trigger - 200 ) +
-                                   ' now recruits ' + self.getDigimonName( self.recruitData[ trigger ][ 1 ] ) )
-
             #------------------------------------------------------
             # Write out special evolution data
             #------------------------------------------------------
@@ -1449,6 +1459,18 @@ class DigimonWorldHandler:
                                           data.trackNameBlockSize,
                                           data.trackNameExclusionOffsets,
                                           data.trackNameExclusionSize )
+
+
+    def applyPatch( self, patch, val=0 ):
+        """
+        Set specified patch to be applied to the ROM.
+
+        Keyword arguments:
+        patch -- one of the following:
+                 'fixEvoItems'  Make evo items give stats + lifetime
+        """
+
+        self.patches.append( tuple( [ patch, val ] ) )
 
 
     def randomizeDigimonData( self, dropItem=False, dropRate=False, price=1000 ):
@@ -1963,24 +1985,27 @@ class DigimonWorldHandler:
 
             self.recruitData[ triggerA ], self.recruitData[ triggerB ] = ofstsB, ofstsA
 
+        #check whether this arrangement is 100PP-safe
         if( not self._validateRecruitments() ):
             self.randomizeRecruitments()
 
+        #rewrite PP calculation function
+        self.applyPatch( 'pp' )
+
+        #write new pp value into least significant 2 bytes of digimon height
         for trigger in self.recruitData:
-            self.logger.logChange( self.getDigimonName( trigger - 200 ) +
-                                   ' now recruits ' + self.getDigimonName( self.recruitData[ trigger ][ 1 ] ) )
+            oldDigi = self.digimonData[ trigger - 200 ]
+            newDigi = self.digimonData[ self.recruitData[ trigger ][ 1 ] ]
 
+            oldDigi.height = ( oldDigi.height & 0xFFFC ) | newDigi.pp
 
-    def applyPatch( self, patch, val=0 ):
-        """
-        Set specified patch to be applied to the ROM.
-
-        Keyword arguments:
-        patch -- one of the following:
-                 'fixEvoItems'  Make evo items give stats + lifetime
-        """
-
-        self.patches.append( tuple( [ patch, val ] ) )
+        #print changes
+        for trigger in self.recruitData:
+            oldDigi = self.digimonData[ trigger - 200 ]
+            newDigi = self.digimonData[ self.recruitData[ trigger ][ 1 ] ]
+            self.logger.logChange( oldDigi.name + ' now recruits ' + newDigi.name +
+                                   ' and gives ' + str( oldDigi.height & 0x0003 ) + ' pp' )
+            self.logger.logChange( oldDigi.name + ' now has height: ' + str( oldDigi.height ) )
 
 
     def getPlayableDigimonByLevel( self, level, excludeSpecials=False ):
@@ -2456,6 +2481,37 @@ class DigimonWorldHandler:
         self.logger.logChange( 'Modified intro scenes to remove most of the dialogue.' )
 
 
+    def _applyPatchUnrigSlots( self, file ):
+        """
+        Overwrite one instruction in each bonus training function to short-circuit all
+        of the "rigging" logic, making slots skill-based.
+        """
+
+        # Write new instruction to both training slots functions
+        for ofst in data.unrigSlotsOffset:
+            util.writeDataToFile( file,
+                                  ofst,
+                                  struct.pack( data.unrigSlotsFormat, data.unrigSlotsValue ),
+                                  self.logger )
+
+        self.logger.logChange( 'Un-rigged slots.' )
+
+
+    def _applyPatchPP( self, file ):
+        """
+        Write new PP calculation function to code.  Reads the new PP value from the least
+        significant two bytes of each digimon's height value.
+        """
+
+        # Write new instructions to prosperity point calculation function
+        util.writeDataToFile( file,
+                            data.rewritePPOffset,
+                            struct.pack( data.rewritePPFormat, *data.rewritePPValue ),
+                            self.logger )
+
+        self.logger.logChange( 'Updated PP calculation function.' )
+
+
     def _applyPatchUnlockAreas( self, file ):
         """
         Remove the digimon type locks on Greylord's Mansion and Ice 
@@ -2476,3 +2532,4 @@ class DigimonWorldHandler:
 
 
         self.logger.logChange( "Removed digimon type locks on Greylord's Mansion and Ice Sanctuary." )
+		

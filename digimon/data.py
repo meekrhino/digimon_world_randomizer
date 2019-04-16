@@ -676,6 +676,12 @@ unrigSlotsFormat         = '<I'
 unrigSlotsValue          = 0x08023A1E #should be written to little endian, this is 'reverse' order
 unrigSlotsOffset         = ( 0x14C8DB10, 0x14C941F8 )
 
+#Update PP calculation function
+rewritePPFormat          = '>IIIIIIIIIII' #write as big endian, because these instructions are 'forwards' order
+rewritePPValue           = ( 0x0F19040C, 0xFFFF6432, 0x1E004010, 0x00000000, 0x1380023C, 0xCECE4224, 0x21105200, 0x00004290, 
+                             0x03004230, 0x21885100, 0x16000010 )
+rewritePPOffset          = 0x14D2848C
+
 #Unlock type-locked areas
 unlockTypeLockFormat     = '<H'
 

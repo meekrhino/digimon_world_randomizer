@@ -305,6 +305,7 @@ export default class MainContainer extends Component<Props, State> {
             this.settings.patches.ShowHashIntro             = getCheckedOfInputById( "showHashIntro" )
             this.settings.patches.SkipIntro                 = getCheckedOfInputById( "skipIntro" )
             this.settings.patches.UnlockAreas               = getCheckedOfInputById( "unTypeLock" )
+            this.settings.patches.UnrigSlots                = getCheckedOfInputById( "unrigSlots" )
             this.settings.patches.Woah                      = getCheckedOfInputById( "woah" )  
             this.settings.patches.Gabu                      = getCheckedOfInputById( "gabu" )  
         }
@@ -318,6 +319,7 @@ export default class MainContainer extends Component<Props, State> {
             this.settings.patches.ShowHashIntro             = "no"
             this.settings.patches.SkipIntro                 = "no"
             this.settings.patches.UnlockAreas               = "no"
+            this.settings.patches.UnrigSlots                = "no"
             this.settings.patches.Woah                      = "no"
             this.settings.patches.Gabu                      = "no"
         }
@@ -439,6 +441,7 @@ export default class MainContainer extends Component<Props, State> {
          || this.settings.patches.ShowHashIntro  == "yes"
          || this.settings.patches.SkipIntro  == "yes"      
          || this.settings.patches.UnlockAreas == "yes"
+	 || this.settings.patches.UnrigSlots == "yes"
          || this.settings.patches.Woah == "yes"                   
          || this.settings.patches.Gabu == "yes" ) {
             setCheckedOfInputById( "patches", "yes" )
@@ -452,6 +455,7 @@ export default class MainContainer extends Component<Props, State> {
         setCheckedOfInputById( "showHashIntro", this.settings.patches.ShowHashIntro  )
         setCheckedOfInputById( "skipIntro", this.settings.patches.SkipIntro  )  
         setCheckedOfInputById( "unTypeLock", this.settings.patches.UnlockAreas )
+        setCheckedOfInputById( "unrigSlots", this.settings.patches.UnrigSlots )
         setCheckedOfInputById( "woah", this.settings.patches.Woah )  
         setCheckedOfInputById( "gabu", this.settings.patches.Gabu )  
     }
@@ -951,6 +955,16 @@ export default class MainContainer extends Component<Props, State> {
                                                       enter.  This option helps alleviate the difficulty of getting
                                                       a partiulcar type of digimon when digivolution is random. for
                                                       instance.` },
+                                            { id: "unrigSlots",
+                                            inputType: InputVariation.Checkbox,
+                                            defaultVal: false,
+                                            label: "Fair Bonus Try",
+                                            tooltip: `In Digimon World, the bonus try slots are not fair.  When you start
+                                                      up the slots, the game has already decided whether or not you will be
+                                                      allowed to win, no matter how perfect you time it (though it still
+                                                      won't do everything for you, even if it is planning to let you win).
+                                                      This option removes that 'feature' and makes the bonus try slots
+                                                      fair and purely skill-based.` },
                                             { id: "setSpawnRate",
                                             inputType: InputVariation.Value,
                                             defaultVal: "",

@@ -140,6 +140,9 @@ if( config[ 'patches' ].getboolean( 'SkipIntro' ) ):
 if( config[ 'patches' ].getboolean( 'UnlockAreas' ) ):
     handler.applyPatch( 'unlock' )
 
+if( config[ 'patches' ].getboolean( 'UnrigSlots' ) ):
+    handler.applyPatch( 'slots' )
+
 
 print( 'Writing to ' + outFile + '...' )
 sys.stdout.flush()
@@ -147,6 +150,7 @@ sys.stdout.flush()
 try:
     handler.write( outFile )
 except:
+    logger.logError( 'System error' )
     print( 'An irrecoverable error occured' )
 
 if( not logger.error ):
