@@ -815,7 +815,7 @@ class DigimonWorldHandler:
             # Read in tech learn chances (battle)
             #------------------------------------------------------
 
-            #Read in tier list data block
+            #Read in tech learn chance data block
             data_read = util.readDataWithExclusions( file,
                                                      data.techLearnBlockOffset,
                                                      data.techLearnBlockSize,
@@ -833,6 +833,32 @@ class DigimonWorldHandler:
 
             for tech in self.techData:
                 self.logger.log( str( tech ) )
+
+
+            #------------------------------------------------------
+            # Read in tech learn chances (brain)
+            #------------------------------------------------------
+            
+            #Read in brain learn chance data block
+            data_read = util.readDataWithExclusions( file,
+                                                     data.techBrainBlockOffset,
+                                                     data.techBrainBlockSize,
+                                                     data.techBrainExclusionOffsets,
+                                                     data.techBrainExclusionSize )
+
+            #Parse data block
+            data_unpacked = util.unpackDataArray( data_read,
+                                                  data.techLearnFormat,
+                                                  data.techBrainBlockCount )
+
+            #Create list, where index is tier and tuple is specialty number
+            self.brainLearn = []
+            for data_tuple in data_unpacked:
+                self.brainLearn.append( data_tuple )
+
+            self.logger.log( "Brain training learn chances:" )
+            for index, learnRate in enumerate( self.brainLearn ):
+                self.logger.log( "Tier " + str( index + 1 ) + ": " + str( learnRate ) )
 
 
             #------------------------------------------------------
