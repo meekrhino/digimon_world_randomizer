@@ -33,8 +33,8 @@ See race instructions below for creating identical race ROMs.
 
 ### Version log:
 
-#### Release 1.0.0
-##### New Features
+##### Release 1.0.0
+###### New Features
     - Graphical User Interface
         -- Select files, save, load and edit settings with an easy-to-use graphical interface.  No more manual `ini` file editing!
     - Patch to insert a hash of the configured settings into the Jijimon intro dialogue (for verifying race integrity)
@@ -54,7 +54,7 @@ See race instructions below for creating identical race ROMs.
         -- NOT Numemon (for the sake of preserving the Toy Town access)
     - Increase tech learn chance patch now applies to brain training as well
         
-##### Bug Fixes
+###### Bug Fixes
     - Fixed certain enemy digimon drop rates being lower than intended
     - Fixed PP calculation with random recruits.  PP will now match that of the received recruit, rather than the one you spoke to/fought.
 
