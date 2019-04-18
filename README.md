@@ -33,6 +33,32 @@ See race instructions below for creating identical race ROMs.
 
 ### Version log:
 
+#### Release 1.0.0
+##### New Features
+    - Graphical User Interface
+        -- Select files, save, load and edit settings with an easy-to-use graphical interface.  No more manual `ini` file editing!
+    - Patch to insert a hash of the configured settings into the Jijimon intro dialogue (for verifying race integrity)
+    - Patch to skip the majority of the introductory dialogue ("Welcome to Digimon World" etc)
+    - Patch to unrig bonus try training -- the slots will no longer force you to lose most of the time.  They are
+                                           now entirely based on skill: no RNG at all.
+    - Patch to remove the virus/vaccine type locks on Greylord's Mansion and Ice Sanctuary.
+    - Additionally randomize the following special evolutions:
+        -- Airdramon
+        -- Ninjamon
+        -- Monochromon
+        -- Kunemon
+        -- Coelamon
+        -- Nanimon
+        -- Vademon
+        -- Sukamon
+        -- NOT Numemon (for the sake of preserving the Toy Town access)
+    - Increase tech learn chance patch now applies to brain training as well
+        
+##### Bug Fixes
+    - Fixed certain enemy digimon drop rates being lower than intended
+    - Fixed PP calculation with random recruits.  PP will now match that of the received recruit, rather than the one you spoke to/fought.
+
+
 ##### Public Beta 0.8.2
 ###### Bug Fixes
     - Fixed hardware crash caused by invalid targeting during confusion status.

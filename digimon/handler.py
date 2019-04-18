@@ -495,7 +495,7 @@ class Digimon:
             #If this digimon already has this evo,
             #don't add it again.
             if( self.toEvo[ i ] == id ):
-                break;
+                break
 
             #If we found an empty slot and the
             #digimon doesn't have this evo, add
@@ -854,7 +854,7 @@ class DigimonWorldHandler:
             #Create list, where index is tier and tuple is specialty number
             self.brainLearn = []
             for data_tuple in data_unpacked:
-                self.brainLearn.append( data_tuple )
+                self.brainLearn.append( list( data_tuple ) )
 
             self.logger.log( "Brain training learn chances:" )
             for index, learnRate in enumerate( self.brainLearn ):
@@ -1233,7 +1233,7 @@ class DigimonWorldHandler:
             # Write out tech learn chance data
             #------------------------------------------------------
 
-            #Pack digimon data into buffer
+            #Pack battle tech learn chance data into buffer
             data_unpacked = []
             for tech in self.techData:
                 if( not tech.isLearnable ):
@@ -1243,13 +1243,28 @@ class DigimonWorldHandler:
 
             data_packed = util.packDataArray( data_unpacked, data.techLearnFormat )
 
-            #Set all digimon data
+            #Set battle tech learn chance data
             util.writeDataWithExclusions( file,
                                           data_packed,
                                           data.techLearnBlockOffset,
                                           data.techLearnBlockSize,
                                           data.techLearnExclusionOffsets,
                                           data.techLearnExclusionSize )
+
+            #Pack brain train tech learn chance data into buffer
+            data_unpacked = []
+            for chances in self.brainLearn:
+                data_unpacked.append( tuple( chances ) )
+
+            data_packed = util.packDataArray( data_unpacked, data.techBrainFormat )
+
+            #Set brain train tech learn chance data
+            util.writeDataWithExclusions( file,
+                                          data_packed,
+                                          data.techBrainBlockOffset,
+                                          data.techBrainBlockSize,
+                                          data.techBrainExclusionOffsets,
+                                          data.techBrainExclusionSize )
 
 
             #------------------------------------------------------
@@ -2383,14 +2398,11 @@ class DigimonWorldHandler:
 
     def _applyPatchLearnTierOne( self, file ):
         """
-        Make tier one move learnable in brain training (40% chance).
+        Make tier one move learnable in brain training (30% chance).
         """
 
-        util.writeDataToFile( file,
-                              data.tierOneTechLearnOffset,
-                              struct.pack( data.tierOneTechLearnFormat, data.tierOneTechLearnValue ),
-                              self.logger )
-        self.logger.logChange( 'Patched brain training to make tier 1 moves learnable with a 40% success rate.' )
+        self.brainLearn[ 0 ][ 0 ] = 30
+        self.logger.logChange( 'Patched brain training to make tier 1 moves learnable with a 30% success rate.' )
 
 
     def _applyPatchLearnChance( self, file ):
@@ -2401,7 +2413,12 @@ class DigimonWorldHandler:
         for tech in self.techData:
             for i, val in enumerate( tech.learnChance ):
                 tech.learnChance[ i ] = val * 2
-        self.logger.logChange( 'Patched battle learn chance to be twice as high.' )
+
+        for chances in self.brainLearn:
+            for i, val in enumerate( chances ):
+                chances[ i ] = ( val * 2 ) if ( val != 0 ) else ( 5 )
+
+        self.logger.logChange( 'Patched learn chance (battle and brain) to be twice as high.' )
 
 
     def _applyPatchGabumon( self, file ):

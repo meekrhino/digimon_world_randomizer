@@ -906,7 +906,7 @@ export default class MainContainer extends Component<Props, State> {
                                                     the lowest tier move for each specialty via brain training.  For 
                                                     example, in vanilla it is impossible to learn Spit Fire via brain
                                                     training.  This patch makes that possible and assigns the tier
-                                                    one moves a 40% learn chance.` },
+                                                    one moves a 30% learn chance.` },
                                             { id: "fixGiromonJukeboxGlitch",
                                             inputType: InputVariation.Checkbox,
                                             defaultVal: false,
