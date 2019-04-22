@@ -718,6 +718,11 @@ unlockGreylordOffset     = ( 0x13FF808E, )
 unlockIceValue           = 60
 unlockIceOffset          = ( 0x1401D130, 0x1401D2A8 )
 
+#Ogremon 2 / Nanimon softlock
+ogremonSoftlockFormat    = '<H'
+ogremonSoftlockValue     = 235
+ogremonSoftlockOffset    = ( 0x13FD689A, 0x140B7A1A )
+
 #Spawn rate for RNG digimon recruit spawns
 spawnRateFormat          = '<B'
 spawnRateMamemonOffset   = ( 0x13FD678F, 0x140B790F )

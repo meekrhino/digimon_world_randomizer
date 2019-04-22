@@ -1207,6 +1207,8 @@ class DigimonWorldHandler:
                     self._applyPatchUnlockAreas( file )
                 elif( patch == 'pp' ):
                     self._applyPatchPP( file )
+                elif( patch == 'ogremon' ):
+                    self._applyPatchOgremonSoftlock( file )
 
 
             #------------------------------------------------------
@@ -2042,6 +2044,9 @@ class DigimonWorldHandler:
 
             oldDigi.height = ( oldDigi.height & 0xFFFC ) | newDigi.pp
 
+        #prevent ogremon 2 softlock
+        self.applyPatch( 'ogremon' )
+
         #print changes
         for trigger in self.recruitData:
             oldDigi = self.digimonData[ trigger - 200 ]
@@ -2577,4 +2582,18 @@ class DigimonWorldHandler:
 
 
         self.logger.logChange( "Removed digimon type locks on Greylord's Mansion and Ice Sanctuary." )
+
+
+    def _applyPatchOgremonSoftlock( self, file ):
+        """
+        Prevent softlock in the Ogremon 2 room when Ogremon 3 is 
+        completed before Ogremon 2.
+        """
+
+        #Overwrite Ogremon 3 trigger check with Shellmon recruited check
+        for ofst in data.ogremonSoftlockOffset:
+            util.writeDataToFile( file,
+                                  ofst,
+                                  struct.pack( data.ogremonSoftlockFormat, data.ogremonSoftlockValue ),
+                                  self.logger )
 		
