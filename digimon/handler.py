@@ -1209,6 +1209,8 @@ class DigimonWorldHandler:
                     self._applyPatchPP( file )
                 elif( patch == 'ogremon' ):
                     self._applyPatchOgremonSoftlock( file )
+                elif( patch == 'softlock' ):
+                    self._applyPatchMovementSoftlock( file )
 
 
             #------------------------------------------------------
@@ -2597,3 +2599,19 @@ class DigimonWorldHandler:
                                   struct.pack( data.ogremonSoftlockFormat, data.ogremonSoftlockValue ),
                                   self.logger )
 		
+    def _applyPatchMovementSoftlock( self, file ):
+        """
+        Prevents entityMoveTo/entityWalkTo softlocks
+        """
+        
+        for ofst in data.fixRotationSLOffset:
+            util.writeDataToFile( file, 
+                                  ofst,
+                                  struct.pack( data.fixRotationSLFormat, data.fixRotationSLValue ),
+                                  self.logger )
+                                  
+        for ofst in data.fixMoveToSLOffset:
+            util.writeDataToFile( file, 
+                                  ofst,
+                                  struct.pack( data.fixMoveToSLFormat, data.fixMoveToSLValue ),
+                                  self.logger )

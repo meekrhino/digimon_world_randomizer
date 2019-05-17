@@ -143,6 +143,9 @@ if( config[ 'patches' ].getboolean( 'UnlockAreas' ) ):
 if( config[ 'patches' ].getboolean( 'UnrigSlots' ) ):
     handler.applyPatch( 'slots' )
 
+if( config[ 'patches' ].getboolean( 'Softlock' ) ):
+    handler.applyPatch( 'softlock' )
+
 
 print( 'Writing to ' + outFile + '...' )
 sys.stdout.flush()

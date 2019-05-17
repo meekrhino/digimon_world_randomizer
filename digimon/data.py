@@ -709,6 +709,16 @@ rewritePPValue           = ( 0x0F19040C, 0xFFFF6432, 0x1E004010, 0x00000000, 0x1
                              0x03004230, 0x21885100, 0x16000010 )
 rewritePPOffset          = 0x14D2848C
 
+#Fix rotation softlock
+fixRotationSLFormat      = "B"
+fixRotationSLValue       = 0x0D
+fixRotationSLOffset      = ( 0x14CE72C0, 0x14CE7464 )
+
+#Fix entityMoveTo softlock
+fixMoveToSLFormat        = "<I"
+fixMoveToSLValue         = 0x10400006
+fixMoveToSLOffset        = ( 0x14CDB140, 0x14CDB19C )
+
 #Unlock type-locked areas
 unlockTypeLockFormat     = '<H'
 
