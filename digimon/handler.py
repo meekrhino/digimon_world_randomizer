@@ -45,7 +45,9 @@ class Digimon:
         self.type      = readData[ 4 ]
         self.level     = readData[ 5 ]
 
-        if self.level == data.levelsByName[ "ROOKIE" ]:
+        if self.name == "Numemon" or self.name == "Sukamon" or self.name == "Nanimon":
+            self.pp = 1
+        elif self.level == data.levelsByName[ "ROOKIE" ]:
             self.pp = 1
         elif self.level == data.levelsByName[ "CHAMPION" ]:
             self.pp = 2
