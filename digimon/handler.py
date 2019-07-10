@@ -2583,9 +2583,13 @@ class DigimonWorldHandler:
                                   ofst,
                                   struct.pack( data.unlockTypeLockFormat, data.unlockIceValue ),
                                   self.logger )
+        for ofst in data.unlockToyTownOffset:
+            util.writeDataToFile( file,
+                                  ofst,
+                                  struct.pack( data.unlockToyTownFormat, data.unlockToyTownValue ),
+                                  self.logger )
 
-
-        self.logger.logChange( "Removed digimon type locks on Greylord's Mansion and Ice Sanctuary." )
+        self.logger.logChange( "Removed digimon type locks on Greylord's Mansion, Ice Sanctuary and Toy Town." )
 
 
     def _applyPatchOgremonSoftlock( self, file ):

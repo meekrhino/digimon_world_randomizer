@@ -728,6 +728,10 @@ unlockGreylordOffset     = ( 0x13FF808E, )
 unlockIceValue           = 60
 unlockIceOffset          = ( 0x1401D130, 0x1401D2A8 )
 
+unlockToyTownFormat      = '<I'
+unlockToyTownValue       = 0x015D0001
+unlockToyTownOffset      = ( 0x140479EA, )
+
 #Ogremon 2 / Nanimon softlock
 ogremonSoftlockFormat    = '<H'
 ogremonSoftlockValue     = 235

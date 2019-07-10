@@ -955,11 +955,11 @@ export default class MainContainer extends Component<Props, State> {
                                             inputType: InputVariation.Checkbox,
                                             defaultVal: false,
                                             label: "Unlock Areas",
-                                            tooltip: `Remove digimon type (Vaccine, Data, Virus) entry barriers to 
-                                                      Greylord's Mansion and Ice Sanctuary, allowing any digimon to 
-                                                      enter.  This option helps alleviate the difficulty of getting
-                                                      a partiulcar type of digimon when digivolution is random. for
-                                                      instance.` },
+                                            tooltip: `Remove digimon type (Vaccine, Data, Virus, Monzaemon) entry
+                                                      barriers to Greylord's Mansion, Ice Sanctuary and Toy Town,
+                                                      allowing any digimon to enter. This option helps alleviate
+                                                      the difficulty of getting a partiulcar type of digimon when
+                                                      digivolution is random. for instance.` },
                                             { id: "unrigSlots",
                                             inputType: InputVariation.Checkbox,
                                             defaultVal: false,
