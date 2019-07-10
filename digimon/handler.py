@@ -886,6 +886,10 @@ class DigimonWorldHandler:
             for i, data_tuple in enumerate( data_unpacked ):
                 self.itemData.append( Item( self, i, data_tuple ) )
                 self.logger.log( str( self.itemData[ i ] ) )
+            
+            self.itemData[125].price = 9999
+            self.itemData[126].price = 5000
+            self.itemData[127].price = 9999
 
 
             #------------------------------------------------------
