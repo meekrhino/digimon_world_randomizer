@@ -2621,3 +2621,8 @@ class DigimonWorldHandler:
                                   ofst,
                                   struct.pack( data.fixMoveToSLFormat, data.fixMoveToSLValue ),
                                   self.logger )
+        
+        util.writeDataToFile( file,
+                              data.fixWalkToSLOffset,
+                              struct.pack( data.fixWalkToSLFormat, *data.fixWalkToSLValue ),
+                              self.logger )
