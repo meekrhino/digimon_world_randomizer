@@ -762,6 +762,22 @@ fixWalkToSLValue         = ( 0xB0FFBD27, 0x2000BFAF, 0x1C00B0AF, 0x1800B1AF,
                              0x5000BD27, )
 fixWalkToSLOffset        = 0x14CDAA64
 
+#Unify evolution target function to free memory
+evoTargetUnifyHackFormat = '<I'
+evoTargetUnifyHack       = { 0x14CD7520: 0x0C038AED, 0x14D19A14: 0x24050003,
+                             0x14D19A20: 0x8FB00018, 0x14D19A2C: 0x16050004, }
+
+#Reset button combination/custom tick function
+customTickFunctionFormat = '<9I'
+customTickFunctionValue  = ( 0x8F8293B8, 0x200301F0, 0x00430824, 0x14230003,
+                             0x240A00A0, 0x01400008, 0x240900A0, 0x03E00008,
+                             0x00000000, )
+customTickFunctionOffset = 0x14D19A70
+
+customTickHookFormat     = '<I'
+customTickHookValue      = 0x24E72F08
+customTickHookOffset     = 0x14D1A388
+
 #Unlock type-locked areas
 unlockTypeLockFormat     = '<H'
 

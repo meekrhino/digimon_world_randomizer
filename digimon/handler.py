@@ -1185,6 +1185,10 @@ class DigimonWorldHandler:
             #------------------------------------------------------
 
             self.logger.logChange( self.logger.getHeader( 'Apply Patches' ) )
+            
+            # Reset button and custom tick function hack
+            self._applyPatchUnifyEvoTargetFunction( file )
+            self._applyPatchResetButton( file )
 
             for ( patch, val ) in self.patches:
                 if( patch == 'fixEvoItems' ):
@@ -2608,6 +2612,8 @@ class DigimonWorldHandler:
                                   ofst,
                                   struct.pack( data.ogremonSoftlockFormat, data.ogremonSoftlockValue ),
                                   self.logger )
+                                  
+        self.logger.logChange( "Applied Ogremon softlock fix" )
 		
     def _applyPatchMovementSoftlock( self, file ):
         """
@@ -2630,3 +2636,35 @@ class DigimonWorldHandler:
                               data.fixWalkToSLOffset,
                               struct.pack( data.fixWalkToSLFormat, *data.fixWalkToSLValue ),
                               self.logger )
+        
+        self.logger.logChange( "Applied 3 movement softlock patches." )
+        
+    def _applyPatchUnifyEvoTargetFunction( self, file ):
+        """
+        Unified two functions that repeat most of their code,
+        freeing memory for other uses.
+        """
+        
+        for ofst, value in data.evoTargetUnifyHack.items():
+            util.writeDataToFile( file,
+                                  ofst,
+                                  struct.pack( data.evoTargetUnifyHackFormat, value ),
+                                  self.logger )
+        self.logger.logChange( "Unified evoTarget functions." )
+    
+    def _applyPatchResetButton( self, file ):
+        """
+        Adds a button combination that reboots the game.
+        """
+        
+        util.writeDataToFile( file,
+                              data.customTickFunctionOffset,
+                              struct.pack( data.customTickFunctionFormat, *data.customTickFunctionValue ),
+                              self.logger )
+        
+        util.writeDataToFile( file,
+                              data.customTickHookOffset,
+                              struct.pack( data.customTickHookFormat, data.customTickHookValue ),
+                              self.logger )
+        
+        self.logger.logChange( "Added custom function and hook for it" )
