@@ -2637,6 +2637,12 @@ class DigimonWorldHandler:
                               struct.pack( data.fixWalkToSLFormat, *data.fixWalkToSLValue ),
                               self.logger )
         
+        for ofst, value in data.fixWalkToSLTuples2.items():
+            util.writeDataToFile( file,
+                                  ofst,
+                                  struct.pack( data.fixWalkToSLFormat2, value ),
+                                  self.logger )
+        
         self.logger.logChange( "Applied 3 movement softlock patches." )
         
     def _applyPatchUnifyEvoTargetFunction( self, file ):
