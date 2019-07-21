@@ -2633,9 +2633,9 @@ class DigimonWorldHandler:
                                   self.logger )
         
         for ofst in data.fixToyTownSLOffset:
-            util.writeDataToFile( file, 
+            util.writeDataToFile( file,
                                   ofst,
-                                  struct.pack( data.fixToyTownSLFormat, *data.fixToyTownSLValue ),
+                                  struct.pack( data.fixToyTownSLFormat, data.fixToyTownSLValue ),
                                   self.logger )
         
         self.logger.logChange( "Applied 3 movement softlock patches." )

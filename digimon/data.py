@@ -720,9 +720,9 @@ fixMoveToSLValue         = 0x10400006
 fixMoveToSLOffset        = ( 0x14CDB140, 0x14CDB19C )
 
 #Fix Toy Town softlock
-fixToyTownSLFormat       = "<HH"
-fixToyTownSLValue        = ( -975, 675 )
-fixToyTownSLOffset       = ( 0x14049DD8, 0x1404A2EA )
+fixToyTownSLFormat       = ">I"
+fixToyTownSLValue        = 0x31FCA302
+fixToyTownSLOffset       = ( 0x14049DD8, 0x1404A2EA, )
 
 #Unify evolution target function to free memory
 evoTargetUnifyHackFormat = '<I'
