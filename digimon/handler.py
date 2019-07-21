@@ -2632,15 +2632,10 @@ class DigimonWorldHandler:
                                   struct.pack( data.fixMoveToSLFormat, data.fixMoveToSLValue ),
                                   self.logger )
         
-        util.writeDataToFile( file,
-                              data.fixWalkToSLOffset,
-                              struct.pack( data.fixWalkToSLFormat, *data.fixWalkToSLValue ),
-                              self.logger )
-        
-        for ofst, value in data.fixWalkToSLTuples2.items():
-            util.writeDataToFile( file,
+        for ofst in data.fixToyTownSLOffset:
+            util.writeDataToFile( file, 
                                   ofst,
-                                  struct.pack( data.fixWalkToSLFormat2, value ),
+                                  struct.pack( data.fixToyTownSLFormat, *data.fixToyTownSLValue ),
                                   self.logger )
         
         self.logger.logChange( "Applied 3 movement softlock patches." )

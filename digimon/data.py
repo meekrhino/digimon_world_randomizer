@@ -719,53 +719,10 @@ fixMoveToSLFormat        = "<I"
 fixMoveToSLValue         = 0x10400006
 fixMoveToSLOffset        = ( 0x14CDB140, 0x14CDB19C )
 
-#Fix entityWalkTo softlock
-fixWalkToSLFormat        = '>153I'
-fixWalkToSLValue         = ( 0xB0FFBD27, 0x2000BFAF, 0x1C00B0AF, 0x1800B1AF,
-                             0x1400B2AF, 0x1000B3AF, 0x2400A4AF, 0x2800A5AF,
-                             0x21800600, 0x21880700, 0x6000B283, 0xBEB0020C,
-                             0x2400A427, 0x2400A393, 0x00000000, 0x0200612C,
-                             0x0400478C, 0x08002014, 0x21980200, 0xFEFF6220,
-                             0x80180200, 0x1480023C, 0x70D14224, 0x21104300,
-                             0x01000424, 0x000044AC, 0x7800E58C, 0x7C00E48C,
-                             0x8000E38C, 0x2C00A5AF, 0x3000A4AF, 0x3400A3AF,
-                             0x2800A393, 0xFF000124, 0x05006114, 0x7C00E28C,
-                             0x3800B0AF, 0x3C00A2AF, 0x0B000010, 0x4000B1AF,
-                             0xBEB0020C, 0x2800A427, 0x0400428C, 0x00000000,
-                             0x7800458C, 0x7C00448C, 0x8000438C, 0x3800A5AF,
-                             0x3C00A4AF, 0x4000A3AF, 0x54918F83, 0x1480033C,
-                             0x0900E015, 0x01000124, 0x07004116, 0x2C00A58F,
-                             0x3000A48F, 0x3400A28F, 0xA88765AC, 0xAC8764AC,
-                             0xB08762AC, 0x549181AF, 0x0B004116, 0x1480043C,
-                             0xA8878424, 0x4B62030C, 0x2C00A527, 0x1480023C,
-                             0x2C00A58F, 0x3000A48F, 0x3400A38F, 0xA88745AC,
-                             0xAC8744AC, 0xB08743AC, 0x2C00A427, 0x4400A527,
-                             0xCA03030C, 0x4600A627, 0x3800A427, 0x4800A527,
-                             0xCA03030C, 0x4A00A627, 0x21206002, 0x6751030C,
-                             0x3800A527, 0x2C00A38F, 0x3400A48F, 0x22180302,
-                             0x22202402, 0x18006300, 0x12180000, 0x18008400,
-                             0x12200000, 0xFF000124, 0x2800A293, 0x20906400,
-                             0x07004110, 0xFFFF0824, 0x21200000, 0x21286002,
-                             0x21300000, 0x7B51030C, 0x21380000, 0x21400200,
-                             0x1C00A78F, 0x2800AF8F, 0xFF000120, 0x00000000,
-                             0x00000000, 0x0800E28C, 0x00000000, 0x0800F2AC,
-                             0x0800E115, 0x2B085200, 0x06002010, 0x0400628E,
-                             0x00000000, 0x780050AC, 0x800051AC, 0x0E000010,
-                             0x2400A38F, 0x4400A287, 0x4800A387, 0x4600A487,
-                             0x4A00A587, 0x03004314, 0x2400A38F, 0x06008510,
-                             0x00000000, 0xFFFF0224, 0x0E000211, 0x0A000129,
-                             0x0C002010, 0x00000000, 0x0200612C, 0x07002014,
-                             0x549180A3, 0xFEFF6220, 0x80180200, 0x1480023C,
-                             0x70D14224, 0x21104300, 0x000040AC, 0x02000010,
-                             0x01000224, 0x21100000, 0x2000BF8F, 0x1C00B08F,
-                             0x1800B18F, 0x1400B28F, 0x1000B38F, 0x0800E003,
-                             0x5000BD27 )
-fixWalkToSLOffset        = 0x14CDAA64
-
-fixWalkToSLFormat2       = "<I"
-fixWalkToSLTuples2       = { 0x14D3F3D8: 0x2001FFFF, 0x14D3F3E4: 0xAC410008,
-                             0x14D3F57C: 0x2001FFFF, 0x14D3F588: 0xAC410008, }
-      
+#Fix Toy Town softlock
+fixToyTownSLFormat       = "<HH"
+fixToyTownSLValue        = ( -975, 675 )
+fixToyTownSLOffset       = ( 0x14049DD8, 0x1404A2EA )
 
 #Unify evolution target function to free memory
 evoTargetUnifyHackFormat = '<I'
