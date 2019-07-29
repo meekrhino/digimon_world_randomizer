@@ -1190,6 +1190,8 @@ class DigimonWorldHandler:
             self._applyPatchUnifyEvoTargetFunction( file )
             self._applyPatchResetButton( file )
 
+            toyTownWorkaround = False
+
             for ( patch, val ) in self.patches:
                 if( patch == 'fixEvoItems' ):
                     self._applyPatchFixEvoItems( file )
@@ -1215,6 +1217,7 @@ class DigimonWorldHandler:
                     self._applyPatchUnrigSlots( file )
                 elif( patch == 'unlock'):
                     self._applyPatchUnlockAreas( file )
+                    toyTownWorkaround = True
                 elif( patch == 'pp' ):
                     self._applyPatchPP( file )
                 elif( patch == 'ogremon' ):
@@ -1451,6 +1454,8 @@ class DigimonWorldHandler:
             for ofsts in self.specEvos:
                 val = self.specEvos[ ofsts ][ 0 ]
                 for ofst in ofsts:
+                    if ofst == 0x140479ED and toyTownWorkaround:
+                        continue
                     util.writeDataToFile( file,
                                           ofst,
                                           struct.pack( data.specEvoFormat, val ),
