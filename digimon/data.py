@@ -701,7 +701,11 @@ introSkipInsideOffset    = 0x1407E44C # just after "I invited you here\nto save 
 #Unrigged slots
 unrigSlotsFormat         = '<I'
 unrigSlotsValue          = 0x08023A1E #should be written to little endian, this is 'reverse' order
-unrigSlotsOffset         = ( 0x14C8DB10, 0x14C941F8 )
+unrigSlotsOffset         = 0x14C8DB10 # TRN_REL.BIN
+
+unrigSlots2Format         = '<I'
+unrigSlots2Value          = 0x08023494
+unrigSlots2Offset         = 0x14C941F8 # TRN_REL2.BIN
 
 #Update PP calculation function
 rewritePPFormat          = '>IIIIIIIIIII' #write as big endian, because these instructions are 'forwards' order

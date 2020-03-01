@@ -2555,11 +2555,15 @@ class DigimonWorldHandler:
         """
 
         # Write new instruction to both training slots functions
-        for ofst in data.unrigSlotsOffset:
-            util.writeDataToFile( file,
-                                  ofst,
-                                  struct.pack( data.unrigSlotsFormat, data.unrigSlotsValue ),
-                                  self.logger )
+        util.writeDataToFile( file,
+                              data.unrigSlotsOffset,
+                              struct.pack( data.unrigSlotsFormat, data.unrigSlotsValue ),
+                              self.logger )
+
+        util.writeDataToFile( file,
+                              data.unrigSlots2Offset,
+                              struct.pack( data.unrigSlots2Format, data.unrigSlots2Value ),
+                              self.logger )
 
         self.logger.logChange( 'Un-rigged slots.' )
 
