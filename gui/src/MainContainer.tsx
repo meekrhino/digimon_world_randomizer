@@ -92,7 +92,8 @@ export default class MainContainer extends Component<Props, State> {
             ShowHashIntro           : "no",
             SkipIntro               : "no",
             Woah                    : "no",
-            Gabu                    : "no"
+            Gabu                    : "no",
+            Softlock                : "no"
         }
     }
 
@@ -308,6 +309,7 @@ export default class MainContainer extends Component<Props, State> {
             this.settings.patches.UnrigSlots                = getCheckedOfInputById( "unrigSlots" )
             this.settings.patches.Woah                      = getCheckedOfInputById( "woah" )  
             this.settings.patches.Gabu                      = getCheckedOfInputById( "gabu" )  
+            this.settings.patches.Softlock                  = getCheckedOfInputById( "softlock" )
         }
         else {
             this.settings.patches.FixEvoItemStatGain        = "no"
@@ -322,6 +324,7 @@ export default class MainContainer extends Component<Props, State> {
             this.settings.patches.UnrigSlots                = "no"
             this.settings.patches.Woah                      = "no"
             this.settings.patches.Gabu                      = "no"
+            this.settings.patches.Softlock                  = "no"
         }
 
         this.settings.general.Hash = hash( this.settings, { algorithm: "md5", excludeKeys: ( key: any ) => {
@@ -441,9 +444,10 @@ export default class MainContainer extends Component<Props, State> {
          || this.settings.patches.ShowHashIntro  == "yes"
          || this.settings.patches.SkipIntro  == "yes"      
          || this.settings.patches.UnlockAreas == "yes"
-	 || this.settings.patches.UnrigSlots == "yes"
+         || this.settings.patches.UnrigSlots == "yes"
          || this.settings.patches.Woah == "yes"                   
-         || this.settings.patches.Gabu == "yes" ) {
+         || this.settings.patches.Gabu == "yes"
+         || this.settings.patches.Softlock == "yes" ) {
             setCheckedOfInputById( "patches", "yes" )
          }
         setCheckedOfInputById( "fixEvoItemStatGain", this.settings.patches.FixEvoItemStatGain )  
@@ -458,6 +462,7 @@ export default class MainContainer extends Component<Props, State> {
         setCheckedOfInputById( "unrigSlots", this.settings.patches.UnrigSlots )
         setCheckedOfInputById( "woah", this.settings.patches.Woah )  
         setCheckedOfInputById( "gabu", this.settings.patches.Gabu )  
+        setCheckedOfInputById( "softlock", this.settings.patches.Softlock )  
     }
 
     /* Handle capturing terminal output */
@@ -950,11 +955,11 @@ export default class MainContainer extends Component<Props, State> {
                                             inputType: InputVariation.Checkbox,
                                             defaultVal: false,
                                             label: "Unlock Areas",
-                                            tooltip: `Remove digimon type (Vaccine, Data, Virus) entry barriers to 
-                                                      Greylord's Mansion and Ice Sanctuary, allowing any digimon to 
-                                                      enter.  This option helps alleviate the difficulty of getting
-                                                      a partiulcar type of digimon when digivolution is random. for
-                                                      instance.` },
+                                            tooltip: `Remove digimon type (Vaccine, Data, Virus, Monzaemon) entry
+                                                      barriers to Greylord's Mansion, Ice Sanctuary and Toy Town,
+                                                      allowing any digimon to enter. This option helps alleviate
+                                                      the difficulty of getting a partiulcar type of digimon when
+                                                      digivolution is random. for instance.` },
                                             { id: "unrigSlots",
                                             inputType: InputVariation.Checkbox,
                                             defaultVal: false,
@@ -973,7 +978,12 @@ export default class MainContainer extends Component<Props, State> {
                                             label: "Recruit Spawn Rate",
                                             tooltip: `Enable this to set the chance for Mamemon, MetalMamemon, Piximon, and
                                                     Otamamon appearing on their respective maps to the specified %.  Leave
-                                                    empty to make no changes to vanilla behavior.` }
+                                                    empty to make no changes to vanilla behavior.` },
+                                            { id: "softlock",
+                                            inputType: InputVariation.Checkbox,
+                                            defaultVal: false,
+                                            label: "Fix Softlocks",
+                                            tooltip: `This fixes some movement related softlocks.` },
                                         ]}
                             />
                         </div>

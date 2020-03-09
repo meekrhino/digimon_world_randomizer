@@ -2,6 +2,8 @@ RMDIR /S /Q "dist"
 RMDIR /S /Q "gui\digimon_randomize-win32-x64"
 pyinstaller "--clean" "--onefile" "--log-level" "ERROR" "digimon_randomize.py"
 CD "gui"
+call npm install
+call npm run-script build
 call npm run package
 CD ".."
 xcopy "gui\digimon_randomize-win32-x64" "dist\gui\" /E /H /C /R /Q /Y

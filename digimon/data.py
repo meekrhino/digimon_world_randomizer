@@ -701,13 +701,48 @@ introSkipInsideOffset    = 0x1407E44C # just after "I invited you here\nto save 
 #Unrigged slots
 unrigSlotsFormat         = '<I'
 unrigSlotsValue          = 0x08023A1E #should be written to little endian, this is 'reverse' order
-unrigSlotsOffset         = ( 0x14C8DB10, 0x14C941F8 )
+unrigSlotsOffset         = 0x14C8DB10 # TRN_REL.BIN
+
+unrigSlots2Format         = '<I'
+unrigSlots2Value          = 0x08023494
+unrigSlots2Offset         = 0x14C941F8 # TRN_REL2.BIN
 
 #Update PP calculation function
 rewritePPFormat          = '>IIIIIIIIIII' #write as big endian, because these instructions are 'forwards' order
 rewritePPValue           = ( 0x0F19040C, 0xFFFF6432, 0x1E004010, 0x00000000, 0x1380023C, 0xCECE4224, 0x21105200, 0x00004290, 
                              0x03004230, 0x21885100, 0x16000010 )
 rewritePPOffset          = 0x14D2848C
+
+#Fix rotation softlock
+fixRotationSLFormat      = "B"
+fixRotationSLValue       = 0x0D
+fixRotationSLOffset      = ( 0x14CE72C0, 0x14CE7464 )
+
+#Fix entityMoveTo softlock
+fixMoveToSLFormat        = "<I"
+fixMoveToSLValue         = 0x10400006
+fixMoveToSLOffset        = ( 0x14CDB140, 0x14CDB19C )
+
+#Fix Toy Town softlock
+fixToyTownSLFormat       = ">I"
+fixToyTownSLValue        = 0x31FCA302
+fixToyTownSLOffset       = ( 0x14049DD8, 0x1404A2EA, )
+
+#Unify evolution target function to free memory
+evoTargetUnifyHackFormat = '<I'
+evoTargetUnifyHack       = { 0x14CD7520: 0x0C038AED, 0x14D19A14: 0x24050003,
+                             0x14D19A20: 0x8FB00018, 0x14D19A2C: 0x16050004, }
+
+#Reset button combination/custom tick function
+customTickFunctionFormat = '<9I'
+customTickFunctionValue  = ( 0x8F8293B8, 0x200301F0, 0x00430824, 0x14230003,
+                             0x240A00A0, 0x01400008, 0x240900A0, 0x03E00008,
+                             0x00000000, )
+customTickFunctionOffset = 0x14D19A70
+
+customTickHookFormat     = '<I'
+customTickHookValue      = 0x24E72F08
+customTickHookOffset     = 0x14D1A388
 
 #Unlock type-locked areas
 unlockTypeLockFormat     = '<H'
@@ -717,6 +752,10 @@ unlockGreylordOffset     = ( 0x13FF808E, )
 
 unlockIceValue           = 60
 unlockIceOffset          = ( 0x1401D130, 0x1401D2A8 )
+
+unlockToyTownFormat      = '<I'
+unlockToyTownValue       = 0x015D0001
+unlockToyTownOffset      = ( 0x140479EA, )
 
 #Ogremon 2 / Nanimon softlock
 ogremonSoftlockFormat    = '<H'

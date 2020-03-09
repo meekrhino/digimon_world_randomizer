@@ -45,7 +45,9 @@ class Digimon:
         self.type      = readData[ 4 ]
         self.level     = readData[ 5 ]
 
-        if self.level == data.levelsByName[ "ROOKIE" ]:
+        if self.name == "Numemon" or self.name == "Sukamon" or self.name == "Nanimon":
+            self.pp = 1
+        elif self.level == data.levelsByName[ "ROOKIE" ]:
             self.pp = 1
         elif self.level == data.levelsByName[ "CHAMPION" ]:
             self.pp = 2
@@ -884,6 +886,10 @@ class DigimonWorldHandler:
             for i, data_tuple in enumerate( data_unpacked ):
                 self.itemData.append( Item( self, i, data_tuple ) )
                 self.logger.log( str( self.itemData[ i ] ) )
+            
+            self.itemData[125].price = 9999
+            self.itemData[126].price = 5000
+            self.itemData[127].price = 9999
 
 
             #------------------------------------------------------
@@ -1179,6 +1185,12 @@ class DigimonWorldHandler:
             #------------------------------------------------------
 
             self.logger.logChange( self.logger.getHeader( 'Apply Patches' ) )
+            
+            # Reset button and custom tick function hack
+            self._applyPatchUnifyEvoTargetFunction( file )
+            self._applyPatchResetButton( file )
+
+            toyTownWorkaround = False
 
             for ( patch, val ) in self.patches:
                 if( patch == 'fixEvoItems' ):
@@ -1205,10 +1217,13 @@ class DigimonWorldHandler:
                     self._applyPatchUnrigSlots( file )
                 elif( patch == 'unlock'):
                     self._applyPatchUnlockAreas( file )
+                    toyTownWorkaround = True
                 elif( patch == 'pp' ):
                     self._applyPatchPP( file )
                 elif( patch == 'ogremon' ):
                     self._applyPatchOgremonSoftlock( file )
+                elif( patch == 'softlock' ):
+                    self._applyPatchMovementSoftlock( file )
 
 
             #------------------------------------------------------
@@ -1439,6 +1454,8 @@ class DigimonWorldHandler:
             for ofsts in self.specEvos:
                 val = self.specEvos[ ofsts ][ 0 ]
                 for ofst in ofsts:
+                    if ofst == 0x140479ED and toyTownWorkaround:
+                        continue
                     util.writeDataToFile( file,
                                           ofst,
                                           struct.pack( data.specEvoFormat, val ),
@@ -2538,11 +2555,15 @@ class DigimonWorldHandler:
         """
 
         # Write new instruction to both training slots functions
-        for ofst in data.unrigSlotsOffset:
-            util.writeDataToFile( file,
-                                  ofst,
-                                  struct.pack( data.unrigSlotsFormat, data.unrigSlotsValue ),
-                                  self.logger )
+        util.writeDataToFile( file,
+                              data.unrigSlotsOffset,
+                              struct.pack( data.unrigSlotsFormat, data.unrigSlotsValue ),
+                              self.logger )
+
+        util.writeDataToFile( file,
+                              data.unrigSlots2Offset,
+                              struct.pack( data.unrigSlots2Format, data.unrigSlots2Value ),
+                              self.logger )
 
         self.logger.logChange( 'Un-rigged slots.' )
 
@@ -2579,9 +2600,13 @@ class DigimonWorldHandler:
                                   ofst,
                                   struct.pack( data.unlockTypeLockFormat, data.unlockIceValue ),
                                   self.logger )
+        for ofst in data.unlockToyTownOffset:
+            util.writeDataToFile( file,
+                                  ofst,
+                                  struct.pack( data.unlockToyTownFormat, data.unlockToyTownValue ),
+                                  self.logger )
 
-
-        self.logger.logChange( "Removed digimon type locks on Greylord's Mansion and Ice Sanctuary." )
+        self.logger.logChange( "Removed digimon type locks on Greylord's Mansion, Ice Sanctuary and Toy Town." )
 
 
     def _applyPatchOgremonSoftlock( self, file ):
@@ -2596,4 +2621,60 @@ class DigimonWorldHandler:
                                   ofst,
                                   struct.pack( data.ogremonSoftlockFormat, data.ogremonSoftlockValue ),
                                   self.logger )
+                                  
+        self.logger.logChange( "Applied Ogremon softlock fix" )
 		
+    def _applyPatchMovementSoftlock( self, file ):
+        """
+        Prevents entityMoveTo/entityWalkTo softlocks
+        """
+        
+        for ofst in data.fixRotationSLOffset:
+            util.writeDataToFile( file, 
+                                  ofst,
+                                  struct.pack( data.fixRotationSLFormat, data.fixRotationSLValue ),
+                                  self.logger )
+                                  
+        for ofst in data.fixMoveToSLOffset:
+            util.writeDataToFile( file, 
+                                  ofst,
+                                  struct.pack( data.fixMoveToSLFormat, data.fixMoveToSLValue ),
+                                  self.logger )
+        
+        for ofst in data.fixToyTownSLOffset:
+            util.writeDataToFile( file,
+                                  ofst,
+                                  struct.pack( data.fixToyTownSLFormat, data.fixToyTownSLValue ),
+                                  self.logger )
+        
+        self.logger.logChange( "Applied 3 movement softlock patches." )
+        
+    def _applyPatchUnifyEvoTargetFunction( self, file ):
+        """
+        Unified two functions that repeat most of their code,
+        freeing memory for other uses.
+        """
+        
+        for ofst, value in data.evoTargetUnifyHack.items():
+            util.writeDataToFile( file,
+                                  ofst,
+                                  struct.pack( data.evoTargetUnifyHackFormat, value ),
+                                  self.logger )
+        self.logger.logChange( "Unified evoTarget functions." )
+    
+    def _applyPatchResetButton( self, file ):
+        """
+        Adds a button combination that reboots the game.
+        """
+        
+        util.writeDataToFile( file,
+                              data.customTickFunctionOffset,
+                              struct.pack( data.customTickFunctionFormat, *data.customTickFunctionValue ),
+                              self.logger )
+        
+        util.writeDataToFile( file,
+                              data.customTickHookOffset,
+                              struct.pack( data.customTickHookFormat, data.customTickHookValue ),
+                              self.logger )
+        
+        self.logger.logChange( "Added custom function and hook for it" )
