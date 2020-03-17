@@ -2,65 +2,55 @@ import * as React from 'react'
 import { Component } from 'react'
 
 import ElementContainer, { SectionElement } from "./ElementContainer"
+import { Checkbox, Tooltip, Card } from '@blueprintjs/core'
+import { Toggleable } from './MainModel'
 
-const initialState = { enabled: false }
-type State = Readonly<typeof initialState>
-
-interface Props { 
-    id              : string
+export interface SectionProps<T> {
     title           : string
     tooltip         : string
     disabled        : boolean
-    elements?       : SectionElement[]
+    data            : T
+    elements?       : SectionElement<T>[]
 }
 
-
-export default class SectionContainer extends Component<Props, State> {
-    readonly state: State = initialState
-    
-    en: HTMLInputElement = null
-    
-    constructor( props: Props ) {
+export default class SectionContainer<T extends Toggleable> extends Component<SectionProps<T>, any> {    
+    constructor( props: SectionProps<T> ) {
         super( props )
     }
 
-    toggleEnabled( e: Event ) { 
-        this.setState( { enabled: this.en.checked } )
-    }
-
     render() {
-        const { enabled } = this.state
-        return ( <div id={this.props.id + "Container"} className="category">
+        return <Card id={this.props.title + "Container"} className="category">
                     <h1 className="category">{this.props.title}</h1>
-                    <label><input type="checkbox" 
-                                  ref={elem => this.en = elem}
-                                  id={this.props.id}
-                                  value="Enabled" 
-                                  disabled={this.props.disabled} 
-                                  onClick={this.toggleEnabled.bind( this )} /> 
-                        <span><div className="tooltip">
-                            Enabled
-                            <span className="tooltiptext">{this.props.tooltip}</span>
-                        </div></span>
-                    </label> <br/>
-                    {this.props.elements.map( ( elem, index ) => 
-                        < ElementContainer
+                    <Tooltip 
+                        popoverClassName="tooltip-popover"
+                        content={this.props.tooltip}
+                        hoverOpenDelay={750}>
+                        <Checkbox
+                            label="Enabled"
+                            checked={this.props.data.Enabled}
+                            disabled={this.props.disabled}
+                            onClick={() => {
+                                this.props.data.Enabled = !this.props.data.Enabled
+                                this.forceUpdate()
+                            }}/>
+                    </Tooltip>
+                    {this.props.elements?.map( ( elem, index ) => 
+                        <ElementContainer
                             key={index}
-                            id={elem.id}
                             inputType={elem.inputType}
-                            defaultVal={elem.defaultVal}
-                            sliderMin={elem.sliderMin}
-                            sliderMax={elem.sliderMax}
-                            enabled={this.state.enabled && !this.props.disabled}
+                            value={this.props.data[ elem.attribute ]}
+                            setValue={( value: any ) => {
+                                this.props.data[ elem.attribute ] = value
+                                this.forceUpdate()
+                            }}
+                            minVal={elem.minVal}
+                            maxVal={elem.maxVal}
+                            enabled={this.props.data.Enabled && !this.props.disabled}
                             label={elem.label}
                             tooltip={elem.tooltip}
                             multiSelect={elem.multiSelect}
-                            multiSelectLabel={elem.multiSelectLabel}
-                        /> )}
-                </div> )
-    }
-
-    componentDidMount() {
-        this.en.addEventListener( "loadSettings", this.toggleEnabled.bind(this) )
+                            multiSelectLabel={elem.multiSelectLabel}/>
+                    )}
+                </Card>
     }
 }

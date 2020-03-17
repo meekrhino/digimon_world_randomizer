@@ -128,7 +128,7 @@ if( config[ 'patches' ].getboolean( 'IncreaseTechLearnChance' ) ):
 if( config[ 'patches' ].getboolean( 'Gabu' ) ):
     handler.applyPatch( 'gabumon' )
     
-if( config[ 'patches' ][ 'SetSpawnRate' ] != '' ):
+if( config[ 'patches' ][ 'SetSpawnRate' ] != '0' ):
     handler.applyPatch( 'spawn', int( config[ 'patches' ][ 'SetSpawnRate' ] ) )
     
 if( config[ 'patches' ].getboolean( 'ShowHashIntro' ) ):

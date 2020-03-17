@@ -1,5 +1,5 @@
-import { app, BrowserWindow, Menu } from "electron";
-import * as path from "path";
+import { app, BrowserWindow, Menu } from "electron"
+import * as path from "path"
 
 let mainWindow: Electron.BrowserWindow;
 
@@ -9,8 +9,11 @@ function createWindow() {
     height: 850,
     minHeight: 850,
     width: 800,
-    minWidth: 780
-  });
+    minWidth: 780,
+    webPreferences: {
+        nodeIntegration: true
+    }
+  } );
 
   // and load the index.html of the app.
   mainWindow.loadFile( path.join( __dirname, "../index.html" ) );

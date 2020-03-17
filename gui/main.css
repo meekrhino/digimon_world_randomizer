@@ -1,5 +1,3 @@
-@import url("http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css");
-
 *{
     box-sizing: border-box;
 }
@@ -7,100 +5,88 @@
 body {
     background-color: rgb(240, 240, 240);
     overflow-x: hidden;
+    line-height: 1;
+    margin: 0;
 }
 
 ::-webkit-scrollbar:horizontal {
     display: none;
 }
-
-/* Create two unequal columns that float next to each other */
-.topColumnLeft {
-    float: left;
-    min-width: 150px;
-    width: 66.66%;
-    padding: 10px;
-} 
-.topColumnRight {
-    float: right;
-    min-width: 150px;
-    width: 33.33%;
-    padding: 10px;
+  
+.window {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
 }
 
-/* Create three equal columns that float next to each other */
+#file-section {
+    position: sticky;
+    top: 0;
+    padding: 5px;
+    height: 160px;
+    border-radius: 0;
+    flex-shrink: 0;
+}
+
+#data-section {
+    overflow-y: hidden;
+}
+
 .column {
     float: left;
-    min-width: 242px;
-    width: 33.33%;
-    padding: 10px;
+    padding: 6px;
 }
-  
-/* Clear floats after the columns */
-.row:after {
-    content: "";
-    display: table;
-    clear: both;
+
+.one-third {
+    width: 33.33%;
+}
+
+.one-half {
+    width: 50%;
+}
+
+.two-thirds {
+    width: 66.66%;
+}
+
+.tooltip-popover {
+    max-width: 400px;
 }
 
 div {
     background-color: inherit
 }
 
-div.fileSelect {
-    padding-left: 10px;
-    height: 22px;
-}
-
-div.fileSelect:before  {
-    content: "";
-    display: inline-block;
-    vertical-align: top;
-    height: 100%;
-}
-
-#logSeedDiv {
-    height: 80px;
-    padding-top: 5px;
-}
-
-div.inBlockAlign {
-    content: "";
-    display: inline-block;
-    vertical-align: top;
-}
-
-div.inBlockAlign:before  {
-    content: "";
-    display: inline-block;
-    vertical-align: top;
-    height: 100%;
-}
-
-div.logSeedChild {
-    display: inline-block;
-    vertical-align: middle;
-}
-
 button {
-    border: 1px solid black;
-    font-weight: bold;
     margin-bottom: 3px;
-    width: 120px;
+    width: 140px;
     height: 22px;
     display: inline-block;
     vertical-align: top;
 }
 
-#inputFileDiv {
+button#randomize {
+    margin-top: 10px;
+}
+
+#input-file {
     margin-bottom: 3px;
 }
 
-button:not(:disabled):hover {
-    border: 2px solid rgb( 27, 68, 97 );
-    font-weight: bold;
-    width: 120px;
-    height: 22px;
-    vertical-align: 0%
+#input-file button,
+#output-file button {
+    width: 110px;
+}
+
+#log-seed-section {
+    display: flex;
+    flex-direction: column;
+}
+
+#seed {
+    display: flex;
+    align-items: center;
 }
 
 span.fileName {
@@ -118,13 +104,10 @@ span.fileName {
     vertical-align: top;
 }
 
-#logLevelDiv {
-    min-width: 225px;
-    width: calc( 50% - 30px );
-}
-
 #topRightSection {
-    padding-left: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 hr {
@@ -135,268 +118,44 @@ hr {
 }
 
 div.category {
-    border-style: solid;
-    border-width: 1px;
-    border-color: lightgray;
-    margin: 10px 10px 20px 10px;
-    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0px 0px;
+    padding: 0px 10px;
 }
 
 h1.category {
     font-size: 15px;
-    margin-top: -20px;
-    margin-left: 0px;
-    width: max-content;
+    text-align: center;
     background-color: inherit;
+    padding-top: 5px;
 }
 
-#digimondata {
-    min-width: 212px;
+/* Element styling */
+.element-slider {
+    margin-left: 8px;
 }
 
-#techdata {
-    min-width: 212px;
+.element-option {
+    margin-left: 10px;
 }
 
-#starter {
-    min-width: 212px;
-}
-
-#digimonevos {
-    min-width: 212px;
-}
-
-#chests {
-    min-width: 212px;
-}
-
-#tokomon {
-    min-width: 212px;
-}
-
-#spawns {
-    min-width: 212px;
-}
-
-#recruit {
-    min-width: 212px;
-}
-
-#techgifts{
-    min-width: 212px;
-}
-
-#patches{
-    min-width: 212px;
-}
-
-/* checkbox styling */
-input[type="checkbox"] { 
-    position: absolute; 
-    opacity: 0; 
-    z-index: -1; 
-}
-
-input[type="checkbox"]+span { 
-    font-size: 16px; 
-    color: black; 
-}
-
-input[type="checkbox"]+span:before { 
-    font: 14pt FontAwesome; 
-    content: '\00f096';
-    display: inline-block; 
-    width: 13pt; 
-    padding: 2px 0 0 3px; 
-    margin-right: 0.5em; 
-}
-
-input[type="checkbox"]:checked+span:before { 
-    content: '\00f046';
-}
-
-input[type="checkbox"]:focus+span:before { 
-    outline: 1px dotted #aaa; 
-
-}
-
-input[type="checkbox"]:disabled+span {
-    color: #999; 
-}
-
-input[type="checkbox"]:not(:disabled)+span:hover:before { 
-    text-shadow: 0 1px 2px #77F;
-}
-
-/*tooltip styling */
-.tooltip {
-    font: 12pt FontAwesome; 
-    position: relative;
-    display: inline-block;
-}
-
-/* Tooltip text */
-.tooltip .tooltiptext {
-    visibility: hidden;
-    width: max-content;
-    max-width: 400px;
-    background-color: rgb( 250, 250, 210 );
-    font-size: 12px;
-    border-color: black;
-    border-style: solid;
-    border-width: 1px;
-    padding: 2px 2px;
-
-    /* position the tooltip */
-    position: absolute;
-    z-index: 1;
-    top: 100%;
-    left: 20%;
-    margin-top: 5px;
-
-    /* animation transition (fade-in) */
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-
-.bottomRightColumn .tooltiptext {
-    right: 20%;
-    left: auto;
-}
-
-.tooltip .tooltiptext::after {
-    content: " ";
-    position: absolute;
-    bottom: 100%;  /* At the top of the tooltip */
-    left: 15px;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: transparent transparent black transparent;
-}
-
-.bottomRightColumn .tooltiptext::after {
-    right: 15px;
-    left: auto;
-}
-
-/* Show the tooltip text when you mouse over the tooltip container */
-.tooltip:hover .tooltiptext {
-    visibility: visible;
-    opacity: 1;
-}
-
-/* slider styling */
-.slidecontainer {
-    width: 100%;
-}
-
-/* The slider itself */
-input[type="range"] {
-    -webkit-appearance: none;
-    width: 75%;
-    height: 8px;
-    border-radius: 5px;
-    background: rgb( 170, 170, 170 );
-    outline: none;
-    opacity: 0.7;
-    -webkit-transition: .2s;
-    transition: opacity .2s;
-}
-
-input[type="range"]:disabled {
-    background: rgb( 210, 210, 210 );
-}
-  
-/* Mouse-over effects */
-input[type="range"]:not(:disabled)+:hover {
-    opacity: 1; /* Fully shown on mouse-over */
-}
-
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: rgb( 100, 100, 100 );
-  cursor: pointer;
-}
-
-input[type="range"]::-moz-range-thumb {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: rgb( 100, 100, 100 );
-  cursor: pointer;
-}
-
-span.slidervalue {
-    background-color: white;
-    color: black;
-    border: 1px solid black;
-    width: 22%;
-    display: inline-block;
-}
-
-/* number input styling */
-#setSpawnRate {
-    margin: 4px 0px;
-    width: 28px;
-}
-
-#seed {
-    margin: 4px 0px;
-    width: 80px;
-}
-
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-input[type="number"]:disabled {
-    color: rgb( 210, 210, 210 );
-}
-
-input[type="number"]+span { 
-    margin-left: 6px;
-    font-size: 16px; 
-    color: black; 
-}
-
-input[type="number"]:disabled+span {
-    color: #999; 
-}
-
-/* multi select styling */
-input[type="radio"] {
-    margin: 4px 10px;
-}
-
-input[type="radio"]:disabled {
-    color: rgb( 210, 210, 210 );
-}
-
-input[type="radio"]:disabled+label {
-    color: #999; 
-}
-
+/* Terminal Styling */
 .terminalOutput {
     position: fixed;
     border: 3px solid rgb(38, 99, 143);
     height: 130px;
-    width: 80%;
+    width: 100%;
     background-color: black;
     color: white;
+    bottom: 0;
 }
 
 .terminalOutput .terminalHeader {
     position: fixed;
     border: 2px solid rgb(27, 68, 97);
     height: 26px;
-    width: calc(80% - 8px);
+    width: calc(100% - 8px);
     background-color: white;
     margin: 1px;
     padding: 2px 4px;
