@@ -7,7 +7,7 @@ import * as Path from "path"
 import * as fs from "fs"
 
 import SectionContainer from "./SectionContainer"
-import { Button, Card, Elevation, Intent, RadioGroup, Radio, FileInput, NumericInput } from '@blueprintjs/core'
+import { Button, Card, Elevation, Intent, RadioGroup, Radio, FileInput, NumericInput, Tabs, Tab, Label } from '@blueprintjs/core'
 import * as Main from './MainModel'
 import * as Constants from './constants'
 
@@ -16,14 +16,23 @@ interface Props {
 }
 
 interface State {
-    terminalOut  : JSX.Element[]
+    terminalOut : JSX.Element[]
+    activeTab   : Page
+}
+
+enum Page {
+    Digimon = "Digimon",
+    Items = "Items",
+    Progress = "Progression",
+    Patches = "Misc. Patches"
 }
 
 export default class MainContainer extends Component<Props, State> {
     constructor( props: Readonly<Props> ) {
         super( props );
         this.state = {
-            terminalOut: []
+            terminalOut: [],
+            activeTab: Page.Digimon
         }
     }
     
@@ -168,89 +177,112 @@ export default class MainContainer extends Component<Props, State> {
     }
 
     render() {
+        let body: JSX.Element
+        switch( this.state.activeTab ) {
+            case Page.Digimon:
+                body =  <div id="data-section">
+                            <div className="column one-half">
+                                <SectionContainer
+                                    title="Starter" 
+                                    disabled={this.inProgress}
+                                    data={this.data.Starter}
+                                    tooltip={Constants.starterTooltip}
+                                    elements={Constants.starterElements}/>
+                                <SectionContainer 
+                                    title="Digimon Data" 
+                                    disabled={this.inProgress}
+                                    data={this.data.Digimon}
+                                    tooltip={Constants.digimonDataTooltip}
+                                    elements={Constants.digimomDataElements}/>
+                                <SectionContainer 
+                                    title="Digivolutions" 
+                                    disabled={this.inProgress}
+                                    data={this.data.Evolution}
+                                    tooltip={Constants.evolutionTooltip}
+                                    elements={Constants.evolutionElements}/>
+                            </div>
+                            <div className="column one-half">
+                                <SectionContainer 
+                                    title="Technique Data" 
+                                    disabled={this.inProgress}
+                                    data={this.data.Techs}
+                                    tooltip={Constants.techDataTooltip}
+                                    elements={Constants.techDataElements}/>
+                            </div>
+                        </div>
+                break
+
+            case Page.Items:
+                body =  <div id="data-section">
+                            <div className="column one-half">
+                                <SectionContainer 
+                                    title="Map Item Spawns" 
+                                    disabled= {this.inProgress}
+                                    data={this.data.MapItems}
+                                    tooltip={Constants.mapItemTooltip}
+                                    elements={Constants.mapItemElements}/>
+                            </div>
+                            <div className="column one-half">
+                                <SectionContainer 
+                                    title="Chest Contents" 
+                                    disabled={this.inProgress}
+                                    data={this.data.Chests}
+                                    tooltip={Constants.chestsTooltip}
+                                    elements={Constants.chestsElements}/>
+                                <SectionContainer 
+                                    title="Tokomon Items" 
+                                    disabled= {this.inProgress}
+                                    data={this.data.Tokomon}
+                                    tooltip={Constants.tokomonTooltip}
+                                    elements={Constants.tokomonElements}/>
+                            </div>
+                        </div>
+                break
+                    
+            case Page.Progress:
+                body =  <div id="data-section">
+                            <div className="column one-half">
+                                <SectionContainer 
+                                    title="Technique Gifts" 
+                                    disabled= {this.inProgress}
+                                    data={this.data.TechGifts}
+                                    tooltip={Constants.techGiftTooltip}/>
+                            </div>
+                            <SectionContainer 
+                                title="Recruitment" 
+                                disabled= {this.inProgress}
+                                data={this.data.Recruitment}
+                                tooltip={Constants.recruitTooltip}/>
+                        </div>
+                break
+
+            case Page.Patches:
+                body =  <div id="data-section">
+                            <SectionContainer 
+                                title="Miscellaneous Patches" 
+                                disabled= {this.inProgress}
+                                data={this.data.Patches}
+                                tooltip={Constants.patchTooltip}
+                                elements={Constants.patchElements}/>
+                        </div>
+                break
+
+        }
         return  <div className="window">
                     {this.renderFileSection()}
-                    <div id="data-section">
-                        {/* leftmost column */}
-                        <div className="column one-third">
-                            <SectionContainer
-                                title="Starter" 
-                                disabled={this.inProgress}
-                                data={this.data.Starter}
-                                tooltip={Constants.starterTooltip}
-                                elements={Constants.starterElements}/>
-                            <SectionContainer 
-                                title="Digimon Data" 
-                                disabled={this.inProgress}
-                                data={this.data.Digimon}
-                                tooltip={Constants.digimonDataTooltip}
-                                elements={Constants.digimomDataElements}/>
-                            <SectionContainer 
-                                title="Technique Data" 
-                                disabled={this.inProgress}
-                                data={this.data.Techs}
-                                tooltip={Constants.techDataTooltip}
-                                elements={Constants.techDataElements}/>
+                    {body}
+                    <div 
+                        className="terminalOutput"
+                        hidden={!this.inProgress}>
+                        <span className="terminalHeader">
+                            Execution Output
+                        </span>
+                        <div className="terminalTextBox"
+                            ref={terminal => { this.terminal = terminal } }>
+                            {this.state.terminalOut}
                         </div>
-                        {/* center column */}
-                        <div className="column one-third">
-                            <SectionContainer 
-                                title="Digivolutions" 
-                                disabled={this.inProgress}
-                                data={this.data.Evolution}
-                                tooltip={Constants.evolutionTooltip}
-                                elements={Constants.evolutionElements}/>
-                            <SectionContainer 
-                                title="Chest Contents" 
-                                disabled={this.inProgress}
-                                data={this.data.Chests}
-                                tooltip={Constants.chestsTooltip}
-                                elements={Constants.chestsElements}/>
-                            <SectionContainer 
-                                title="Tokomon Items" 
-                                disabled= {this.inProgress}
-                                data={this.data.Tokomon}
-                                tooltip={Constants.tokomonTooltip}
-                                elements={Constants.tokomonElements}/>
-                            <SectionContainer 
-                                title="Map Item Spawns" 
-                                disabled= {this.inProgress}
-                                data={this.data.MapItems}
-                                tooltip={Constants.mapItemTooltip}
-                                elements={Constants.mapItemElements}/>
-                        </div>
-                        {/* rightmost column */}
-                        <div className="column one-third">
-                        <SectionContainer 
-                            title="Recruitment" 
-                            disabled= {this.inProgress}
-                            data={this.data.Recruitment}
-                            tooltip={Constants.recruitTooltip}/>
-                        <SectionContainer 
-                            title="Technique Gifts" 
-                            disabled= {this.inProgress}
-                            data={this.data.TechGifts}
-                            tooltip={Constants.techGiftTooltip}/>
-                        <SectionContainer 
-                            title="Miscellaneous Patches" 
-                            disabled= {this.inProgress}
-                            data={this.data.Patches}
-                            tooltip={Constants.patchTooltip}
-                            elements={Constants.patchElements}/>
                     </div>
                 </div>
-                <div 
-                    className="terminalOutput"
-                    hidden={!this.inProgress}>
-                    <span className="terminalHeader">
-                        Execution Output
-                    </span>
-                    <div className="terminalTextBox"
-                        ref={terminal => { this.terminal = terminal } }>
-                        {this.state.terminalOut}
-                    </div>
-                </div>
-            </div>
     }
 
     componentDidUpdate( prevProps: Props, prevState: State ) {
@@ -265,82 +297,110 @@ export default class MainContainer extends Component<Props, State> {
 
     /* Private Functions */
     private renderFileSection = () => {
-        return  <Card id="file-section" elevation={Elevation.TWO}>
-                    <div className="column two-thirds" >
-                        <div id="input-file"  className="fileSelect" >
-                            <FileInput
-                                className="file-select"
-                                id="input-file-select"
-                                disabled={this.inProgress}
-                                text={this.data.General.InputFile || "Select ROM file..."}
-                                fill={true}
-                                onInputChange={this.onMenuSelectROM}/>
-                        </div>
-                        <div id="output-file" className="fileSelect">
-                            <FileInput
-                                className="file-select"
-                                id="output-file-select"
-                                disabled={this.inProgress}
-                                text={this.data.General.InputFile || "Select destination..."}
-                                fill={true}
-                                onInputChange={this.onMenuSelectOutput}/>
-                        </div>
-                        <div id="log-seed-section"> 
-                            <div id="seed">
-                                <b>
-                                    Seed: 
-                                </b>
-                                <NumericInput
-                                    placeholder="Random"
-                                    disabled={this.inProgress}
-                                    buttonPosition={"none"}
-                                    allowNumericCharactersOnly={true}
-                                    value={this.data.General.Seed}
-                                    onValueChange={val => this.data.General.Seed = val}/>
+        return  <>
+                    <Card id="file-section-wrapper" elevation={Elevation.TWO}>
+                        <div id="file-section">
+                            <div className="fill column two-thirds" >
+                                <div id="input-file" className="file-select" >
+                                    <Label>
+                                        ROM:
+                                    </Label>
+                                    <FileInput
+                                        className="file-select"
+                                        id="input-file-select"
+                                        disabled={this.inProgress}
+                                        text={this.data.General.InputFile || "Select ROM file..."}
+                                        fill={true}
+                                        onInputChange={this.onMenuSelectROM}/>
+                                </div>
+                                <div id="output-file" className="file-select">
+                                    <Label>
+                                        Output:
+                                    </Label>
+                                    <FileInput
+                                        className="file-select"
+                                        id="output-file-select"
+                                        disabled={this.inProgress}
+                                        text={this.data.General.InputFile || "Select destination..."}
+                                        fill={true}
+                                        onInputChange={this.onMenuSelectOutput}/>
+                                </div>
+                                <div id="log-seed-section"> 
+                                    <div className="seed-subsection">
+                                        <Label id="seed">
+                                            Seed: 
+                                        </Label>
+                                        <NumericInput
+                                            placeholder="Random"
+                                            disabled={this.inProgress}
+                                            buttonPosition={"none"}
+                                            allowNumericCharactersOnly={true}
+                                            value={this.data.General.Seed}
+                                            onValueChange={val => this.data.General.Seed = val}/>
+                                    </div>
+                                    <RadioGroup
+                                        className="log-subsection"
+                                        label="Logging:"
+                                        onChange={ ( e ) => {
+                                            this.data.General.LogLevel = e.currentTarget.value as Main.LogType
+                                            this.forceUpdate()
+                                        }}
+                                        selectedValue={this.data.General.LogLevel}
+                                        inline={true}>
+                                        <br/>
+                                        <Radio 
+                                            label="Full"
+                                            value="full"
+                                            id="logFull"
+                                            inline={true}
+                                            disabled={this.inProgress}/>
+                                        <Radio
+                                            label="Casual"
+                                            value="casual"
+                                            id="logCasual"
+                                            inline={true}
+                                            disabled={this.inProgress}/>
+                                        <Radio
+                                            label="Race"
+                                            value="race"
+                                            id="logRace"
+                                            inline={true}
+                                            disabled={this.inProgress}/>
+                                    </RadioGroup>
+                                </div>
                             </div>
-                            <RadioGroup
-                                onChange={e => {this.data.General.LogLevel = e.currentTarget.value as Main.LogType}}
-                                selectedValue={this.data.General.LogLevel}
-                                inline={true}>
-                                <Radio 
-                                    label="Full"
-                                    value="full"
-                                    id="logFull"
-                                    disabled={this.inProgress}/>
-                                <Radio
-                                    label="Casual"
-                                    value="casual"
-                                    id="logCasual"
-                                    disabled={this.inProgress}/>
-                                <Radio
-                                    label="Race"
-                                    value="race"
-                                    id="logRace"
-                                    disabled={this.inProgress}/>
-                            </RadioGroup>
-                        </div>
-                    </div>
-                    <div className="column one-third">
-                        <div id="topRightSection" >
-                            <Button id="load" 
+                            <div id="topRightSection" className="column one-third">
+                                <Button id="load" 
+                                        disabled={this.inProgress} 
+                                        onClick={this.onMenuLoadSettings}>
+                                    Load Settings
+                                </Button>
+                                <Button id="save" 
+                                        disabled={this.inProgress} 
+                                        onClick={this.onMenuSaveSettings}>
+                                    Save Settings
+                                </Button>
+                                <Button 
+                                    id="randomize" 
+                                    intent={Intent.SUCCESS}
                                     disabled={this.inProgress} 
-                                    onClick={this.onMenuLoadSettings}>
-                                Load Settings
-                            </Button>
-                            <Button id="save" 
-                                    disabled={this.inProgress} 
-                                    onClick={this.onMenuSaveSettings}>
-                                Save Settings
-                            </Button>
-                            <Button 
-                                id="randomize" 
-                                intent={Intent.SUCCESS}
-                                disabled={this.inProgress} 
-                                onClick={this.runRandomize}>
-                                {this.inProgress? "Randomizing..." : "Randomize"}
-                            </Button>
+                                    onClick={this.runRandomize}>
+                                    {this.inProgress? "Randomizing..." : "Randomize"}
+                                </Button>
+                            </div>
                         </div>
-                    </div>
-                </Card>
+                        <Tabs 
+                            className="tab-group"
+                            onChange={( newTab ) => { this.setState( { activeTab: newTab as Page } ) }}>
+                            {Object.values( Page ).map( page =>
+                                <Tab 
+                                    key={`tab-${page.toLowerCase()}`} 
+                                    id={page} 
+                                    title={page}
+                                    className="tab"/>
+                            )}
+                        </Tabs>
+                    </Card>
+        </>
     }
 }

@@ -20,22 +20,44 @@ body {
     overflow: hidden;
 }
 
-#file-section {
-    position: sticky;
-    top: 0;
-    padding: 5px;
-    height: 160px;
+#file-section-wrapper {
+    position: relative;
+    padding: 0px;
+    height: 178px;
     border-radius: 0;
     flex-shrink: 0;
+}
+
+#file-section {
+    padding: 5px;
+    height: 145px;
+}
+
+.tab-group {
+    padding-left: 15px;
+    box-shadow: 0 -1px 0px 1px rgba( 16, 22, 26, 0.15 );
+    margin-top: 3px;
+    background-color: rgb( 245, 245, 255 );
+}
+
+.tab {
+    padding: 0px 10px;
 }
 
 #data-section {
     overflow-y: hidden;
 }
 
+.fill {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    height: 100%;
+}
+
+
 .column {
     float: left;
-    padding: 6px;
 }
 
 .one-third {
@@ -70,6 +92,10 @@ button#randomize {
     margin-top: 10px;
 }
 
+.file-select {
+    display: flex;
+}
+
 #input-file {
     margin-bottom: 3px;
 }
@@ -79,14 +105,40 @@ button#randomize {
     width: 110px;
 }
 
+#input-file label:first-of-type,
+#output-file label:first-of-type,
+.log-subsection label:first-of-type,
+#seed {
+    width: 60px;
+    margin: 0px 15px 0px 5px;
+    text-align: right;
+    font-weight: bold;
+    height: 30px;
+    line-height: 30px;
+    flex-shrink: 0;
+}
+
 #log-seed-section {
     display: flex;
     flex-direction: column;
+    margin: 8px 0px 0px;
 }
 
-#seed {
+.seed-subsection {
     display: flex;
     align-items: center;
+    margin-bottom: 5px;
+}
+
+.log-subsection {
+    display: flex;
+    line-height: 32px;
+}
+
+#log-seed-section .log-subsection > * {
+    height: 32px;
+    margin-bottom: 0px;
+    margin-right: 15px;
 }
 
 span.fileName {
@@ -120,13 +172,13 @@ hr {
 div.category {
     display: flex;
     flex-direction: column;
-    margin: 10px 0px 0px;
+    margin: 12px 6px;
     padding: 0px 10px;
 }
 
 h1.category {
     font-size: 15px;
-    text-align: center;
+    margin-left: 15px;
     background-color: inherit;
     padding-top: 5px;
 }
