@@ -6,6 +6,7 @@ import argparse
 import json
 import sys
 from builtins import input
+from digimon.data import levels
 from log.logger import Logger
 from digimon.handler import DigimonWorldHandler
 
@@ -74,7 +75,21 @@ if( config[ 'techs' ][ 'Enabled' ] ):
                                effectChance=config[ 'techs' ][ 'EffectChance' ] )
 
 if( config[ 'starter' ][ 'Enabled' ] ):
-    handler.randomizeStarters( useWeakestTech=config[ 'starter' ][ 'UseWeakestTech' ] )
+    #Use true/false values as a mask against the list of levels
+    #to get a list of levels that are enabled
+    levelsMask = [ 
+        config[ 'starter' ][ 'Fresh' ], 
+        config[ 'starter' ][ 'InTraining' ],
+        config[ 'starter' ][ 'Rookie' ],
+        config[ 'starter' ][ 'Champion' ],
+        config[ 'starter' ][ 'Ultimate' ]
+    ]
+    levelValues = list( levels.keys() )
+
+    handler.randomizeStarters( 
+        useWeakestTech=config[ 'starter' ][ 'UseWeakestTech' ],
+        allowedLevels=[ b for a, b in zip( levelsMask, levelValues ) if a ]
+    )
 
 if( config[ 'recruitment' ][ 'Enabled' ] ):
     handler.randomizeRecruitments()

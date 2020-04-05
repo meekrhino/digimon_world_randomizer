@@ -1662,22 +1662,26 @@ class DigimonWorldHandler:
                                                              tech.learnChance[ 2 ] ) )
 
 
-    def randomizeStarters( self, useWeakestTech=True ):
+    def randomizeStarters( self, useWeakestTech=True, allowedLevels=[ data.levelsByName[ 'ROOKIE' ] ] ):
         """
         Set starters to two random different rookie Digimon.
         """
 
         self.logger.logChange( self.logger.getHeader( 'Randomize Starters' ) )
 
+        allowedSet = []
+        for level in allowedLevels:
+            allowedSet += self.getPlayableDigimonByLevel( level )
+
         prevFirst = self.starterID[ 0 ]
-        firstDigi = data.rookies[ random.randint( 0, len( data.rookies ) - 1) ]
+        firstDigi = allowedSet[ random.randint( 0, len( allowedSet ) - 1) ]
         while firstDigi == prevFirst:
-            firstDigi = data.rookies[ random.randint( 0, len( data.rookies ) - 1 ) ]
+            firstDigi = allowedSet[ random.randint( 0, len( allowedSet ) - 1 ) ]
 
         prevSecond = self.starterID[ 1 ]
         secondDigi = firstDigi
         while secondDigi == firstDigi or secondDigi == prevSecond:
-            secondDigi = data.rookies[ random.randint( 0, len( data.rookies ) - 1 ) ]
+            secondDigi = allowedSet[ random.randint( 0, len( allowedSet ) - 1 ) ]
 
         self.starterID[ 0 ] = firstDigi
         self.logger.logChange( 'First starter set to ' + self.digimonData[ firstDigi ].name )

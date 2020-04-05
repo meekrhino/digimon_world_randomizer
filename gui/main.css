@@ -56,6 +56,10 @@ body {
     height: 100%;
 }
 
+.flex {
+    display: flex;
+    flex-direction: column;
+}
 
 .column {
     float: left;
@@ -189,12 +193,19 @@ h1.category {
 }
 
 /* Element styling */
-.element-slider {
+.element.slider {
     margin-left: 8px;
+    min-width: 110px;
 }
 
-.element-option {
+.element.option {
     margin-left: 10px;
+}
+
+/* Special styling */
+#misc-patches {
+    flex-wrap: wrap;
+    height: 140px;
 }
 
 /* Terminal Styling */

@@ -1,6 +1,15 @@
 import { InputVariation, SectionElement } from "./ElementContainer"
 import * as Main from "./MainModel"
 
+/* Levels */
+export enum Level {
+    Fresh = 1,
+    InTraining,   
+    Rookie,     
+    Champion,
+    Ultimate,
+}
+
 /* Starter */
 export const starterTooltip: string = 
    `Enable starter randomization.  This will select two random rookies to replace
@@ -15,7 +24,37 @@ export const starterElements: SectionElement<Main.StarterSettings>[] = [
        `When this is enabled, the randomized starter will receive
         the lowest tier damaging move that it can use.  NOTE: this
         does not mean the WEAKEST tech, it means the first tech you
-        would learn from brain training (e.g. Spit Fire, Tear Drop).` }
+        would learn from brain training (e.g. Spit Fire, Tear Drop).` },
+    { attribute: "Fresh",
+        inputType: InputVariation.Checkbox,
+        label: "Include Fresh",
+        tooltip: 
+            `Include Fresh digimon in starter options.  If no
+             options are selected, only rookies will be included.` },
+    { attribute: "InTraining",
+        inputType: InputVariation.Checkbox,
+        label: "Include In-Training",
+        tooltip: 
+            `Include InTraining digimon in starter options.  If no
+             options are selected, only rookies will be included.` },
+    { attribute: "Rookie",
+        inputType: InputVariation.Checkbox,
+        label: "Include Rookie",
+        tooltip: 
+            `Include Rookie digimon in starter options.  If no
+             options are selected, only rookies will be included.` },
+    { attribute: "Champion",
+        inputType: InputVariation.Checkbox,
+        label: "Include Champion",
+        tooltip: 
+            `Include Champion digimon in starter options.  If no
+             options are selected, only rookies will be included.` },
+    { attribute: "Ultimate",
+        inputType: InputVariation.Checkbox,
+        label: "Include Ultimate",
+        tooltip: 
+            `Include Ultimate digimon in starter options.  If no
+             options are selected, only rookies will be included.` }
 ]
 
 /* Digimon Data */
@@ -46,8 +85,8 @@ export const digimomDataElements: SectionElement<Main.DigimonSettings>[] = [
         lower value drops to similar value.` },
   { attribute: "ValuableItemCutoff",
     inputType: InputVariation.Slider,
-    minVal: 0,
-    maxVal: 10000,
+    minVal: Main.ItemValueMin,
+    maxVal: Main.ItemValueMax,
     tooltip: 
        `Set the threshold value for the cutoff between high and
         and low value items.  Maximum and minimum vlues for this
@@ -214,8 +253,8 @@ export const mapItemElements: SectionElement<Main.MapItemSettings>[] = [
         item spawns being generally more valuable than common ones.` },
   { attribute: "ValuableItemCutoff",
     inputType: InputVariation.Slider,
-    minVal: 0,
-    maxVal: 10000,
+    minVal: Main.ItemValueMin,
+    maxVal: Main.ItemValueMax,
     tooltip: 
        `Set the threshold value for the cutoff between high and
         and low value items.  Maximum and minimum vlues for this
@@ -338,8 +377,8 @@ export const patchElements: SectionElement<Main.PatchSettings>[] = [
         Otamamon appearing on their respective maps` },
   { attribute: "SpawnRate",
     inputType: InputVariation.Slider,
-    minVal: 1,
-    maxVal: 100,
+    minVal: Main.SpawnRateMin,
+    maxVal: Main.SpawnRateMax,
     label: "Recruit Spawn Rate",
     tooltip: 
        `The percentage chance for the digimon to spawn.  Disable to use vanilla

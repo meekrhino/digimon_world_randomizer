@@ -10,6 +10,7 @@ export interface SectionProps<T> {
     tooltip         : string
     disabled        : boolean
     data            : T
+    wrapperID?      : string
     elements?       : SectionElement<T>[]
 }
 
@@ -20,7 +21,9 @@ export default class SectionContainer<T extends Toggleable> extends Component<Se
 
     render() {
         return <Card id={this.props.title + "Container"} className="category">
-                    <h1 className="category">{this.props.title}</h1>
+                    <h1 className="category">
+                        {this.props.title}
+                    </h1>
                     <Tooltip 
                         popoverClassName="tooltip-popover"
                         content={this.props.tooltip}
@@ -34,23 +37,27 @@ export default class SectionContainer<T extends Toggleable> extends Component<Se
                                 this.forceUpdate()
                             }}/>
                     </Tooltip>
-                    {this.props.elements?.map( ( elem, index ) => 
-                        <ElementContainer
-                            key={index}
-                            inputType={elem.inputType}
-                            value={this.props.data[ elem.attribute ]}
-                            setValue={( value: any ) => {
-                                this.props.data[ elem.attribute ] = value
-                                this.forceUpdate()
-                            }}
-                            minVal={elem.minVal}
-                            maxVal={elem.maxVal}
-                            enabled={this.props.data.Enabled && !this.props.disabled}
-                            label={elem.label}
-                            tooltip={elem.tooltip}
-                            multiSelect={elem.multiSelect}
-                            multiSelectLabel={elem.multiSelectLabel}/>
-                    )}
+                    <div 
+                        className={`flex`}
+                        id={this.props.wrapperID || this.props.title}>
+                        {this.props.elements?.map( ( elem, index ) => 
+                            <ElementContainer
+                                key={index}
+                                inputType={elem.inputType}
+                                value={this.props.data[ elem.attribute ]}
+                                setValue={( value: any ) => {
+                                    this.props.data[ elem.attribute ] = value
+                                    this.forceUpdate()
+                                }}
+                                minVal={elem.minVal}
+                                maxVal={elem.maxVal}
+                                enabled={this.props.data.Enabled && !this.props.disabled}
+                                label={elem.label}
+                                tooltip={elem.tooltip}
+                                multiSelect={elem.multiSelect}
+                                multiSelectLabel={elem.multiSelectLabel}/>
+                        )}
+                    </div>
                 </Card>
     }
 }

@@ -38,7 +38,7 @@ export default function ElementContainer( props: Props ) {
         case InputVariation.Checkbox:
             input = <Checkbox
                         checked={props.value}
-                        className="element-checkbox"
+                        className="element checkbox"
                         disabled={!props.enabled}
                         label={props.label}
                         onChange={() => {
@@ -49,12 +49,12 @@ export default function ElementContainer( props: Props ) {
         case InputVariation.Slider:
             const stepSize = props.maxVal / 20
             input = <Slider
-                        className="element-slider"
+                        className="element slider"
                         disabled={!props.enabled}
                         min={props.minVal}
                         max={props.maxVal}
                         stepSize={stepSize}
-                        labelStepSize={props.maxVal}
+                        labelStepSize={props.maxVal - props.minVal}
                         showTrackFill={false}
                         onChange={( value ) => {
                             props.setValue( value )
@@ -70,7 +70,7 @@ export default function ElementContainer( props: Props ) {
                         selectedValue={props.value}>
                         {props.multiSelect.map( ( opt, index ) =>
                             <Radio
-                                className="element-option"
+                                className="element option"
                                 key={`${props.multiSelectLabel[ index ]}-${index}`}
                                 disabled={!props.enabled}
                                 value={opt}
@@ -81,7 +81,7 @@ export default function ElementContainer( props: Props ) {
     }
 
     return  <Tooltip 
-                popoverClassName="tooltip-popover"
+                popoverClassName="tooltip popover"
                 content={props.tooltip}
                 hoverOpenDelay={750}>
                 {input}

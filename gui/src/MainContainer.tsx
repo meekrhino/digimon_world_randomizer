@@ -194,14 +194,14 @@ export default class MainContainer extends Component<Props, State> {
                                     data={this.data.Digimon}
                                     tooltip={Constants.digimonDataTooltip}
                                     elements={Constants.digimomDataElements}/>
+                            </div>
+                            <div className="column one-half">
                                 <SectionContainer 
                                     title="Digivolutions" 
                                     disabled={this.inProgress}
                                     data={this.data.Evolution}
                                     tooltip={Constants.evolutionTooltip}
                                     elements={Constants.evolutionElements}/>
-                            </div>
-                            <div className="column one-half">
                                 <SectionContainer 
                                     title="Technique Data" 
                                     disabled={this.inProgress}
@@ -241,18 +241,16 @@ export default class MainContainer extends Component<Props, State> {
                     
             case Page.Progress:
                 body =  <div id="data-section">
-                            <div className="column one-half">
-                                <SectionContainer 
-                                    title="Technique Gifts" 
-                                    disabled= {this.inProgress}
-                                    data={this.data.TechGifts}
-                                    tooltip={Constants.techGiftTooltip}/>
-                            </div>
                             <SectionContainer 
                                 title="Recruitment" 
                                 disabled= {this.inProgress}
                                 data={this.data.Recruitment}
                                 tooltip={Constants.recruitTooltip}/>
+                            <SectionContainer 
+                                title="Technique Gifts" 
+                                disabled= {this.inProgress}
+                                data={this.data.TechGifts}
+                                tooltip={Constants.techGiftTooltip}/>
                         </div>
                 break
 
@@ -263,6 +261,7 @@ export default class MainContainer extends Component<Props, State> {
                                 disabled= {this.inProgress}
                                 data={this.data.Patches}
                                 tooltip={Constants.patchTooltip}
+                                wrapperID="misc-patches"
                                 elements={Constants.patchElements}/>
                         </div>
                 break

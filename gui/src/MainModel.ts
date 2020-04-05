@@ -48,6 +48,11 @@ export interface TechSettings extends Toggleable {
 
 export interface StarterSettings extends Toggleable {
     UseWeakestTech      : boolean
+    Fresh               : boolean
+    InTraining          : boolean
+    Rookie              : boolean
+    Champion            : boolean
+    Ultimate            : boolean
 }
 
 export interface RecruitmentSettings extends Toggleable {
@@ -97,7 +102,7 @@ export interface PatchSettings extends Toggleable {
 export const ItemValueMax = 10000
 export const ItemValueMin = 0
 export const SpawnRateMax = 100
-export const SpawnRateMin = 0
+export const SpawnRateMin = 1
 
 export class MainModel {
     constructor( raw?: string ) {
@@ -129,7 +134,12 @@ export class MainModel {
 
         this.Starter = {
             Enabled             : false,
-            UseWeakestTech      : false
+            UseWeakestTech      : false,
+            Fresh               : false,
+            InTraining          : false,
+            Rookie              : true,
+            Champion            : false,
+            Ultimate            : false
         }
 
         this.Recruitment = {
@@ -172,7 +182,7 @@ export class MainModel {
             JukeboxGlitch       : false,
             IncreaseLearnChance : false,
             SpawnRateEnabled    : false,
-            SpawnRate           : 0,
+            SpawnRate           : SpawnRateMin,
             ShowHashIntro       : false,
             SkipIntro           : false,
             Woah                : false,
@@ -206,7 +216,7 @@ export class MainModel {
         this.General        = data.general
         this.Digimon        = data.digimon
         this.Techs          = data.techs      
-        this.Starter        = data.starter    
+        this.Starter        = data.starter
         this.Recruitment    = data.recruitment
         this.Chests         = data.chests     
         this.Tokomon        = data.tokomon    
@@ -230,6 +240,14 @@ export class MainModel {
             evolution       : this.Evolution,  
             patches         : this.Patches
         }
+
+        if( !this.Starter.Fresh
+         && !this.Starter.InTraining
+         && !this.Starter.Rookie
+         && !this.Starter.Champion
+         && !this.Starter.Ultimate ) {
+             raw.starter.Rookie = true
+         }
 
         raw.general.Hash = hash( raw, { algorithm: "md5", excludeKeys: ( key: any ) => {
             if( key == "InputFile" || key == "OutputFile" || key == "Hash" ) {
