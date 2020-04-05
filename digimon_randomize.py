@@ -2,8 +2,8 @@
 # Copyright: please don't steal this that is all
 
 import random
-import configparser
 import argparse
+import json
 import sys
 from builtins import input
 from log.logger import Logger
@@ -11,38 +11,31 @@ from digimon.handler import DigimonWorldHandler
 
 #Parse settings argument
 args = argparse.ArgumentParser( description='Randomize Digimon World' )
-args.add_argument( '-settings', required=True, help='Settings INI file to use to configure the randomization.' )
+args.add_argument( '-settings', required=True, help='JSON settings string that configures the operation' )
 settings = args.parse_args( sys.argv[1:] ).settings
 
 #Load settings from specified file
 if( settings == '' ):
     print( 'Settings file must be provided at command line.  Use [-h] for help.' )
     exit()
-config = configparser.ConfigParser( allow_no_value=True )
-config.read( settings )
+config = json.loads( settings )
 
 verbose = config[ 'general' ][ 'LogLevel' ]
 logger = Logger( verbose, filename='randomize.log' )
 
-if( config[ 'general' ][ 'Input' ] != '' ):
-    inFile = config[ 'general' ][ 'Input' ]
+if( config[ 'general' ][ 'InputFile' ] != '' ):
+    inFile = config[ 'general' ][ 'InputFile' ]
 else:
-    logger.fatalError( 'Must provide file name in settings "Input".' )
+    logger.fatalError( 'ROM file section is required' )
     exit()
 
 #If an output file was Set, use that as the output.
 #Otherwise, read and write the same file
-if( config[ 'general' ][ 'Output' ] != '' ):
-    outFile = config[ 'general' ][ 'Output' ]
+if( config[ 'general' ][ 'OutputFile' ] != '' ):
+    outFile = config[ 'general' ][ 'OutputFile' ]
 else:
-    outFile = inFile
-
-#Give the user a warning when we are going to overwrite the base ROM
-#if( outFile == inFile ):
-#    qa = input( 'Warning: currently set to overwrite the input file.\nAre you sure you want to continue? (y/n)' )
-#    if( qa != 'y' ):
-#        print( 'Exiting.  Please update settings.ini \'Output\' to select a different output location.' )
-#        exit()
+    logger.fatalError( 'Destination file section is required' )
+    exit()
 
 print( 'Reading data from ' + inFile + '...' )
 sys.stdout.flush()
@@ -60,91 +53,98 @@ else:
 print( 'Modifying data...' )
 sys.stdout.flush()
 
-if( config[ 'digimon' ].getboolean( 'Enabled' ) ):
-    pricecfg =  config[ 'digimon' ][ 'ValuableItemCutoff' ]
+if( config[ 'digimon' ][ 'Enabled' ] ):
+    if( config[ 'digimon' ][ 'MatchValue' ] ):
+        pricecfg =  config[ 'digimon' ][ 'ValuableItemCutoff' ]
+    else:
+        pricecfg = "10000"
     try:
-        handler.randomizeDigimonData( dropItem=config[ 'digimon' ].getboolean( 'DropItem' ),
-                                      dropRate=config[ 'digimon' ].getboolean( 'DropRate' ),
+        handler.randomizeDigimonData( dropItem=config[ 'digimon' ][ 'DroppedItem' ],
+                                      dropRate=config[ 'digimon' ][ 'DropRate' ],
                                       price=int( pricecfg ) )
     except ValueError:
-        logger.fatalError( 'Item price cutoff must be an integer. ' + str( seedcfg ) + ' is not a valid value.' )
+        logger.fatalError( 'Item price cutoff must be an integer. ' + str( pricecfg ) + ' is not a valid value.' )
 
-if( config[ 'techs' ].getboolean( 'Enabled' ) ):
-    handler.randomizeTechData( power=config[ 'techs' ].getboolean( 'Power' ),
-                               mode=config[ 'techs' ][ 'mode' ],
-                               cost=config[ 'techs' ].getboolean( 'Cost' ),
-                               accuracy=config[ 'techs' ].getboolean( 'Accuracy' ),
-                               effect=config[ 'techs' ].getboolean( 'Effect' ),
-                               effectChance=config[ 'techs' ].getboolean( 'EffectChance' ) )
+if( config[ 'techs' ][ 'Enabled' ] ):
+    handler.randomizeTechData( power=config[ 'techs' ][ 'Power' ],
+                               mode=config[ 'techs' ][ 'RandomizationMode' ],
+                               cost=config[ 'techs' ][ 'Cost' ],
+                               accuracy=config[ 'techs' ][ 'Accuracy' ],
+                               effect=config[ 'techs' ][ 'Effect' ],
+                               effectChance=config[ 'techs' ][ 'EffectChance' ] )
 
-if( config[ 'starter' ].getboolean( 'Enabled' ) ):
-    handler.randomizeStarters( useWeakestTech=config[ 'starter' ].getboolean( 'UseWeakestTech' ) )
+if( config[ 'starter' ][ 'Enabled' ] ):
+    handler.randomizeStarters( useWeakestTech=config[ 'starter' ][ 'UseWeakestTech' ] )
 
-if( config[ 'recruitment' ].getboolean( 'Enabled' ) ):
+if( config[ 'recruitment' ][ 'Enabled' ] ):
     handler.randomizeRecruitments()
 
-if( config[ 'chests' ].getboolean( 'Enabled' ) ):
-    handler.randomizeChestItems( allowEvo=config[ 'chests' ].getboolean( 'AllowEvo' ) )
+if( config[ 'chests' ][ 'Enabled' ] ):
+    handler.randomizeChestItems( allowEvo=config[ 'chests' ][ 'AllowEvolutionItems' ] )
 
-if( config[ 'tokomon' ].getboolean( 'Enabled' ) ):
-    handler.randomizeTokomonItems( consumableOnly=config[ 'tokomon' ].getboolean( 'ConsumableOnly' ) )
+if( config[ 'tokomon' ][ 'Enabled' ] ):
+    handler.randomizeTokomonItems( consumableOnly=config[ 'tokomon' ][ 'ConsumableOnly' ] )
 
-if( config[ 'techgifts' ].getboolean( 'Enabled' ) ):
+if( config[ 'techgifts' ][ 'Enabled' ] ):
     handler.randomizeTechGifts()
 
-if( config[ 'mapItems' ].getboolean( 'Enabled' ) ):
-    pricecfg =  config[ 'mapItems' ][ 'ValuableItemCutoff' ]
+if( config[ 'mapItems' ][ 'Enabled' ] ):
+    if( config[ 'mapItems' ][ 'MatchValue' ] ):
+        pricecfg = config[ 'mapItems' ][ 'ValuableItemCutoff' ]
+    else:
+        pricecfg = "10000"
     try:
-        handler.randomizeMapSpawnItems( foodOnly=config[ 'mapItems' ].getboolean( 'FoodOnly' ), price=int( pricecfg ) )
+        handler.randomizeMapSpawnItems( foodOnly=config[ 'mapItems' ][ 'FoodOnly' ], price=int( pricecfg ) )
     except ValueError:
-        logger.fatalError( 'Item price cutoff must be an integer. ' + str( seedcfg ) + ' is not a valid value.' )
+        logger.fatalError( 'Item price cutoff must be an integer. ' + str( pricecfg ) + ' is not a valid value.' )
 
-if( config[ 'evolution' ].getboolean( 'Enabled' ) ):
-    if( config[ 'evolution' ].getboolean( 'Requirements' ) ):
+if( config[ 'evolution' ][ 'Enabled' ] ):
+    if( config[ 'evolution' ][ 'Requirements' ] ):
         handler.randomizeEvolutionRequirements()
-    handler.randomizeEvolutions( obtainAll=config[ 'evolution' ].getboolean( 'ObtainAll' ) )
-    if( config[ 'evolution' ].getboolean( 'SpecialEvos' ) ):
+    handler.randomizeEvolutions( obtainAll=config[ 'evolution' ][ 'ObtainAllMode' ] )
+    if( config[ 'evolution' ][ 'SpecialEvolutions' ] ):
         handler.randomizeSpecialEvolutions()
         handler.updateEvolutionStats()
 
-if( config[ 'patches' ].getboolean( 'FixEvoItemStatGain' ) ):
-    handler.applyPatch( 'fixEvoItems' )
+if( config[ 'patches' ][ 'Enabled' ] ):
+    if( config[ 'patches' ][ 'EvoItemStatGain' ] ):
+        handler.applyPatch( 'fixEvoItems' )
 
-if( config[ 'patches' ].getboolean( 'AllowDropQuestItems' ) ):
-    handler.applyPatch( 'allowDrop' )
+    if( config[ 'patches' ][ 'QuestItemsDroppable' ] ):
+        handler.applyPatch( 'allowDrop' )
 
-if( config[ 'patches' ].getboolean( 'Woah' ) ):
-    handler.applyPatch( 'woah' )
+    if( config[ 'patches' ][ 'Woah' ] ):
+        handler.applyPatch( 'woah' )
 
-if( config[ 'patches' ].getboolean( 'FixBrainTrainTierOne' ) ):
-    handler.applyPatch( 'learnTierOne' )
+    if( config[ 'patches' ][ 'BrainTrainTierOne' ] ):
+        handler.applyPatch( 'learnTierOne' )
 
-if( config[ 'patches' ].getboolean( 'FixGiromonJukeboxGlitch' ) ):
-    handler.applyPatch( 'giromon' )
+    if( config[ 'patches' ][ 'JukeboxGlitch' ] ):
+        handler.applyPatch( 'giromon' )
 
-if( config[ 'patches' ].getboolean( 'IncreaseTechLearnChance' ) ):
-    handler.applyPatch( 'upLearnChance' )
+    if( config[ 'patches' ][ 'IncreaseLearnChance' ] ):
+        handler.applyPatch( 'upLearnChance' )
 
-if( config[ 'patches' ].getboolean( 'Gabu' ) ):
-    handler.applyPatch( 'gabumon' )
-    
-if( config[ 'patches' ][ 'SetSpawnRate' ] != '0' ):
-    handler.applyPatch( 'spawn', int( config[ 'patches' ][ 'SetSpawnRate' ] ) )
-    
-if( config[ 'patches' ].getboolean( 'ShowHashIntro' ) ):
-    handler.applyPatch( 'hash', config[ 'general' ][ 'Hash'] )
-    
-if( config[ 'patches' ].getboolean( 'SkipIntro' ) ):
-    handler.applyPatch( 'intro' )
+    if( config[ 'patches' ][ 'Gabu' ] ):
+        handler.applyPatch( 'gabumon' )
+        
+    if( config[ 'patches' ][ 'SpawnRateEnabled' ] != '0' ):
+        handler.applyPatch( 'spawn', int( config[ 'patches' ][ 'SpawnRate' ] ) )
+        
+    if( config[ 'patches' ][ 'ShowHashIntro' ] ):
+        handler.applyPatch( 'hash', config[ 'general' ][ 'Hash'] )
+        
+    if( config[ 'patches' ][ 'SkipIntro' ] ):
+        handler.applyPatch( 'intro' )
 
-if( config[ 'patches' ].getboolean( 'UnlockAreas' ) ):
-    handler.applyPatch( 'unlock' )
+    if( config[ 'patches' ][ 'UnlockAreas' ] ):
+        handler.applyPatch( 'unlock' )
 
-if( config[ 'patches' ].getboolean( 'UnrigSlots' ) ):
-    handler.applyPatch( 'slots' )
+    if( config[ 'patches' ][ 'UnrigSlots' ] ):
+        handler.applyPatch( 'slots' )
 
-if( config[ 'patches' ].getboolean( 'Softlock' ) ):
-    handler.applyPatch( 'softlock' )
+    if( config[ 'patches' ][ 'Softlock' ] ):
+        handler.applyPatch( 'softlock' )
 
 
 print( 'Writing to ' + outFile + '...' )

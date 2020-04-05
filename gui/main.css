@@ -46,6 +46,7 @@ body {
 
 #data-section {
     overflow-y: hidden;
+    height: 495px;
 }
 
 .fill {
@@ -94,6 +95,10 @@ button#randomize {
 
 .file-select {
     display: flex;
+}
+
+.file-select-label:not(.unselected) {
+    direction: rtl;
 }
 
 #input-file {

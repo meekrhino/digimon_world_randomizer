@@ -23,7 +23,7 @@ class Logger:
 
         self.filename = filename
         if( self.filename is not None ):
-            with open( self.filename, 'w' ) as file:
+            with open( self.filename, 'w' ):
                 self.logAlways( self.getHeader( 'Digimon World Randomization Log' ) )
                 self.logAlways( 'Logging mode is set to \'' + verbose + '\'' )
 

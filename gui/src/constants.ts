@@ -338,12 +338,12 @@ export const patchElements: SectionElement<Main.PatchSettings>[] = [
         Otamamon appearing on their respective maps` },
   { attribute: "SpawnRate",
     inputType: InputVariation.Slider,
-    minVal: 0,
+    minVal: 1,
     maxVal: 100,
     label: "Recruit Spawn Rate",
     tooltip: 
-       `The percentage chance for the digimon to spawn.  When set to zero or
-        disabled, behavior will match vanilla.` },
+       `The percentage chance for the digimon to spawn.  Disable to use vanilla
+        behavior.` },
   { attribute: "Softlock",
     inputType: InputVariation.Checkbox,
     label: "Fix Softlocks",
