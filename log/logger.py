@@ -22,6 +22,8 @@ class Logger:
         self.error = False
 
         self.filename = filename
+        self.file = None
+
         if( self.filename is not None ):
             with open( self.filename, 'w' ):
                 self.logAlways( self.getHeader( 'Digimon World Randomization Log' ) )
@@ -80,7 +82,18 @@ class Logger:
 
         self.logError( str )
         print( 'Program ended with errors.  See log file for errors.' )
+        self.close()
         exit()
+
+
+    def close( self ):
+        """
+        Close the logging file.
+        """
+
+        self.logAlways( self.getHeader( 'End of Log' ) )
+        if( self.file is not None ):
+            self.file.close()
 
 
     def logAlways( self, str ):
@@ -93,8 +106,9 @@ class Logger:
         """
 
         if( self.filename is not None ):
-            with open( self.filename, 'a' ) as file:
-                file.write( str + '\n' )
+            if( self.file is None ):
+                self.file = open( self.filename, 'a' )
+            self.file.write( str + '\n' )
         else:
             print( str )
 

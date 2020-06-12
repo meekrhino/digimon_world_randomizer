@@ -97,12 +97,13 @@ button#randomize {
     margin-top: 10px;
 }
 
-.file-select {
+.file-select-row {
     display: flex;
 }
 
-.file-select-label:not(.unselected) {
+.file-select:not(.unselected) span {
     direction: rtl;
+    color: black;
 }
 
 #input-file {
@@ -130,7 +131,7 @@ button#randomize {
 #log-seed-section {
     display: flex;
     flex-direction: column;
-    margin: 8px 0px 0px;
+    margin: 3px 0px 0px;
 }
 
 .seed-subsection {
@@ -231,9 +232,10 @@ h1.category {
 }
 
 .terminalOutput .terminalTextBox {
-    height: calc(100% - 36px);
+    height: calc(100% - 32px);
+    width: calc(100% - 2px);
+    margin-top: 30px;
     overflow-y: auto;
-    padding: 0px 8px;
     text-align: left;
     white-space: pre-wrap;
     font-family: 'Courier New', Courier, monospace;

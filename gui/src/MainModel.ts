@@ -1,4 +1,5 @@
 import * as hash from "object-hash"
+import * as path from "path"
 
 /* Local Types */
 interface RawSettings {
@@ -213,7 +214,10 @@ export class MainModel {
     fromJSON = ( json: string ) => {
         const data = JSON.parse( json ) as RawSettings
 
-        this.General        = data.general
+        this.General        = { 
+            ...data.general, 
+            OutputFile: path.parse( data.general.OutputFile ).base
+        }
         this.Digimon        = data.digimon
         this.Techs          = data.techs      
         this.Starter        = data.starter
@@ -227,8 +231,16 @@ export class MainModel {
     }
 
     toJSON = (): string => {
+        let outPath = path.join( path.parse( this.General.InputFile ).dir, this.General.OutputFile )
+        if( path.parse( outPath ).ext !== "bin" ) {
+            outPath = outPath + ".bin"
+        }
+
         let raw: RawSettings = {
-            general         : this.General,
+            general         : {
+                ...this.General,
+                OutputFile: outPath
+            },
             digimon         : this.Digimon,
             techs           : this.Techs,      
             starter         : this.Starter,    

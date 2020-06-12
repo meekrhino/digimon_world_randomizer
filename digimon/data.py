@@ -201,7 +201,6 @@ evoitemPatchFormat = '<B'
 
 #"Woah!" text on item pickup
 woahPatchOffset = 0x14D76EF4
-woahPatchValue = 'Oh shit!'.encode( 'ascii' )
 woahPatchFormat = '<10s'
 
 #Gabumon enemy stats

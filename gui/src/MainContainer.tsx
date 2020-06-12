@@ -7,7 +7,7 @@ import * as Path from "path"
 import * as fs from "fs"
 
 import SectionContainer from "./SectionContainer"
-import { Button, Card, Elevation, Intent, RadioGroup, Radio, FileInput, NumericInput, Tabs, Tab, Label } from '@blueprintjs/core'
+import { Button, Card, Elevation, Intent, RadioGroup, Radio, FileInput, NumericInput, Tabs, Tab, Label, InputGroup } from '@blueprintjs/core'
 import * as Main from './MainModel'
 import * as Constants from './constants'
 
@@ -39,21 +39,26 @@ export default class MainContainer extends Component<Props, State> {
     /* Private Variables */
     private data                    = new Main.MainModel()
     private inProgress  : boolean   = false
+    private showTerminal: boolean   = false
     private terminal    : any       = null
     private scrollDown  : boolean   = false
 
     /* select file to use for base ROM */
     private onMenuSelectROM = ( e: React.FormEvent<HTMLInputElement> ): void => {
-        let path = e.currentTarget.files[ 0 ].path
+        let path = e.currentTarget.files?.[ 0 ]?.path
 
-        this.data.General.InputFile = path
+        if( path ) {
+            this.data.General.InputFile = path
+            this.forceUpdate()
+        }
     }
 
     /* select location to output randomized ROM */
     private onMenuSelectOutput = ( e: React.FormEvent<HTMLInputElement> ): void => {
-        let path = e.currentTarget.files[ 0 ].path
+        let path = e.currentTarget.value
 
         this.data.General.OutputFile = path
+        this.forceUpdate()
     }
 
     /* select file to save settings to */
@@ -116,6 +121,7 @@ export default class MainContainer extends Component<Props, State> {
 
     /* Handle capturing terminal output */
     private addToOutput = ( text: string, name?: string ) => {
+        console.log( text )
         let output = this.state.terminalOut;
         let newDiv = <div key={output.length} 
                           className={"terminalText" + ( name? ( " " + name ) : "" )}>
@@ -124,8 +130,8 @@ export default class MainContainer extends Component<Props, State> {
 
         output.push( newDiv )
 
-        this.setState( { terminalOut: output } )
         this.scrollDown = true
+        this.forceUpdate()
     }
 
     /* Notification callback for end of execution */
@@ -151,6 +157,7 @@ export default class MainContainer extends Component<Props, State> {
             cwd: this.props.rootDirectory,
             env
         }
+        this.showTerminal = true
 
         if( this.data.General.InputFile == "" ) {
             this.addToOutput( "ERR: must select a ROM input file", "error" )
@@ -173,6 +180,11 @@ export default class MainContainer extends Component<Props, State> {
         proc.stdout.on('data', (chunk) => {
             let textChunk = chunk.toString();
             this.addToOutput( textChunk )
+        })
+
+        proc.stderr.on('data', (chunk) => {
+            let textChunk = chunk.toString();
+            this.addToOutput( textChunk, "error" )
         })
     }
 
@@ -272,7 +284,7 @@ export default class MainContainer extends Component<Props, State> {
                     {body}
                     <div 
                         className="terminalOutput"
-                        hidden={!this.inProgress}>
+                        hidden={!this.showTerminal}>
                         <span className="terminalHeader">
                             Execution Output
                         </span>
@@ -300,29 +312,29 @@ export default class MainContainer extends Component<Props, State> {
                     <Card id="file-section-wrapper" elevation={Elevation.TWO}>
                         <div id="file-section">
                             <div className="fill column two-thirds" >
-                                <div id="input-file" className="file-select" >
+                                <div id="input-file" className="file-select-row" >
                                     <Label>
                                         ROM:
                                     </Label>
                                     <FileInput
-                                        className="file-select"
+                                        className={`file-select ${this.data.General.InputFile? "" : "unselected"}`}
                                         id="input-file-select"
                                         disabled={this.inProgress}
                                         text={this.data.General.InputFile || "Select ROM file..."}
                                         fill={true}
                                         onInputChange={this.onMenuSelectROM}/>
                                 </div>
-                                <div id="output-file" className="file-select">
+                                <div id="output-file" className="file-select-row">
                                     <Label>
                                         Output:
                                     </Label>
-                                    <FileInput
+                                    <InputGroup
                                         className="file-select"
-                                        id="output-file-select"
+                                        placeholder="Destination file name..."
                                         disabled={this.inProgress}
-                                        text={this.data.General.InputFile || "Select destination..."}
-                                        fill={true}
-                                        onInputChange={this.onMenuSelectOutput}/>
+                                        value={this.data.General.OutputFile}
+                                        onChange={this.onMenuSelectOutput}
+                                        fill={true}/>
                                 </div>
                                 <div id="log-seed-section"> 
                                     <div className="seed-subsection">

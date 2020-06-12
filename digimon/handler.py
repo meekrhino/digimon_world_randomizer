@@ -738,7 +738,7 @@ class DigimonWorldHandler:
     # p     char[]
     # P     void *
 
-    def __init__( self, filename, logger, seed=None ):
+    def __init__( self, filename, logger: Logger, seed=None ):
         """
         Load ROM data into cache so that it can be read
         and manipulated.
@@ -757,6 +757,11 @@ class DigimonWorldHandler:
         if( seed == None ):
             self.randomseed = random.randrange( sys.maxsize )
         random.seed( a=self.randomseed )
+
+        #Advance the RNG when logging is set to race to
+        #prevent cheating
+        if( logger.verbose == 'race' ):
+            random.randint( 0, 1 )
 
         self.inFilename = filename
 
@@ -1683,11 +1688,11 @@ class DigimonWorldHandler:
         while secondDigi == firstDigi or secondDigi == prevSecond:
             secondDigi = allowedSet[ random.randint( 0, len( allowedSet ) - 1 ) ]
 
-        self.starterID[ 0 ] = firstDigi
-        self.logger.logChange( 'First starter set to ' + self.digimonData[ firstDigi ].name )
+        self.starterID[ 0 ] = firstDigi.id
+        self.logger.logChange( 'First starter set to ' + firstDigi.name )
 
-        self.starterID[ 1 ] = secondDigi
-        self.logger.logChange( 'Second starter set to ' + self.digimonData[ secondDigi ].name )
+        self.starterID[ 1 ] = secondDigi.id
+        self.logger.logChange( 'Second starter set to ' +  secondDigi.name )
 
         self._setStarterTechs( useWeakestTech )
 
@@ -2328,7 +2333,7 @@ class DigimonWorldHandler:
         if( level == data.levelsByName[ 'ROOKIE' ] ):
             numStats = 3
 
-            for i in range( 0, numStats ):
+            for _ in range( 0, numStats ):
                 val = random.choice( statsToChooseFrom )
                 statsToChooseFrom.remove( val )
                 stats.append( val )
@@ -2341,7 +2346,7 @@ class DigimonWorldHandler:
         elif( level == data.levelsByName[ 'CHAMPION' ] ):
             numStats = random.randint( 1, 4 )
 
-            for i in range( 0, numStats ):
+            for _ in range( 0, numStats ):
                 val = random.choice( statsToChooseFrom )
                 statsToChooseFrom.remove( val )
                 stats.append( val )
@@ -2352,7 +2357,7 @@ class DigimonWorldHandler:
         elif( level == data.levelsByName[ 'ULTIMATE' ] ):
             numStats = random.randint( 4, 6 )
 
-            for i in range( 0, numStats ):
+            for _ in range( 0, numStats ):
                 val = random.choice( statsToChooseFrom )
                 statsToChooseFrom.remove( val )
                 stats.append( val )
@@ -2410,16 +2415,16 @@ class DigimonWorldHandler:
         self.logger.logChange( 'Patched quest items to be dropable from the menu.' )
 
 
-    def _applyPatchWoah( self, file ):
+    def _applyPatchWoah( self, file, text="Oh shit!" ):
         """
         Change "Woah!" to something else.
         """
 
         util.writeDataToFile( file,
                               data.woahPatchOffset,
-                              struct.pack( data.woahPatchFormat, data.woahPatchValue ),
+                              struct.pack( data.woahPatchFormat, text[ :8 ].encode( 'ascii' ) ),
                               self.logger )
-        self.logger.logChange( 'Patched "Woah!" to be something else.' )
+        self.logger.logChange( 'Patched "Woah!" to be "' + text + '".' )
 
 
     def _applyPatchLearnTierOne( self, file ):

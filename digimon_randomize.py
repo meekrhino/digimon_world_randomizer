@@ -4,11 +4,16 @@
 import random
 import argparse
 import json
+from json import JSONDecodeError
 import sys
 from builtins import input
 from digimon.data import levels
 from log.logger import Logger
 from digimon.handler import DigimonWorldHandler
+
+print( "XXXXXXXXXXXXXXXXXXXXXXXXX" )
+print( sys.argv )
+print( "XXXXXXXXXXXXXXXXXXXXXXXXX" )
 
 #Parse settings argument
 args = argparse.ArgumentParser( description='Randomize Digimon World' )
@@ -19,7 +24,14 @@ settings = args.parse_args( sys.argv[1:] ).settings
 if( settings == '' ):
     print( 'Settings file must be provided at command line.  Use [-h] for help.' )
     exit()
-config = json.loads( settings )
+
+config = {}
+try:
+    config = json.loads( settings )
+except JSONDecodeError as err:
+    print( "Failed to parse JSON" )
+    print( err )
+    exit()
 
 verbose = config[ 'general' ][ 'LogLevel' ]
 logger = Logger( verbose, filename='randomize.log' )
@@ -28,7 +40,6 @@ if( config[ 'general' ][ 'InputFile' ] != '' ):
     inFile = config[ 'general' ][ 'InputFile' ]
 else:
     logger.fatalError( 'ROM file section is required' )
-    exit()
 
 #If an output file was Set, use that as the output.
 #Otherwise, read and write the same file
@@ -36,20 +47,17 @@ if( config[ 'general' ][ 'OutputFile' ] != '' ):
     outFile = config[ 'general' ][ 'OutputFile' ]
 else:
     logger.fatalError( 'Destination file section is required' )
-    exit()
 
 print( 'Reading data from ' + inFile + '...' )
 sys.stdout.flush()
 
-seedcfg = config[ 'general' ][ 'Seed' ]
-
-if( seedcfg == '' ):
+try:
+    seedcfg = config[ 'general' ][ 'Seed' ]
+    handler = DigimonWorldHandler( inFile, logger, seed=int( seedcfg ) )
+except ValueError:
+    logger.fatalError( 'Seed must be an integer. ' + str( seedcfg ) + ' is not a valid value.' )
+except:
     handler = DigimonWorldHandler( inFile, logger )
-else:
-    try:
-        handler = DigimonWorldHandler( inFile, logger, seed=int( seedcfg ) )
-    except ValueError:
-        logger.fatalError( 'Seed must be an integer. ' + str( seedcfg ) + ' is not a valid value.' )
 
 print( 'Modifying data...' )
 sys.stdout.flush()
@@ -100,7 +108,7 @@ if( config[ 'chests' ][ 'Enabled' ] ):
 if( config[ 'tokomon' ][ 'Enabled' ] ):
     handler.randomizeTokomonItems( consumableOnly=config[ 'tokomon' ][ 'ConsumableOnly' ] )
 
-if( config[ 'techgifts' ][ 'Enabled' ] ):
+if( config[ 'techGifts' ][ 'Enabled' ] ):
     handler.randomizeTechGifts()
 
 if( config[ 'mapItems' ][ 'Enabled' ] ):
@@ -183,4 +191,4 @@ logger.logAlways( logger.getHeader( 'Seed' ) )
 
 logger.logAlways( 'Seed was ' + str( handler.randomseed ) + '.' )
 
-logger.logAlways( logger.getHeader( 'End of log' ) )
+logger.close()
