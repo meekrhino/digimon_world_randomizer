@@ -149,7 +149,7 @@ export default class MainContainer extends Component<Props, State> {
     /* Run the randomizer */
     private runRandomize = () => {
         this.setState( { terminalOut: [] } )
-        const path = Path.join( this.props.rootDirectory, "digimon_randomize.exe" )
+        const path = Path.join( this.props.rootDirectory, "resources", "app", "digimon_randomize.exe" )
         const args = [ "-settings", this.data.toJSON() ]
         const env = Object.assign({}, process.env)
         const options = {
@@ -158,6 +158,8 @@ export default class MainContainer extends Component<Props, State> {
             env
         }
         this.showTerminal = true
+
+        console.log( path )
 
         if( this.data.General.InputFile == "" ) {
             this.addToOutput( "ERR: must select a ROM input file", "error" )
@@ -194,26 +196,20 @@ export default class MainContainer extends Component<Props, State> {
             case Page.Digimon:
                 body =  <div id="data-section">
                             <div className="column one-half">
-                                <SectionContainer
-                                    title="Starter" 
-                                    disabled={this.inProgress}
-                                    data={this.data.Starter}
-                                    tooltip={Constants.starterTooltip}
-                                    elements={Constants.starterElements}/>
                                 <SectionContainer 
                                     title="Digimon Data" 
                                     disabled={this.inProgress}
                                     data={this.data.Digimon}
                                     tooltip={Constants.digimonDataTooltip}
                                     elements={Constants.digimomDataElements}/>
-                            </div>
-                            <div className="column one-half">
                                 <SectionContainer 
                                     title="Digivolutions" 
                                     disabled={this.inProgress}
                                     data={this.data.Evolution}
                                     tooltip={Constants.evolutionTooltip}
                                     elements={Constants.evolutionElements}/>
+                            </div>
+                            <div className="column one-half">
                                 <SectionContainer 
                                     title="Technique Data" 
                                     disabled={this.inProgress}
@@ -253,16 +249,26 @@ export default class MainContainer extends Component<Props, State> {
                     
             case Page.Progress:
                 body =  <div id="data-section">
-                            <SectionContainer 
-                                title="Recruitment" 
-                                disabled= {this.inProgress}
-                                data={this.data.Recruitment}
-                                tooltip={Constants.recruitTooltip}/>
-                            <SectionContainer 
-                                title="Technique Gifts" 
-                                disabled= {this.inProgress}
-                                data={this.data.TechGifts}
-                                tooltip={Constants.techGiftTooltip}/>
+                            <div className="column one-half">
+                                <SectionContainer
+                                    title="Starter" 
+                                    disabled={this.inProgress}
+                                    data={this.data.Starter}
+                                    tooltip={Constants.starterTooltip}
+                                    elements={Constants.starterElements}/>
+                            </div>
+                            <div className="column one-half">
+                                <SectionContainer 
+                                    title="Recruitment" 
+                                    disabled= {this.inProgress}
+                                    data={this.data.Recruitment}
+                                    tooltip={Constants.recruitTooltip}/>
+                                <SectionContainer 
+                                    title="Technique Gifts" 
+                                    disabled= {this.inProgress}
+                                    data={this.data.TechGifts}
+                                    tooltip={Constants.techGiftTooltip}/>
+                            </div>
                         </div>
                 break
 

@@ -96,6 +96,7 @@ if( config[ 'starter' ][ 'Enabled' ] ):
 
     handler.randomizeStarters( 
         useWeakestTech=config[ 'starter' ][ 'UseWeakestTech' ],
+        forceDigimon=config[ 'starter' ][ 'Digimon' ],
         allowedLevels=[ b for a, b in zip( levelsMask, levelValues ) if a ]
     )
 

@@ -203,6 +203,10 @@ h1.category {
     margin-left: 10px;
 }
 
+.element.dropdown {
+    margin-bottom: 8px;
+}
+
 /* Special styling */
 #misc-patches {
     flex-wrap: wrap;

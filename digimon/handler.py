@@ -1667,7 +1667,12 @@ class DigimonWorldHandler:
                                                              tech.learnChance[ 2 ] ) )
 
 
-    def randomizeStarters( self, useWeakestTech=True, allowedLevels=[ data.levelsByName[ 'ROOKIE' ] ] ):
+    def randomizeStarters( 
+        self, 
+        useWeakestTech=True, 
+        forceDigimon="Random",
+        allowedLevels=[ data.levelsByName[ 'ROOKIE' ] ] 
+    ):
         """
         Set starters to two random different rookie Digimon.
         """
@@ -1679,9 +1684,12 @@ class DigimonWorldHandler:
             allowedSet += self.getPlayableDigimonByLevel( level )
 
         prevFirst = self.starterID[ 0 ]
-        firstDigi = allowedSet[ random.randint( 0, len( allowedSet ) - 1) ]
-        while firstDigi == prevFirst:
-            firstDigi = allowedSet[ random.randint( 0, len( allowedSet ) - 1 ) ]
+        if forceDigimon == "Random":
+            firstDigi = allowedSet[ random.randint( 0, len( allowedSet ) - 1) ]
+            while firstDigi == prevFirst:
+                firstDigi = allowedSet[ random.randint( 0, len( allowedSet ) - 1 ) ]
+        else:
+            firstDigi = self.getDigimonByName( forceDigimon )
 
         prevSecond = self.starterID[ 1 ]
         secondDigi = firstDigi
@@ -2113,6 +2121,22 @@ class DigimonWorldHandler:
             return self.digimonData[ id ].name
         else:
             return '---'
+
+    
+    def getDigimonByName( self, name ):
+        """
+        Get digimon from data that matches name.
+
+        Keyword arguments:
+        name -- Digimon to retrieve.
+        """
+
+        for digi in self.digimonData:
+            if digi.name == name:
+                return digi
+        
+        return self.digimonData[ 1 ]
+
 
 
     def getItemName( self, id ):

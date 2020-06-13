@@ -10,6 +10,75 @@ export enum Level {
     Ultimate,
 }
 
+/* Digimon Names */
+export const digimonNames = [
+    "Botamon",
+    "Koromon",
+    "Agumon",
+    "Betamon",
+    "Greymon",
+    "Devimon",
+    "Airdramon",
+    "Tyrannomon",
+    "Meramon",
+    "Seadramon",
+    "Numemon",
+    "MetalGreymon",
+    "Mamemon",
+    "Monzaemon",
+    "Punimon",
+    "Tsunomon",
+    "Gabumon",
+    "Elecmon",
+    "Kabuterimon",
+    "Angemon",
+    "Birdramon",
+    "Garurumon",
+    "Frigimon",
+    "Whamon",
+    "Vegiemon",
+    "SkullGreymon",
+    "MetalMamemon",
+    "Vademon",
+    "Poyomon",
+    "Tokomon",
+    "Patamon",
+    "Kunemon",
+    "Unimon",
+    "Ogremon",
+    "Shellmon",
+    "Centarumon",
+    "Bakemon",
+    "Drimogemon",
+    "Sukamon",
+    "Andromon",
+    "Giromon",
+    "Etemon",
+    "Yuramon",
+    "Tanemon",
+    "Biyomon",
+    "Palmon",
+    "Monochromon",
+    "Leomon",
+    "Coelamon",
+    "Kokatorimon",
+    "Kuwagamon",
+    "Mojyamon",
+    "Nanimon",
+    "Megadramon",
+    "Piximon",
+    "Digitamamon",
+    "Penguinmon",
+    "Ninjamon",
+    "Phoenixmon",
+    "H-Kabuterimon",
+    "MegaSeadramon",
+    "WereGarurumon",
+    "Panjyamon",
+    "Gigadramon",
+    "MetalEtemon",
+]
+
 /* Starter */
 export const starterTooltip: string = 
    `Enable starter randomization.  This will select two random rookies to replace
@@ -25,36 +94,45 @@ export const starterElements: SectionElement<Main.StarterSettings>[] = [
         the lowest tier damaging move that it can use.  NOTE: this
         does not mean the WEAKEST tech, it means the first tech you
         would learn from brain training (e.g. Spit Fire, Tear Drop).` },
-    { attribute: "Fresh",
-        inputType: InputVariation.Checkbox,
-        label: "Include Fresh",
-        tooltip: 
-            `Include Fresh digimon in starter options.  If no
-             options are selected, only rookies will be included.` },
-    { attribute: "InTraining",
-        inputType: InputVariation.Checkbox,
-        label: "Include In-Training",
-        tooltip: 
-            `Include InTraining digimon in starter options.  If no
-             options are selected, only rookies will be included.` },
-    { attribute: "Rookie",
-        inputType: InputVariation.Checkbox,
-        label: "Include Rookie",
-        tooltip: 
-            `Include Rookie digimon in starter options.  If no
-             options are selected, only rookies will be included.` },
-    { attribute: "Champion",
-        inputType: InputVariation.Checkbox,
-        label: "Include Champion",
-        tooltip: 
-            `Include Champion digimon in starter options.  If no
-             options are selected, only rookies will be included.` },
-    { attribute: "Ultimate",
-        inputType: InputVariation.Checkbox,
-        label: "Include Ultimate",
-        tooltip: 
-            `Include Ultimate digimon in starter options.  If no
-             options are selected, only rookies will be included.` }
+  { attribute: "Digimon",
+    inputType: InputVariation.Dropdown,
+    dropdownPlaceholder: "Select Starter Digimon",
+    dropdownOptions: [ "Random" ].concat( digimonNames ),
+    tooltip: 
+       `Set starter digimon.  Leave unchanged or select "Random"
+        to randomize from the selected levels.  This will only
+        set the DAY starter -- the NIGHT starter will be 
+        randomized according to other selections.` },
+  { attribute: "Fresh",
+    inputType: InputVariation.Checkbox,
+    label: "Include Fresh",
+    tooltip: 
+       `Include Fresh digimon in starter options.  If no
+        options are selected, only rookies will be included.` },
+  { attribute: "InTraining",
+    inputType: InputVariation.Checkbox,
+    label: "Include In-Training",
+    tooltip: 
+       `Include In-Training digimon in starter options.  If no
+        options are selected, only rookies will be included.` },
+  { attribute: "Rookie",
+    inputType: InputVariation.Checkbox,
+    label: "Include Rookie",
+    tooltip: 
+       `Include Rookie digimon in starter options.  If no
+        options are selected, only rookies will be included.` },
+  { attribute: "Champion",
+    inputType: InputVariation.Checkbox,
+    label: "Include Champion",
+    tooltip: 
+       `Include Champion digimon in starter options.  If no
+        options are selected, only rookies will be included.` },
+  { attribute: "Ultimate",
+    inputType: InputVariation.Checkbox,
+    label: "Include Ultimate",
+    tooltip: 
+       `Include Ultimate digimon in starter options.  If no
+        options are selected, only rookies will be included.` }
 ]
 
 /* Digimon Data */

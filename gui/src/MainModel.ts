@@ -1,5 +1,6 @@
 import * as hash from "object-hash"
 import * as path from "path"
+import { digimonNames } from "./constants"
 
 /* Local Types */
 interface RawSettings {
@@ -54,6 +55,7 @@ export interface StarterSettings extends Toggleable {
     Rookie              : boolean
     Champion            : boolean
     Ultimate            : boolean
+    Digimon             : string
 }
 
 export interface RecruitmentSettings extends Toggleable {
@@ -136,6 +138,7 @@ export class MainModel {
         this.Starter = {
             Enabled             : false,
             UseWeakestTech      : false,
+            Digimon             : "Random",
             Fresh               : false,
             InTraining          : false,
             Rookie              : true,
@@ -228,11 +231,15 @@ export class MainModel {
         this.MapItems       = data.mapItems   
         this.Evolution      = data.evolution  
         this.Patches        = data.patches    
+
+        if( !digimonNames.includes( this.Starter.Digimon ) ) {
+            this.Starter.Digimon = "Random"
+        }
     }
 
     toJSON = (): string => {
         let outPath = path.join( path.parse( this.General.InputFile ).dir, this.General.OutputFile )
-        if( path.parse( outPath ).ext !== "bin" ) {
+        if( path.parse( outPath ).ext !== ".bin" ) {
             outPath = outPath + ".bin"
         }
 
@@ -251,6 +258,10 @@ export class MainModel {
             mapItems        : this.MapItems,   
             evolution       : this.Evolution,  
             patches         : this.Patches
+        }
+
+        if( !digimonNames.includes( raw.starter.Digimon ) ) {
+            raw.starter.Digimon = "Random"
         }
 
         if( !this.Starter.Fresh

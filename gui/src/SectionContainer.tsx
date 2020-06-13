@@ -55,7 +55,9 @@ export default class SectionContainer<T extends Toggleable> extends Component<Se
                                 label={elem.label}
                                 tooltip={elem.tooltip}
                                 multiSelect={elem.multiSelect}
-                                multiSelectLabel={elem.multiSelectLabel}/>
+                                multiSelectLabel={elem.multiSelectLabel}
+                                dropdownPlaceholder={elem.dropdownPlaceholder}
+                                dropdownOptions={elem.dropdownOptions}/>
                         )}
                     </div>
                 </Card>

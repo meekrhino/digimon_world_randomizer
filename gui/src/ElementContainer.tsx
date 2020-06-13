@@ -1,10 +1,11 @@
 import * as React from 'react'
-import { Tooltip, Checkbox, Slider, RadioGroup, Radio } from '@blueprintjs/core'
+import { Tooltip, Checkbox, Slider, RadioGroup, Radio, HTMLSelect } from '@blueprintjs/core'
 
 export enum InputVariation {
     Checkbox,
     Slider,
-    Multiselect
+    Multiselect,
+    Dropdown
 }
 
 export interface SectionElement<T> {
@@ -16,6 +17,8 @@ export interface SectionElement<T> {
     maxVal?             : number
     multiSelect?        : string[]
     multiSelectLabel?   : string[]
+    dropdownOptions?    : string[]
+    dropdownPlaceholder?: string
 }
 
 interface Props {
@@ -26,6 +29,8 @@ interface Props {
     maxVal?             : number
     multiSelect?        : string[]
     multiSelectLabel?   : string[]
+    dropdownOptions?    : string[]
+    dropdownPlaceholder?: string
     enabled             : boolean
     value               : any
     setValue            : ( value: any ) => void
@@ -78,12 +83,25 @@ export default function ElementContainer( props: Props ) {
                         )}
                     </RadioGroup>
             break
+
+        case InputVariation.Dropdown:
+            const options = [ props.dropdownPlaceholder ].concat( props.dropdownOptions )
+            input = <HTMLSelect
+                        className="element dropdown"
+                        onChange={( event ) => {
+                            props.setValue( event.currentTarget.value )
+                        }}
+                        value={props.value || props.dropdownPlaceholder}
+                        options={options}
+                        disabled={!props.enabled}/>
+            break
+
     }
 
     return  <Tooltip 
                 popoverClassName="tooltip popover"
                 content={props.tooltip}
-                hoverOpenDelay={750}>
+                hoverOpenDelay={1250}>
                 {input}
             </Tooltip>
 }
