@@ -1684,18 +1684,19 @@ class DigimonWorldHandler:
             allowedSet += self.getPlayableDigimonByLevel( level )
 
         prevFirst = self.starterID[ 0 ]
-        forcedDigimon = self.getDigimonByName( forceDigimon )
-        if forcedDigimon is None:
-            firstDigi = allowedSet[ random.randint( 0, len( allowedSet ) - 1) ]
-            while firstDigi == prevFirst:
-                firstDigi = allowedSet[ random.randint( 0, len( allowedSet ) - 1 ) ]
-        else:
-            firstDigi = forcedDigimon
+        firstDigi = allowedSet[ random.randint( 0, len( allowedSet ) - 1) ]
+        while firstDigi == prevFirst:
+            firstDigi = allowedSet[ random.randint( 0, len( allowedSet ) - 1 ) ]
 
         prevSecond = self.starterID[ 1 ]
         secondDigi = firstDigi
         while secondDigi == firstDigi or secondDigi == prevSecond:
             secondDigi = allowedSet[ random.randint( 0, len( allowedSet ) - 1 ) ]
+
+        #Do this after the above so that selecting digimon doesn't change the rest of the seed
+        forcedDigimon = self.getDigimonByName( forceDigimon )
+        if forcedDigimon is not None:
+            firstDigi = forcedDigimon
 
         self.starterID[ 0 ] = firstDigi.id
         self.logger.logChange( 'First starter set to ' + firstDigi.name )
