@@ -138,18 +138,16 @@ export default class MainContainer extends Component<Props, State> {
     private notifyDone = () => {
         this.inProgress = false
 
-        this.addToOutput( `Settings (excluding input and output file names) were hashed
-                           to the following MD5 value:` )
+        this.addToOutput( `Settings (excluding input and output file names) were hashed to the following MD5 value:` )
         this.addToOutput( this.data.General.Hash )
-        this.addToOutput( `If you're racing, compare this value to that of your race
-                           opponents to make sure you have the same ROM.` )
+        this.addToOutput( `If you're racing, compare this value to that of your race opponents to make sure you have the same ROM.` )
         this.forceUpdate()
     }
 
     /* Run the randomizer */
     private runRandomize = () => {
         this.setState( { terminalOut: [] } )
-        const path = Path.join( this.props.rootDirectory, "resources", "app", "digimon_randomize.exe" )
+        const path = Path.join( this.props.rootDirectory, "digimon_randomize.exe" )
         const args = [ "-settings", this.data.toJSON() ]
         const env = Object.assign({}, process.env)
         const options = {
@@ -158,8 +156,6 @@ export default class MainContainer extends Component<Props, State> {
             env
         }
         this.showTerminal = true
-
-        console.log( path )
 
         if( this.data.General.InputFile == "" ) {
             this.addToOutput( "ERR: must select a ROM input file", "error" )

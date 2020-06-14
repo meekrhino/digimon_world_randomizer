@@ -1,6 +1,5 @@
 import * as hash from "object-hash"
 import * as path from "path"
-import { digimonNames } from "./constants"
 
 /* Local Types */
 interface RawSettings {
@@ -230,9 +229,9 @@ export class MainModel {
         this.TechGifts      = data.techGifts  
         this.MapItems       = data.mapItems   
         this.Evolution      = data.evolution  
-        this.Patches        = data.patches    
+        this.Patches        = data.patches
 
-        if( !digimonNames.includes( this.Starter.Digimon ) ) {
+        if( !this.Starter.Digimon ) {
             this.Starter.Digimon = "Random"
         }
     }
@@ -260,7 +259,7 @@ export class MainModel {
             patches         : this.Patches
         }
 
-        if( !digimonNames.includes( raw.starter.Digimon ) ) {
+        if( !raw.starter.Digimon ) {
             raw.starter.Digimon = "Random"
         }
 

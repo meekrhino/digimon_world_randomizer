@@ -1684,12 +1684,13 @@ class DigimonWorldHandler:
             allowedSet += self.getPlayableDigimonByLevel( level )
 
         prevFirst = self.starterID[ 0 ]
-        if forceDigimon == "Random":
+        forcedDigimon = self.getDigimonByName( forceDigimon )
+        if forcedDigimon is None:
             firstDigi = allowedSet[ random.randint( 0, len( allowedSet ) - 1) ]
             while firstDigi == prevFirst:
                 firstDigi = allowedSet[ random.randint( 0, len( allowedSet ) - 1 ) ]
         else:
-            firstDigi = self.getDigimonByName( forceDigimon )
+            firstDigi = forcedDigimon
 
         prevSecond = self.starterID[ 1 ]
         secondDigi = firstDigi
@@ -2135,7 +2136,7 @@ class DigimonWorldHandler:
             if digi.name == name:
                 return digi
         
-        return self.digimonData[ 1 ]
+        return None
 
 
 

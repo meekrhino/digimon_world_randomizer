@@ -11,10 +11,6 @@ from digimon.data import levels
 from log.logger import Logger
 from digimon.handler import DigimonWorldHandler
 
-print( "XXXXXXXXXXXXXXXXXXXXXXXXX" )
-print( sys.argv )
-print( "XXXXXXXXXXXXXXXXXXXXXXXXX" )
-
 #Parse settings argument
 args = argparse.ArgumentParser( description='Randomize Digimon World' )
 args.add_argument( '-settings', required=True, help='JSON settings string that configures the operation' )
@@ -34,29 +30,35 @@ except JSONDecodeError as err:
     exit()
 
 verbose = config[ 'general' ][ 'LogLevel' ]
-logger = Logger( verbose, filename='randomize.log' )
 
 if( config[ 'general' ][ 'InputFile' ] != '' ):
     inFile = config[ 'general' ][ 'InputFile' ]
 else:
-    logger.fatalError( 'ROM file section is required' )
+    print( 'ROM file section is required' )
+    exit()
 
 #If an output file was Set, use that as the output.
 #Otherwise, read and write the same file
 if( config[ 'general' ][ 'OutputFile' ] != '' ):
     outFile = config[ 'general' ][ 'OutputFile' ]
 else:
-    logger.fatalError( 'Destination file section is required' )
+    print( 'Destination file section is required' )
+    exit
 
 print( 'Reading data from ' + inFile + '...' )
 sys.stdout.flush()
 
+seedcfg = config[ 'general' ][ 'Seed' ]
 try:
-    seedcfg = config[ 'general' ][ 'Seed' ]
-    handler = DigimonWorldHandler( inFile, logger, seed=int( seedcfg ) )
+    name = 'randomize-' + str( seedcfg ) + '.log'
+    logger = Logger( verbose, filename=name )
+    handler = DigimonWorldHandler( inFile, logger, seed=seedcfg )
 except ValueError:
-    logger.fatalError( 'Seed must be an integer. ' + str( seedcfg ) + ' is not a valid value.' )
-except:
+    print( 'Seed must be an integer. ' + str( seedcfg ) + ' is not a valid value.' )
+    exit()
+except Exception as e:
+    print( e )
+    logger = Logger( verbose, filename='randomize.log' )
     handler = DigimonWorldHandler( inFile, logger )
 
 print( 'Modifying data...' )

@@ -222,6 +222,8 @@ h1.category {
     background-color: black;
     color: white;
     bottom: 0;
+    resize: vertical;
+    overflow: auto;
 }
 
 .terminalOutput .terminalHeader {
