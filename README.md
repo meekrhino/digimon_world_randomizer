@@ -33,6 +33,24 @@ See race instructions below for creating identical race ROMs.
 
 ### Version log:
 
+##### Release 1.1.0
+###### New Features
+    - Complete re-design of the GUI
+        -- Tabbed view to allow far more room for adding new features
+        -- Tie all data directly into UI for easier expansion
+    - Integrate all of Syd's features from the forked branch
+        -- Fix softlocks patches
+        -- Fix PP calculation 
+        -- Unlock Toy Town as part of "Unlock Areas" patch
+        -- Various other fixes
+    - Options to allow starter to be any level (fresh to ultimate)
+    - Option to specify exact starting digimon
+    - Make race/casual always produce different results for same seed
+    - Include seed value in log file filename
+
+###### Bug Fixes
+    - Too many to try to list here -- mostly patch improvement and UI improvement.  Stability significantly up
+
 ##### Release 1.0.0
 ###### New Features
     - Graphical User Interface
