@@ -1,6 +1,8 @@
 # Author: Tristan Challener <challenert@gmail.com>
 # Copyright: please don't steal this that is all
 
+import os
+
 """
 Utilities for manipulating digimon data.
 """
@@ -94,6 +96,17 @@ class Logger:
         self.logAlways( self.getHeader( 'End of Log' ) )
         if( self.file is not None ):
             self.file.close()
+
+
+    def rename( self, newName ):
+        """
+        Close the logging file.
+
+        Keyword arguments:
+        newName -- New name of file
+        """
+
+        os.rename( self.filename, newName )
 
 
     def logAlways( self, str ):

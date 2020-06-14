@@ -27,7 +27,7 @@ export interface GeneralSettings {
     InputFile           : string
     OutputFile          : string
     LogLevel            : LogType
-    Seed                : number
+    Seed                : string
     Hash                : string
 }
 

@@ -48,11 +48,11 @@ else:
 print( 'Reading data from ' + inFile + '...' )
 sys.stdout.flush()
 
-seedcfg = config[ 'general' ][ 'Seed' ]
 try:
-    name = 'randomize-' + str( seedcfg ) + '.log'
+    seedcfg = config[ 'general' ][ 'Seed' ]
+    name = 'randomize.log'
     logger = Logger( verbose, filename=name )
-    handler = DigimonWorldHandler( inFile, logger, seed=seedcfg )
+    handler = DigimonWorldHandler( inFile, logger, seed=int( seedcfg ) )
 except ValueError:
     print( 'Seed must be an integer. ' + str( seedcfg ) + ' is not a valid value.' )
     exit()
@@ -195,3 +195,5 @@ logger.logAlways( logger.getHeader( 'Seed' ) )
 logger.logAlways( 'Seed was ' + str( handler.randomseed ) + '.' )
 
 logger.close()
+
+logger.rename( 'randomize-' + str( handler.randomseed ) + '.log')

@@ -33,6 +33,11 @@ See race instructions below for creating identical race ROMs.
 
 ### Version log:
 
+##### Release 1.1.1
+###### Bug Fixes
+    - Fix random seed crashing the script
+    - Fix log file not having seed in name when it was random
+
 ##### Release 1.1.0
 ###### New Features
     - Complete re-design of the GUI

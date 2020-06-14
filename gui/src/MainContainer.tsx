@@ -347,9 +347,9 @@ export default class MainContainer extends Component<Props, State> {
                                             placeholder="Random"
                                             disabled={this.inProgress}
                                             buttonPosition={"none"}
-                                            allowNumericCharactersOnly={true}
+                                            allowNumericCharactersOnly={false}
                                             value={this.data.General.Seed}
-                                            onValueChange={val => this.data.General.Seed = val}/>
+                                            onValueChange={val => this.data.General.Seed = val? `${val}` : undefined}/>
                                     </div>
                                     <RadioGroup
                                         className="log-subsection"
