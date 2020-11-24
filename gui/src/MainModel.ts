@@ -45,6 +45,7 @@ export interface TechSettings extends Toggleable {
     Accuracy            : boolean
     Effect              : boolean
     EffectChance        : boolean
+    TypeEffectiveness   : boolean
 }
 
 export interface StarterSettings extends Toggleable {
@@ -131,7 +132,8 @@ export class MainModel {
             Cost                : false,
             Accuracy            : false,
             Effect              : false,
-            EffectChance        : false
+            EffectChance        : false,
+            TypeEffectiveness   : false,
         }
 
         this.Starter = {

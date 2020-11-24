@@ -227,7 +227,12 @@ export const techDataElements: SectionElement<Main.TechSettings>[] = [
     tooltip: 
        `Randomize the chance of a status effect being inflicted for
         each tech.  Techs will be assigned a random value between 
-        1% and 70%.  This option is not affected by the mode.` }
+        1% and 70%.  This option is not affected by the mode.` },
+  { attribute: "TypeEffectiveness",
+    inputType: InputVariation.Checkbox,
+    label: "Type Effectiveness",
+    tooltip: `Randomizes the type effectiveness of different attributes.
+              The values will be between 2 and 20, as in vanilla.`}
 ]
 
 /* Evolution */

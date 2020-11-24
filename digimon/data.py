@@ -725,7 +725,12 @@ fixMoveToSLOffset        = ( 0x14CDB140, 0x14CDB19C )
 #Fix Toy Town softlock
 fixToyTownSLFormat       = ">I"
 fixToyTownSLValue        = 0x31FCA302
-fixToyTownSLOffset       = ( 0x14049DD8, 0x1404A2EA, )
+fixToyTownSLOffset       = ( 0x14049DD8, 0x1404A2EA )
+
+#Fix Leomon's Cave Nanimon softlock
+fixLeoCaveSLFormat       = "B"
+fixLeoCaveSLValue        = 0x3B
+fixLeoCaveSLOffset       = ( 0x14030380, 0x14030444, 0x14030D36, 0x14030DFA, 0x140317F6, 0x140318BA, 0x140321C8, 0x1403228C )
 
 #Unify evolution target function to free memory
 evoTargetUnifyHackFormat = '<I'
@@ -775,3 +780,6 @@ starterLearnTechOffset   = ( 0x14CD1D40, 0x14CD1D60 )   #tech to learn
 starterEquipAnimOffset   = ( 0x14CD1D30, 0x14CD1D50 )   #animation to equip
 starterStatChkDigimonOffset = 0x1407E2C5
 
+#type effectiveness 
+typeEffectivenessFormat = 'B'
+typeEffectivenessOffset = 0x14D669F8

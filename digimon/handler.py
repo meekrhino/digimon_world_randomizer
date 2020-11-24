@@ -1229,6 +1229,8 @@ class DigimonWorldHandler:
                     self._applyPatchOgremonSoftlock( file )
                 elif( patch == 'softlock' ):
                     self._applyPatchMovementSoftlock( file )
+                elif( patch == 'typeEffectiveness'):
+                    self._randomizeTypeEffectiveness( file ) 
 
 
             #------------------------------------------------------
@@ -2681,8 +2683,14 @@ class DigimonWorldHandler:
                                   ofst,
                                   struct.pack( data.fixToyTownSLFormat, data.fixToyTownSLValue ),
                                   self.logger )
+                                  
+        for ofst in data.fixLeoCaveSLOffset:
+            util.writeDataToFile( file,
+                                  ofst,
+                                  struct.pack( data.fixLeoCaveSLFormat, data.fixLeoCaveSLValue ),
+                                  self.logger )
         
-        self.logger.logChange( "Applied 3 movement softlock patches." )
+        self.logger.logChange( "Applied 4 movement softlock patches." )
         
     def _applyPatchUnifyEvoTargetFunction( self, file ):
         """
@@ -2713,3 +2721,26 @@ class DigimonWorldHandler:
                               self.logger )
         
         self.logger.logChange( "Added custom function and hook for it" )
+
+    def _randomizeTypeEffectiveness( self, file ):
+        """
+        Randomizes type effectiveness to a random value between 2 and 20
+        """
+
+        self.logger.logChange( "Changing type effectivness chart" )
+
+        for type1 in range(0, 7):
+            row = ""
+            
+            for type2 in range(0, 7):
+                newValue = random.randint(2, 20)
+                offset =  type1 * 7 + type2
+                util.writeDataToFile( file,
+                                      data.typeEffectivenessOffset + offset,
+                                      struct.pack( data.typeEffectivenessFormat, newValue),
+                                      self.logger )
+                row = row + str(newValue) + " "
+            
+            self.logger.logChange( row )
+        
+        self.logger.logChange( "Randomized type effectiveness" )

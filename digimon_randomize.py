@@ -83,6 +83,9 @@ if( config[ 'techs' ][ 'Enabled' ] ):
                                accuracy=config[ 'techs' ][ 'Accuracy' ],
                                effect=config[ 'techs' ][ 'Effect' ],
                                effectChance=config[ 'techs' ][ 'EffectChance' ] )
+    
+    if( config[ 'techs' ][ 'TypeEffectiveness']):
+        handler.applyPatch( 'typeEffectiveness' )
 
 if( config[ 'starter' ][ 'Enabled' ] ):
     #Use true/false values as a mask against the list of levels
