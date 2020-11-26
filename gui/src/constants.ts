@@ -477,4 +477,15 @@ export const patchElements: SectionElement<Main.PatchSettings>[] = [
         `This patch disables the text for learning new commands, allowing you
          to learn a command and a technique at the same session.
          This mainly helps if you're doing Bonus Tries to obtain new moves.` },
+  { attribute: "FixDVChips",
+  inputType: InputVariation.Checkbox,
+  label: "Fix DV Chip descriptions",
+  tooltip: 
+      `Fixes DV Chip descriptions, to actually tell you what they do` },
+  { attribute: "HappyVending",
+    inputType: InputVariation.Checkbox,
+    label: "Happymushroom Vending",
+    tooltip: 
+        `Replaces Meat trade with a Happymushroom trade at the vending machine
+         at Dragon Eye Lake's top area.` },
 ]

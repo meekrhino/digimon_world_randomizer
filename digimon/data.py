@@ -788,3 +788,35 @@ typeEffectivenessOffset = 0x14D669F8
 learnMoveAndCommandFormat = "<II"
 learnMoveAndCommandValue  = ( 0x10000065, 0x00001021 )
 learnMoveAndCommandOffset = 0x14C8821C
+
+#DV Chip text patch
+
+DVChipAValue = "Boosts Off+Brains by 100"
+DVChipAOffset = 0x14D65F10
+DVChipAFormat = "<28s"
+
+DVChipDValue = "Boosts Def+Speed by 100"
+DVChipDOffset = 0x14D65F2C
+DVChipDFormat = "<28s"
+
+DVChipEValue = "Boosts HP+MP by 1000"
+DVChipEOffset = 0x14D65F48
+DVChipEFormat = "<28s"
+
+# Change Dragon Eye Lake Vending Machine to HappyShroom
+happyMushroomVendingOffset1 = 0x13FE31C8
+happyMushroomVendingFormat1 = "<124s"
+happyMushroomVendingValue1 = "HappyMushroom: 2000 bits\r\0DigiMushroom: 600 bits\r\0Don「t buy\r\0"
+
+happyMushroomVendingOffset2 = 0x13FE3300
+happyMushroomVendingFormat2 = "<36s"
+happyMushroomVendingValue2 = "\1\6HappyMushroom \1\1came out!\0\r\0\r\0\r"
+
+happyMushroomVendingOffset3 = 0x13FE3252
+happyMushroomVendingOffset4 = 0x13FE32F8
+happyMushroomVendingPriceFormat = "<H"
+happyMushroomVendingPriceValue = 2000
+
+happyMushroomVendingOffset5 = ( 0x13FE3326, 0x13FE3338, 0x13FE3382 )
+happyMushroomVendingFormat5 = "B"
+happyMushroomVendingValue5 = 69

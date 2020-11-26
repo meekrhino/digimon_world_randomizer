@@ -1232,7 +1232,11 @@ class DigimonWorldHandler:
                 elif( patch == 'typeEffectiveness'):
                     self._randomizeTypeEffectiveness( file ) 
                 elif( patch == 'learnmoveandcommand'):
-                    self._applyPatchLearnMoveAndCommand( file) 
+                    self._applyPatchLearnMoveAndCommand( file )
+                elif( patch == 'fixDVChips'):
+                    self._applyPatchDVChipDescription( file )
+                elif( patch == 'happyVending'):
+                    self._applyPatchGuaranteeHappyShrm( file )
 
 
             #------------------------------------------------------
@@ -2759,3 +2763,50 @@ class DigimonWorldHandler:
                                 self.logger )
 
         self.logger.logChange( "Fixing move learning at brains training.")
+
+    def _applyPatchDVChipDescription( self, file ):
+        """
+        Fixes the description of DV Chips to reflect what they're actually doing.
+        """
+
+        util.writeDataToFile( file,
+                              data.DVChipAOffset,
+                              struct.pack( data.DVChipAFormat, data.DVChipAValue[ :26 ].encode( 'ascii' ) ),
+                              self.logger )
+
+        util.writeDataToFile( file,
+                              data.DVChipDOffset,
+                              struct.pack( data.DVChipDFormat, data.DVChipDValue[ :26 ].encode( 'ascii' ) ),
+                              self.logger )
+
+        util.writeDataToFile( file,
+                              data.DVChipEOffset,
+                              struct.pack( data.DVChipEFormat, data.DVChipEValue[ :26 ].encode( 'ascii' ) ),
+                              self.logger )
+
+    def _applyPatchGuaranteeHappyShrm( self, file ):
+        util.writeDataToFile( file,
+                              data.happyMushroomVendingOffset1,
+                              struct.pack( data.happyMushroomVendingFormat1, data.happyMushroomVendingValue1.encode( 'shift_jis' ) ),
+                              self.logger )
+
+        util.writeDataToFile( file,
+                              data.happyMushroomVendingOffset2,
+                              struct.pack( data.happyMushroomVendingFormat2, data.happyMushroomVendingValue2.encode( 'ascii' ) ),
+                              self.logger )
+
+        util.writeDataToFile( file,
+                              data.happyMushroomVendingOffset3,
+                              struct.pack( data.happyMushroomVendingPriceFormat, data.happyMushroomVendingPriceValue ),
+                              self.logger )
+
+        util.writeDataToFile( file,
+                              data.happyMushroomVendingOffset4,
+                              struct.pack( data.happyMushroomVendingPriceFormat, data.happyMushroomVendingPriceValue ),
+                              self.logger )
+
+        for ofst in data.happyMushroomVendingOffset5:
+            util.writeDataToFile( file,
+                                  ofst,
+                                  struct.pack( data.happyMushroomVendingFormat5, data.happyMushroomVendingValue5 ),
+                                  self.logger )

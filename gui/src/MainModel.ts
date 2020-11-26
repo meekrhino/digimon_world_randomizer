@@ -100,6 +100,8 @@ export interface PatchSettings extends Toggleable {
     UnlockAreas         : boolean
     UnrigSlots          : boolean
     LearnMoveAndCommand : boolean
+    FixDVChips          : boolean
+    HappyVending        : boolean
 }
 
 /* Public Constants */
@@ -198,6 +200,8 @@ export class MainModel {
             UnlockAreas         : false,
             UnrigSlots          : false,
             LearnMoveAndCommand : false,
+            FixDVChips          : false,
+            HappyVending        : false,
         }
 
         if( raw ) {

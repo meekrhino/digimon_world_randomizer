@@ -178,14 +178,19 @@ if( config[ 'patches' ][ 'Enabled' ] ):
     if( config[ 'patches' ][ 'LearnMoveAndCommand' ] ):
         handler.applyPatch( 'learnmoveandcommand' )
 
+    if( config[ 'patches' ][ 'FixDVChips' ] ):
+        handler.applyPatch( 'fixDVChips' )
+
+    if( config[ 'patches' ][ 'HappyVending' ] ):
+        handler.applyPatch( 'happyVending' )
 
 print( 'Writing to ' + outFile + '...' )
 sys.stdout.flush()
 
 try:
     handler.write( outFile )
-except:
-    logger.logError( 'System error' )
+except Exception as ex:
+    logger.logError( 'System error: {0}'.format(ex) )
     print( 'An irrecoverable error occured' )
 
 if( not logger.error ):
