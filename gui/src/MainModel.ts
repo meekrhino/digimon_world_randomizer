@@ -107,6 +107,7 @@ export const ItemValueMax = 10000
 export const ItemValueMin = 0
 export const SpawnRateMax = 100
 export const SpawnRateMin = 1
+export const SpawnRateDefault = 3
 
 export class MainModel {
     constructor( raw?: string ) {
@@ -188,7 +189,7 @@ export class MainModel {
             JukeboxGlitch       : false,
             IncreaseLearnChance : false,
             SpawnRateEnabled    : false,
-            SpawnRate           : SpawnRateMin,
+            SpawnRate           : SpawnRateDefault,
             ShowHashIntro       : false,
             SkipIntro           : false,
             Woah                : false,
