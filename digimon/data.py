@@ -725,7 +725,12 @@ fixMoveToSLOffset        = ( 0x14CDB140, 0x14CDB19C )
 #Fix Toy Town softlock
 fixToyTownSLFormat       = ">I"
 fixToyTownSLValue        = 0x31FCA302
-fixToyTownSLOffset       = ( 0x14049DD8, 0x1404A2EA, )
+fixToyTownSLOffset       = ( 0x14049DD8, 0x1404A2EA )
+
+#Fix Leomon's Cave Nanimon softlock
+fixLeoCaveSLFormat       = "B"
+fixLeoCaveSLValue        = 0x3B
+fixLeoCaveSLOffset       = ( 0x14030380, 0x14030444, 0x14030D36, 0x14030DFA, 0x140317F6, 0x140318BA, 0x140321C8, 0x1403228C )
 
 #Unify evolution target function to free memory
 evoTargetUnifyHackFormat = '<I'
@@ -775,3 +780,43 @@ starterLearnTechOffset   = ( 0x14CD1D40, 0x14CD1D60 )   #tech to learn
 starterEquipAnimOffset   = ( 0x14CD1D30, 0x14CD1D50 )   #animation to equip
 starterStatChkDigimonOffset = 0x1407E2C5
 
+#type effectiveness 
+typeEffectivenessFormat = 'B'
+typeEffectivenessOffset = 0x14D669F8
+ 
+#learn move and command patch
+learnMoveAndCommandFormat = "<II"
+learnMoveAndCommandValue  = ( 0x10000065, 0x00001021 )
+learnMoveAndCommandOffset = 0x14C8821C
+
+#DV Chip text patch
+
+DVChipAValue = "Boosts Off+Brains by 100"
+DVChipAOffset = 0x14D65F10
+DVChipAFormat = "<28s"
+
+DVChipDValue = "Boosts Def+Speed by 100"
+DVChipDOffset = 0x14D65F2C
+DVChipDFormat = "<28s"
+
+DVChipEValue = "Boosts HP+MP by 1000"
+DVChipEOffset = 0x14D65F48
+DVChipEFormat = "<28s"
+
+# Change Dragon Eye Lake Vending Machine to HappyShroom
+happyMushroomVendingOffset1 = 0x13FE31C8
+happyMushroomVendingFormat1 = "<124s"
+happyMushroomVendingValue1 = "HappyMushroom: 2000 bits\r\0DigiMushroom: 600 bits\r\0Don「t buy\r\0"
+
+happyMushroomVendingOffset2 = 0x13FE3300
+happyMushroomVendingFormat2 = "<36s"
+happyMushroomVendingValue2 = "\1\6HappyMushroom \1\1came out!\0\r\0\r\0\r"
+
+happyMushroomVendingOffset3 = 0x13FE3252
+happyMushroomVendingOffset4 = 0x13FE32F8
+happyMushroomVendingPriceFormat = "<H"
+happyMushroomVendingPriceValue = 2000
+
+happyMushroomVendingOffset5 = ( 0x13FE3326, 0x13FE3338, 0x13FE3382 )
+happyMushroomVendingFormat5 = "B"
+happyMushroomVendingValue5 = 69

@@ -83,6 +83,9 @@ if( config[ 'techs' ][ 'Enabled' ] ):
                                accuracy=config[ 'techs' ][ 'Accuracy' ],
                                effect=config[ 'techs' ][ 'Effect' ],
                                effectChance=config[ 'techs' ][ 'EffectChance' ] )
+    
+    if( config[ 'techs' ][ 'TypeEffectiveness']):
+        handler.applyPatch( 'typeEffectiveness' )
 
 if( config[ 'starter' ][ 'Enabled' ] ):
     #Use true/false values as a mask against the list of levels
@@ -171,15 +174,23 @@ if( config[ 'patches' ][ 'Enabled' ] ):
 
     if( config[ 'patches' ][ 'Softlock' ] ):
         handler.applyPatch( 'softlock' )
+        
+    if( config[ 'patches' ][ 'LearnMoveAndCommand' ] ):
+        handler.applyPatch( 'learnmoveandcommand' )
 
+    if( config[ 'patches' ][ 'FixDVChips' ] ):
+        handler.applyPatch( 'fixDVChips' )
+
+    if( config[ 'patches' ][ 'HappyVending' ] ):
+        handler.applyPatch( 'happyVending' )
 
 print( 'Writing to ' + outFile + '...' )
 sys.stdout.flush()
 
 try:
     handler.write( outFile )
-except:
-    logger.logError( 'System error' )
+except Exception as ex:
+    logger.logError( 'System error: {0}'.format(ex) )
     print( 'An irrecoverable error occured' )
 
 if( not logger.error ):

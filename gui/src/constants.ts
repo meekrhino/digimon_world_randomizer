@@ -227,7 +227,12 @@ export const techDataElements: SectionElement<Main.TechSettings>[] = [
     tooltip: 
        `Randomize the chance of a status effect being inflicted for
         each tech.  Techs will be assigned a random value between 
-        1% and 70%.  This option is not affected by the mode.` }
+        1% and 70%.  This option is not affected by the mode.` },
+  { attribute: "TypeEffectiveness",
+    inputType: InputVariation.Checkbox,
+    label: "Type Effectiveness",
+    tooltip: `Randomizes the type effectiveness of different attributes.
+              The values will be between 2 and 20, as in vanilla.`}
 ]
 
 /* Evolution */
@@ -465,4 +470,22 @@ export const patchElements: SectionElement<Main.PatchSettings>[] = [
     inputType: InputVariation.Checkbox,
     label: "Fix Softlocks",
     tooltip: `This fixes some movement related softlocks.` },
+  { attribute: "LearnMoveAndCommand",
+    inputType: InputVariation.Checkbox,
+    label: "Fix Brains Learning",
+    tooltip: 
+        `This patch disables the text for learning new commands, allowing you
+         to learn a command and a technique at the same session.
+         This mainly helps if you're doing Bonus Tries to obtain new moves.` },
+  { attribute: "FixDVChips",
+  inputType: InputVariation.Checkbox,
+  label: "Fix DV Chip descriptions",
+  tooltip: 
+      `Fixes DV Chip descriptions, to actually tell you what they do` },
+  { attribute: "HappyVending",
+    inputType: InputVariation.Checkbox,
+    label: "Happymushroom Vending",
+    tooltip: 
+        `Replaces Meat trade with a Happymushroom trade at the vending machine
+         at Dragon Eye Lake's top area.` },
 ]

@@ -45,6 +45,7 @@ export interface TechSettings extends Toggleable {
     Accuracy            : boolean
     Effect              : boolean
     EffectChance        : boolean
+    TypeEffectiveness   : boolean
 }
 
 export interface StarterSettings extends Toggleable {
@@ -98,6 +99,9 @@ export interface PatchSettings extends Toggleable {
     Softlock            : boolean
     UnlockAreas         : boolean
     UnrigSlots          : boolean
+    LearnMoveAndCommand : boolean
+    FixDVChips          : boolean
+    HappyVending        : boolean
 }
 
 /* Public Constants */
@@ -105,6 +109,7 @@ export const ItemValueMax = 10000
 export const ItemValueMin = 0
 export const SpawnRateMax = 100
 export const SpawnRateMin = 1
+export const SpawnRateDefault = 3
 
 export class MainModel {
     constructor( raw?: string ) {
@@ -131,7 +136,8 @@ export class MainModel {
             Cost                : false,
             Accuracy            : false,
             Effect              : false,
-            EffectChance        : false
+            EffectChance        : false,
+            TypeEffectiveness   : false,
         }
 
         this.Starter = {
@@ -185,14 +191,17 @@ export class MainModel {
             JukeboxGlitch       : false,
             IncreaseLearnChance : false,
             SpawnRateEnabled    : false,
-            SpawnRate           : SpawnRateMin,
+            SpawnRate           : SpawnRateDefault,
             ShowHashIntro       : false,
             SkipIntro           : false,
             Woah                : false,
             Gabu                : false,
             Softlock            : false,
             UnlockAreas         : false,
-            UnrigSlots          : false
+            UnrigSlots          : false,
+            LearnMoveAndCommand : false,
+            FixDVChips          : false,
+            HappyVending        : false,
         }
 
         if( raw ) {

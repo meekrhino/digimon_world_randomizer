@@ -1229,6 +1229,14 @@ class DigimonWorldHandler:
                     self._applyPatchOgremonSoftlock( file )
                 elif( patch == 'softlock' ):
                     self._applyPatchMovementSoftlock( file )
+                elif( patch == 'typeEffectiveness'):
+                    self._randomizeTypeEffectiveness( file ) 
+                elif( patch == 'learnmoveandcommand'):
+                    self._applyPatchLearnMoveAndCommand( file )
+                elif( patch == 'fixDVChips'):
+                    self._applyPatchDVChipDescription( file )
+                elif( patch == 'happyVending'):
+                    self._applyPatchGuaranteeHappyShrm( file )
 
 
             #------------------------------------------------------
@@ -2681,8 +2689,14 @@ class DigimonWorldHandler:
                                   ofst,
                                   struct.pack( data.fixToyTownSLFormat, data.fixToyTownSLValue ),
                                   self.logger )
+                                  
+        for ofst in data.fixLeoCaveSLOffset:
+            util.writeDataToFile( file,
+                                  ofst,
+                                  struct.pack( data.fixLeoCaveSLFormat, data.fixLeoCaveSLValue ),
+                                  self.logger )
         
-        self.logger.logChange( "Applied 3 movement softlock patches." )
+        self.logger.logChange( "Applied 4 movement softlock patches." )
         
     def _applyPatchUnifyEvoTargetFunction( self, file ):
         """
@@ -2713,3 +2727,86 @@ class DigimonWorldHandler:
                               self.logger )
         
         self.logger.logChange( "Added custom function and hook for it" )
+
+    def _randomizeTypeEffectiveness( self, file ):
+        """
+        Randomizes type effectiveness to a random value between 2 and 20
+        """
+
+        self.logger.logChange( "Changing type effectivness chart" )
+
+        for type1 in range(0, 7):
+            row = ""
+            
+            for type2 in range(0, 7):
+                newValue = random.randint(2, 20)
+                offset =  type1 * 7 + type2
+                util.writeDataToFile( file,
+                                      data.typeEffectivenessOffset + offset,
+                                      struct.pack( data.typeEffectivenessFormat, newValue),
+                                      self.logger )
+                row = row + str(newValue) + " "
+            
+            self.logger.logChange( row )
+        
+        self.logger.logChange( "Randomized type effectiveness" )
+
+    def _applyPatchLearnMoveAndCommand( self, file ):
+        """
+        Removes the command learning text to allow learning a move and a command
+        in the same training session.
+        """
+
+        util.writeDataToFile(   file,
+                                data.learnMoveAndCommandOffset,
+                                struct.pack( data.learnMoveAndCommandFormat, *data.learnMoveAndCommandValue ),
+                                self.logger )
+
+        self.logger.logChange( "Fixing move learning at brains training.")
+
+    def _applyPatchDVChipDescription( self, file ):
+        """
+        Fixes the description of DV Chips to reflect what they're actually doing.
+        """
+
+        util.writeDataToFile( file,
+                              data.DVChipAOffset,
+                              struct.pack( data.DVChipAFormat, data.DVChipAValue[ :26 ].encode( 'ascii' ) ),
+                              self.logger )
+
+        util.writeDataToFile( file,
+                              data.DVChipDOffset,
+                              struct.pack( data.DVChipDFormat, data.DVChipDValue[ :26 ].encode( 'ascii' ) ),
+                              self.logger )
+
+        util.writeDataToFile( file,
+                              data.DVChipEOffset,
+                              struct.pack( data.DVChipEFormat, data.DVChipEValue[ :26 ].encode( 'ascii' ) ),
+                              self.logger )
+
+    def _applyPatchGuaranteeHappyShrm( self, file ):
+        util.writeDataToFile( file,
+                              data.happyMushroomVendingOffset1,
+                              struct.pack( data.happyMushroomVendingFormat1, data.happyMushroomVendingValue1.encode( 'shift_jis' ) ),
+                              self.logger )
+
+        util.writeDataToFile( file,
+                              data.happyMushroomVendingOffset2,
+                              struct.pack( data.happyMushroomVendingFormat2, data.happyMushroomVendingValue2.encode( 'ascii' ) ),
+                              self.logger )
+
+        util.writeDataToFile( file,
+                              data.happyMushroomVendingOffset3,
+                              struct.pack( data.happyMushroomVendingPriceFormat, data.happyMushroomVendingPriceValue ),
+                              self.logger )
+
+        util.writeDataToFile( file,
+                              data.happyMushroomVendingOffset4,
+                              struct.pack( data.happyMushroomVendingPriceFormat, data.happyMushroomVendingPriceValue ),
+                              self.logger )
+
+        for ofst in data.happyMushroomVendingOffset5:
+            util.writeDataToFile( file,
+                                  ofst,
+                                  struct.pack( data.happyMushroomVendingFormat5, data.happyMushroomVendingValue5 ),
+                                  self.logger )

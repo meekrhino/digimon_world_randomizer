@@ -52,7 +52,7 @@ export default function ElementContainer( props: Props ) {
             break
 
         case InputVariation.Slider:
-            const stepSize = props.maxVal / 20
+            const stepSize = props.maxVal / 100
             input = <Slider
                         className="element slider"
                         disabled={!props.enabled}
