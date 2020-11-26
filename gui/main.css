@@ -210,14 +210,14 @@ h1.category {
 /* Special styling */
 #misc-patches {
     flex-wrap: wrap;
-    height: 140px;
+    height: 200px;
 }
 
 /* Terminal Styling */
 .terminalOutput {
     position: fixed;
     border: 3px solid rgb(38, 99, 143);
-    height: 130px;
+    height: 160px;
     width: 100%;
     background-color: black;
     color: white;

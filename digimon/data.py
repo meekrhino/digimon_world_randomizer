@@ -783,3 +783,8 @@ starterStatChkDigimonOffset = 0x1407E2C5
 #type effectiveness 
 typeEffectivenessFormat = 'B'
 typeEffectivenessOffset = 0x14D669F8
+ 
+#learn move and command patch
+learnMoveAndCommandFormat = "<II"
+learnMoveAndCommandValue  = ( 0x10000065, 0x00001021 )
+learnMoveAndCommandOffset = 0x14C8821C

@@ -1231,6 +1231,8 @@ class DigimonWorldHandler:
                     self._applyPatchMovementSoftlock( file )
                 elif( patch == 'typeEffectiveness'):
                     self._randomizeTypeEffectiveness( file ) 
+                elif( patch == 'learnmoveandcommand'):
+                    self._applyPatchLearnMoveAndCommand( file) 
 
 
             #------------------------------------------------------
@@ -2744,3 +2746,16 @@ class DigimonWorldHandler:
             self.logger.logChange( row )
         
         self.logger.logChange( "Randomized type effectiveness" )
+
+    def _applyPatchLearnMoveAndCommand( self, file ):
+        """
+        Removes the command learning text to allow learning a move and a command
+        in the same training session.
+        """
+
+        util.writeDataToFile(   file,
+                                data.learnMoveAndCommandOffset,
+                                struct.pack( data.learnMoveAndCommandFormat, *data.learnMoveAndCommandValue ),
+                                self.logger )
+
+        self.logger.logChange( "Fixing move learning at brains training.")

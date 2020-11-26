@@ -99,6 +99,7 @@ export interface PatchSettings extends Toggleable {
     Softlock            : boolean
     UnlockAreas         : boolean
     UnrigSlots          : boolean
+    LearnMoveAndCommand : boolean
 }
 
 /* Public Constants */
@@ -194,7 +195,8 @@ export class MainModel {
             Gabu                : false,
             Softlock            : false,
             UnlockAreas         : false,
-            UnrigSlots          : false
+            UnrigSlots          : false,
+            LearnMoveAndCommand : false,
         }
 
         if( raw ) {

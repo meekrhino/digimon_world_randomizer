@@ -470,4 +470,11 @@ export const patchElements: SectionElement<Main.PatchSettings>[] = [
     inputType: InputVariation.Checkbox,
     label: "Fix Softlocks",
     tooltip: `This fixes some movement related softlocks.` },
+  { attribute: "LearnMoveAndCommand",
+    inputType: InputVariation.Checkbox,
+    label: "Fix Brains Learning",
+    tooltip: 
+        `This patch disables the text for learning new commands, allowing you
+         to learn a command and a technique at the same session.
+         This mainly helps if you're doing Bonus Tries to obtain new moves.` },
 ]

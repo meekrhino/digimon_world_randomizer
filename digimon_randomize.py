@@ -174,6 +174,9 @@ if( config[ 'patches' ][ 'Enabled' ] ):
 
     if( config[ 'patches' ][ 'Softlock' ] ):
         handler.applyPatch( 'softlock' )
+        
+    if( config[ 'patches' ][ 'LearnMoveAndCommand' ] ):
+        handler.applyPatch( 'learnmoveandcommand' )
 
 
 print( 'Writing to ' + outFile + '...' )
