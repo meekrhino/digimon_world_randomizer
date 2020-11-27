@@ -2735,11 +2735,13 @@ class DigimonWorldHandler:
 
         self.logger.logChange( "Changing type effectivness chart" )
 
+        options = [ 2, 5, 10, 15, 20 ]
+
         for type1 in range(0, 7):
             row = ""
             
             for type2 in range(0, 7):
-                newValue = random.randint(2, 20)
+                newValue = random.choice(options) # random.randint(2, 20)
                 offset =  type1 * 7 + type2
                 util.writeDataToFile( file,
                                       data.typeEffectivenessOffset + offset,
