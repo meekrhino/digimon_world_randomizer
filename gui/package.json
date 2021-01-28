@@ -22,7 +22,7 @@
   "author": "Tristan Challener",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^4.2.12",
+    "electron": "^9.4.0",
     "electron-packager": "^13.1.1",
     "tslint": "^5.20.1",
     "typescript": "^3.7.5"
