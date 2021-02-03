@@ -1,37 +1,34 @@
 # Digimon World Randomizer
 ##### Digimon World 1 (PSX) data randomizer.  Create a unique, brand new experience for the classic game!
 
-To use, open settings.ini and adjust all settings according to preference.  In `[general]`, set `Input` as the relative path to your Digimon World `.bin` file, then set `Output` to the filename where you would like the modified `.bin` file to be placed.
-
-i.e. if your DW binary file is called `Digimon World.bin` and is in the same folder as `digimon_randomize.exe` or `digimon_randomize.py`:
-`Input = Digimon World.bin`
-`Output = Digimon World Rando.bin`
-
-###### Note:  For most sections of the settings file, there is an `Enabled` field that must be set to yes before any of the other options will be used.
-&nbsp;
-After you have the settings you want, run `digimon_randomize.py` or `digimon_randomize.exe`.  The random seed will be printed out to the console. If you did not manually set a seed via `Seed`, one will be randomly generated.
-See race instructions below for creating identical race ROMs.
-
-##### Steps for first time setup:
+###### Steps for first time setup:
 1. Download the latest release of `digimon_randomizer.zip`
 2. Unzip to wherever
-3. Open `settings.ini` and fill out the file paths for `Input` and `Output`
-    * Paths can be absolute or relative, and should point to the `.bin` file
-4. Change the other settings to your liking
-5. Run `digimon_randomize.exe`
-6. Load the `.bin` file at the `Output` location into your emulator of choice
+3. Run `digimon_randomize.exe` and select any or all options.  
+4. Press the `Randomize` button.
+5. Load the `.bin` file with the name you specified in the emulator of your choice.
 
-##### Recommended race setup:
-1. Follow 1-4 above
-2. Set `LogLevel` to `race`
+###### Recommended race setup:
+1. Follow 1-3 above
+2. Set `LogLevel` to `race`.  Enable `Display Settings` patch.
 3. Set the seed to any number, or simply run the randomizer and copy the random seed produced
-4. Once `Seed` in `settings.ini` is set to the value you want, send your `settings.ini` file to your race opponents
-5. All race participants should update `Input`/`Output` in `settings.ini` to their own paths
-6. All race participants should run `digimon_randomize.exe`
+4. Save settings with the seed set, then share your settings file with your race opponents.
+5. All race participants should load the settings then update ROM input and output paths to their own file system.
+6. All race participants should press the Randomize button.
 7. If everyone's settings matched, including the seed, an identical ROM will be produced for everyone.
+    * You can verify this by seeing the hash value during the game's intro.
 
 
 ### Version log:
+
+##### Release 1.1.2
+###### New Features
+    - Patch for learning moves and commands on same session
+    - Randomize type effectiveness
+    
+###### Bug Fixes
+    - Fix some seeds being truncated on input
+    - Up slider steps from 20 to 100, fix default values
 
 ##### Release 1.1.1
 ###### Bug Fixes
