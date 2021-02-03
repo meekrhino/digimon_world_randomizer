@@ -1118,13 +1118,13 @@ Ideas for things to randomize:
   ✓Evolutions (highly requested)
   ----MUST FIX REQS FOR PANJYAMON, GIGADRAMON, METALETEMON!!!
     Learnable techs (most likely not possible, but cool af)
-    Random recruitments (who you get from what recruitment)
+  ✓Random recruitments (who you get from what recruitment)
   ✓Digimon drops/droprates from fights
     Mojyamon item trading items
-    All special evos
+  ✓All special evos (minus numemon cuz toy town)
   ✓Always change the starter (never random agumon to agumon)
   ✓Tech Data
-    Fix jukebox crash.  Need to truncate track names.
+  ✓Fix jukebox crash.  Need to truncate track names.
 ----------------------------------------------------------------------------------------------------
 
 ----------------------------------------------------------------------------------------------------
@@ -1181,6 +1181,11 @@ MetalMamemon   (99, >2)
 Otamamon   (2, >0)
 007674 if pstat(110) > 0 OR trigger(309) == true then 7698
     0x13FD7F47 -> 00
+----------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
+Rewriting the function to calculate battle stat gains
+
 
 ----------------------------------------------------------------------------------------------------
 

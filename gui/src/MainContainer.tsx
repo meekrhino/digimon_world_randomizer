@@ -61,6 +61,13 @@ export default class MainContainer extends Component<Props, State> {
         this.forceUpdate()
     }
 
+    /* select location to output randomized ROM */
+    private onMenuSelectSeed = ( e: React.FormEvent<HTMLInputElement> ): void => {
+        let val = e.currentTarget.value
+
+        this.data.General.Seed = val? `${val}` : undefined
+    }
+
     /* select file to save settings to */
     private onMenuSaveSettings = (): void => {
         let path = remote.dialog.showSaveDialog( {
@@ -343,13 +350,11 @@ export default class MainContainer extends Component<Props, State> {
                                         <Label id="seed">
                                             Seed: 
                                         </Label>
-                                        <NumericInput
+                                        <InputGroup
                                             placeholder="Random"
                                             disabled={this.inProgress}
-                                            buttonPosition={"none"}
-                                            allowNumericCharactersOnly={false}
                                             value={this.data.General.Seed}
-                                            onValueChange={val => this.data.General.Seed = val? `${val}` : undefined}/>
+                                            onChange={this.onMenuSelectSeed}/>
                                     </div>
                                     <RadioGroup
                                         className="log-subsection"
